@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package ride.trip.v1alpha1;
+
+import "google/protobuf/timestamp.proto";
+import "ride/trip/v1alpha1/types.proto";
+
+service TripServie {
+  rpc CreateTrip(CreateTripRequest) returns (CreateTripResponse) {}
+
+  rpc GetTrip(GetTripRequest) returns (something) {}
+
+  rpc GetTripUpdates(GetTripUpdatesRequest) returns (stream GetTripUpdatesResponse) {}
+
+  rpc StartTrip(StartTripRequest) returns (StartTripResponse) {}
+
+  rpc CancelTrip(CancelTripRequest) returns (CancelTripResponse) {}
+
+  rpc EndTrip(EndTripRequest) returns (EndTripResponse) {}
+}
+
+message something {}
+
+message CreateTripRequest {
+  TripLocation pickup = 1;
+  TripLocation dropoff = 2;
+  VehicleType vehicle_type = 3;
+  TripType trip_type = 4;
+  uint32 passengers = 5;
+  repeated string skip_list = 6;
+  string overview_polyline = 7;
+}
+
+message CreateTripResponse {
+  string trip_id = 1;
+}
+
+message GetTripRequest {
+  string trip_id = 1;
+}
+
+message GetTripResponse {
+  Trip trip = 1;
+}
+
+message GetTripUpdatesRequest {
+  string trip_id = 1;
+}
+
+message GetTripUpdatesResponse {
+  Trip trip = 1;
+  google.protobuf.Timestamp timestamp = 2;
+}
+
+message StartTripRequest {
+  string trip_id = 1;
+  string verification_code = 2;
+}
+
+message StartTripResponse {}
+
+message CancelTripRequest {
+  string trip_id = 1;
+}
+
+message CancelTripResponse {}
+
+message EndTripRequest {
+  string trip_id = 1;
+}
+
+message EndTripResponse {}

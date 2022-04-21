@@ -1,11 +1,11 @@
 {
-  "extends": "@tsconfig/node16/tsconfig.json",
-  "compilerOptions": {
-    "outDir": "build",
-    "sourceMap": true,
-    "removeComments": true,
-    "noImplicitReturns": false,
-  },
-  "compileOnSave": true,
-  "include": ["src"],
+	"extends": "@tsconfig/node16/tsconfig.json",
+	"compilerOptions": {
+		"outDir": "build",
+		"sourceMap": true,
+		"removeComments": true,
+		"noImplicitReturns": false
+	},
+	"compileOnSave": true,
+	"include": ["src"]
 }

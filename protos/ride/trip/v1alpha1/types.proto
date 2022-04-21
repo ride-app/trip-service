@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package ride.trip.v1alpha1;
+
+import "google/type/latlng.proto";
+
+message Trip {
+  string trip_id = 1;
+  TripStatus status = 2;
+  TripLocation pickup_location = 3;
+  TripLocation dropoff_location = 4;
+  uint32 passengers = 5;
+  VehicleType vehicle_type = 6;
+  TripType trip_type = 7;
+  Person rider = 8;
+  optional Person driver = 9;
+  optional string overview_polyline = 10;
+}
+
+enum VehicleType {
+  VEHICLE_TYPE_UNSPECIFIED = 0;
+  VEHICLE_TYPE_ERICKSHAW = 1;
+}
+
+enum TripType {
+  TRIP_TYPE_UNSPECIFIED = 0;
+  TRIP_TYPE_SHARED = 1;
+  TRIP_TYPE_PRIVATE = 2;
+  TRIP_TYPE_DOORSTEP = 3;
+}
+
+enum TripStatus {
+  TRIP_STATUS_UNSPECIFIED = 0;
+  TRIP_STATUS_PENDING = 1;
+  TRIP_STATUS_ACCEPTED = 2;
+  TRIP_STATUS_DECLINED = 3;
+  TRIP_STATUS_DRIVER_ARRIVED = 5;
+  TRIP_STATUS_ACTIVE = 6;
+  TRIP_STATUS_AT_DESTINATION = 7;
+  TRIP_STATUS_COMPLETED = 8;
+  TRIP_STATUS_DRIVER_CANCELLED = 9;
+  TRIP_STATUS_RIDER_CANCELLED = 10;
+}
+
+message TripLocation {
+  google.type.LatLng coordinates = 1;
+  string address = 2;
+}
+
+message Person {
+  string uid = 1;
+  string name = 2;
+  optional string phone_number = 3;
+  optional string photo_url = 4;
+}

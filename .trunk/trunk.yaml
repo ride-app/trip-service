@@ -1,0 +1,50 @@
+version: 0.1
+cli:
+  version: 0.10.1-beta
+lint:
+  # linters:
+  #   - name: buf-breaking
+  #     command:
+  #       - buf
+  #       - breaking
+  #       - --against
+  #       - buf.build/ride/trip-service
+  #       - --error-format
+  #       - json
+  #       - --path
+  #       - ${target}
+  enabled:
+    - actionlint@1.6.12
+    - eslint@8.13.0
+    - gitleaks@8.7.2
+    - prettier@2.6.2
+    - buf-lint@1.3.1
+    - buf-breaking@1.3.1
+    - dotenv-linter@3.2.0
+    - hadolint@2.10.0
+
+  ignore:
+    - linters: [ALL]
+      paths:
+        - src/gen/**
+    - linters: [prettier]
+      paths:
+        - protos/**
+        - package-lock.json
+
+  triggers:
+    - linters:
+        - hadolint
+      paths:
+        - dockerfile
+        - dockerfile.*
+      targets:
+        - dockerfile
+        - dockerfile.*
+    # - linters:
+    #     - buf-lint
+    #     - buf-breaking
+    #   paths:
+    #     - protos
+    #   targets:
+    #     - protos
