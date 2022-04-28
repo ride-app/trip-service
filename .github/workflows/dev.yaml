@@ -28,7 +28,7 @@ jobs:
         run: npm install
 
       - name: Lint
-        run: npm run lint
+        uses: trunk-io/trunk-action@v1
 
       - name: Format
         run: npm run format
