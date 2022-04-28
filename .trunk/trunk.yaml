@@ -1,7 +1,12 @@
 version: 0.1
 cli:
-  version: 0.10.1-beta
+  version: 0.11.0-beta
 lint:
+  files:
+    - name: docker
+      filenames:
+        - Dockerfile
+        - dockerfile
   #   linters:
   #     - name: buf-breaking
   #       command:
@@ -42,15 +47,6 @@ lint:
         - protos/**
         - package-lock.json
 
-  triggers:
-    - linters:
-        - hadolint
-      paths:
-        - dockerfile
-        - dockerfile.*
-      targets:
-        - dockerfile
-        - dockerfile.*
     # - linters:
     #     - buf-lint
     #     - buf-breaking
