@@ -2,7 +2,7 @@ import {
 	GetTripRequest,
 	GetTripResponse,
 } from './gen/ride/trip/v1alpha1/trip_service';
-import { Vehicle } from './gen/ride/trip/v1alpha1/types';
+import { TripStatus, TripType, Vehicle } from './gen/ride/trip/v1alpha1/types';
 import { VehicleType } from './gen/ride/type/v1alpha1/types';
 
 import getTripFromRepo from './repositories/trip-repository';
@@ -34,7 +34,8 @@ async function getTrip(
 		return {
 			trip: {
 				tripId: req.tripId,
-				// status:,
+				status: TripStatus.ACCEPTED,
+				tripType: TripType.DOORSTEP,
 				overviewPolyline: trip.polyline,
 				passengers: trip.passengers,
 				rider: await getPersonFromUid(trip.riderUid),
