@@ -4,11 +4,12 @@ package ride.trip.v1alpha1;
 
 import "google/protobuf/timestamp.proto";
 import "ride/trip/v1alpha1/types.proto";
+import "ride/type/v1alpha1/types.proto";
 
-service TripServie {
+service TripService {
   rpc CreateTrip(CreateTripRequest) returns (CreateTripResponse) {}
 
-  rpc GetTrip(GetTripRequest) returns (something) {}
+  rpc GetTrip(GetTripRequest) returns (GetTripResponse) {}
 
   rpc GetTripUpdates(GetTripUpdatesRequest) returns (stream GetTripUpdatesResponse) {}
 
@@ -19,12 +20,10 @@ service TripServie {
   rpc EndTrip(EndTripRequest) returns (EndTripResponse) {}
 }
 
-message something {}
-
 message CreateTripRequest {
-  TripLocation pickup = 1;
-  TripLocation dropoff = 2;
-  VehicleType vehicle_type = 3;
+  TripLocation origin = 1;
+  TripLocation destination = 2;
+  ride.type.v1alpha1.VehicleType vehicle_type = 3;
   TripType trip_type = 4;
   uint32 passengers = 5;
   repeated string skip_list = 6;

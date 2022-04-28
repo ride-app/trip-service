@@ -50,6 +50,7 @@ async function sendOffer(
 		expiresAt,
 		polyline: option.optimalRoute.newVehiclePathPolyline,
 		locations: [
+			// TODO: Don't forget about these null checks
 			new GeoPoint(
 				...(option.optimalRoute.tripPath[0] ?? [
 					tripRequest.pickup?.coordinates?.latitude,

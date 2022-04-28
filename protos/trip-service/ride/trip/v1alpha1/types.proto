@@ -3,6 +3,7 @@ syntax = "proto3";
 package ride.trip.v1alpha1;
 
 import "google/type/latlng.proto";
+import "ride/type/v1alpha1/types.proto";
 
 message Trip {
   string trip_id = 1;
@@ -10,17 +11,18 @@ message Trip {
   TripLocation pickup_location = 3;
   TripLocation dropoff_location = 4;
   uint32 passengers = 5;
-  VehicleType vehicle_type = 6;
+  ride.type.v1alpha1.VehicleType vehicle_type = 6;
   TripType trip_type = 7;
   Person rider = 8;
   optional Person driver = 9;
   optional string overview_polyline = 10;
+  optional Vehicle vehicle = 11;
 }
 
-enum VehicleType {
-  VEHICLE_TYPE_UNSPECIFIED = 0;
-  VEHICLE_TYPE_ERICKSHAW = 1;
-}
+// enum VehicleType {
+//   VEHICLE_TYPE_UNSPECIFIED = 0;
+//   VEHICLE_TYPE_ERICKSHAW = 1;
+// }
 
 enum TripType {
   TRIP_TYPE_UNSPECIFIED = 0;
@@ -52,4 +54,9 @@ message Person {
   string name = 2;
   optional string phone_number = 3;
   optional string photo_url = 4;
+}
+
+message Vehicle {
+  string vehicle_id = 1;
+  string license_number = 2;
 }

@@ -1,3 +1,0 @@
-class TripService {
-	static storeTripRequest() {}
-}

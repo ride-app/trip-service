@@ -2,17 +2,27 @@ version: 0.1
 cli:
   version: 0.10.1-beta
 lint:
-  # linters:
-  #   - name: buf-breaking
-  #     command:
-  #       - buf
-  #       - breaking
-  #       - --against
-  #       - buf.build/ride/trip-service
-  #       - --error-format
-  #       - json
-  #       - --path
-  #       - ${target}
+  #   linters:
+  #     - name: buf-breaking
+  #       command:
+  #         - buf
+  #         - breaking
+  #         - --against
+  #         - ${workspace}/.git#branch=${upstream-ref}, subdir=$(echo ${target} | cut -d "/" -f2)
+  #         - --error-format
+  #         - json
+  #         - --path
+  #         - ${target}
+  #       # command:
+  #       #   - buf
+  #       #   - breaking
+  #       #   - --against
+  #       #   - buf.build/ride/trip-service
+  #       #   - --error-format
+  #       #   - json
+  #       #   - --path
+  #       #   - ${target}
+  #       # run_from_root_file: buf.yaml
   enabled:
     - actionlint@1.6.12
     - eslint@8.13.0

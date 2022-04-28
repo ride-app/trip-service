@@ -1,4 +1,4 @@
-import { getAuth, UserRecord } from 'firebase-admin/auth';
+import { getAuth } from 'firebase-admin/auth';
 import {
 	getFirestore,
 	FieldPath,
@@ -9,22 +9,29 @@ import {
 	CreateTripRequest,
 	CreateTripResponse,
 } from '../gen/ride/trip/v1alpha1/trip_service';
-import { VehicleType } from '../gen/ride/trip/v1alpha1/types';
+import { VehicleType } from '../gen/ride/type/v1alpha1/types';
+import * as AuthRepository from '../repositories/auth-repository';
 
-import Vehicle from './models/vehicle';
+import Vehicle from '../models/vehicle';
 import { DriverSearchService } from './services/driver-search-service';
 import {
 	sendOffer,
 	getDriverDataIfCapacityAvailable,
 } from './services/driver-services';
+import { ExpectedError, Reason } from '../utils/errors/expected-error';
 
 const createTrip = async (
 	tripRequest: CreateTripRequest,
-	user: UserRecord
+	uid: string
 ): Promise<CreateTripResponse | undefined> => {
-	if (tripRequest.pickup === undefined || !tripRequest.dropoff === undefined) {
-		// TODO: return error
+	if (
+		tripRequest.origin === undefined ||
+		!tripRequest.destination === undefined
+	) {
+		throw new ExpectedError('Invalid Argument', Reason.INVALID_ARGUMENT);
 	}
+
+	const user = await AuthRepository.getUser(uid);
 
 	const MAX_SEARCH_RADIUS = 2;
 	const firestore = getFirestore();
@@ -37,19 +44,19 @@ const createTrip = async (
 		vehicleType: tripRequest.vehicleType,
 		passengers: tripRequest.passengers,
 		locations: {
-			pickup: {
+			origin: {
 				location: new GeoPoint(
-					tripRequest.pickup!.coordinates!.latitude,
-					tripRequest.pickup!.coordinates!.longitude
+					tripRequest.origin!.coordinates.latitude,
+					tripRequest.origin!.coordinates.longitude
 				),
-				address: tripRequest.pickup!.address,
+				address: tripRequest.origin!.address,
 			},
 			dropOff: {
 				location: new GeoPoint(
-					tripRequest.dropoff!.coordinates!.latitude,
-					tripRequest.dropoff!.coordinates!.longitude
+					tripRequest.destination!.coordinates.latitude,
+					tripRequest.destination!.coordinates.longitude
 				),
-				address: tripRequest.dropoff!.address,
+				address: tripRequest.destination!.address,
 			},
 		},
 		user: {
@@ -106,7 +113,8 @@ const createTrip = async (
 					// Update driver's properties
 					driver.vehicle = new Vehicle(
 						driverData.vehicleId,
-						driverData.vehicleNumber
+						driverData.vehicleNumber,
+						tripRequest.vehicleType
 					);
 					driver.name = driverAuthData.displayName!;
 					driver.phone = driverAuthData.phoneNumber!;
@@ -185,7 +193,7 @@ const createTrip = async (
 					regNo: driver.vehicle?.regNumber,
 				},
 				walks: {
-					pickup:
+					origin:
 						result!.optimalRoute.pickupWalk !== undefined
 							? {
 									distance: result?.optimalRoute.pickupWalk.length,
