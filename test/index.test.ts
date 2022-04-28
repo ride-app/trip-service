@@ -4,7 +4,9 @@
  * @group unit
  */
 
-import greeter from '../src/index';
+function greeter(name: string) {
+	return `Hello ${name}`;
+}
 
 // Test for greeter function
 describe('greeter', () => {
