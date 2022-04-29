@@ -1,24 +1,24 @@
 import { VehicleType } from "../gen/ride/type/v1alpha1/types";
 
 class Vehicle {
-  id: string;
+	id: string;
 
-  type: VehicleType;
+	type: VehicleType;
 
-  regNumber: string;
+	regNumber: string;
 
-  constructor(id: string, regNumber: string, type: VehicleType) {
-    this.id = id;
-    this.regNumber = regNumber;
-    this.type = type;
-  }
+	constructor(id: string, regNumber: string, type: VehicleType) {
+		this.id = id;
+		this.regNumber = regNumber;
+		this.type = type;
+	}
 
-  // toJSON() {
-  // 	return {
-  // 		id: this.id,
-  // 		regNumber: this.regNumber,
-  // 	};
-  // }
+	// toJSON() {
+	// 	return {
+	// 		id: this.id,
+	// 		regNumber: this.regNumber,
+	// 	};
+	// }
 }
 
 export default Vehicle;

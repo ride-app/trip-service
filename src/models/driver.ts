@@ -1,57 +1,57 @@
 import Vehicle from "./vehicle";
 
 class Driver {
-  id: string;
+	id: string;
 
-  name!: string;
+	name!: string;
 
-  location: [number, number];
+	location: [number, number];
 
-  distance: number;
+	distance: number;
 
-  currentPathString!: string | undefined;
+	currentPathString!: string | undefined;
 
-  // currentPath!: LatLngTuple[];
+	// currentPath!: LatLngTuple[];
 
-  // ETA!: number;
+	// ETA!: number;
 
-  // _rating: number;
-  notificationToken!: string;
+	// _rating: number;
+	notificationToken!: string;
 
-  phone!: string;
+	phone!: string;
 
-  photoUrl!: string;
+	photoUrl!: string;
 
-  vehicle!: Vehicle;
+	vehicle!: Vehicle;
 
-  // vehicleId!: string;
+	// vehicleId!: string;
 
-  // vehicleNumber!: string;
+	// vehicleNumber!: string;
 
-  constructor(
-    id: string,
-    location: [number, number],
-    distance: number,
-    currentPathString: string | undefined
-  ) {
-    this.id = id;
-    this.location = location;
-    this.distance = distance;
-    this.currentPathString = currentPathString;
-  }
+	constructor(
+		id: string,
+		location: [number, number],
+		distance: number,
+		currentPathString: string | undefined
+	) {
+		this.id = id;
+		this.location = location;
+		this.distance = distance;
+		this.currentPathString = currentPathString;
+	}
 
-  // toJSON() {
-  // 	return {
-  // 		id: this.id,
-  // 		location: this.location,
-  // 		distance: this.distance,
-  // 		name: this.name,
-  // 		phone: this.phone,
-  // 		photoUrl: this.photoUrl,
-  // 		vehicle: this.vehicle?.toJSON(),
-  // 		// rating: this._rating
-  // 	};
-  // }
+	// toJSON() {
+	// 	return {
+	// 		id: this.id,
+	// 		location: this.location,
+	// 		distance: this.distance,
+	// 		name: this.name,
+	// 		phone: this.phone,
+	// 		photoUrl: this.photoUrl,
+	// 		vehicle: this.vehicle?.toJSON(),
+	// 		// rating: this._rating
+	// 	};
+	// }
 }
 
 export default Driver;
