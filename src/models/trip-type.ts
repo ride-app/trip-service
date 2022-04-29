@@ -3,7 +3,7 @@
 // 	shared,
 // }
 
-const TripTypes = ['regular', 'shared'] as const;
+const TripTypes = ["regular", "shared"] as const;
 
 type TripType = typeof TripTypes[number];
 

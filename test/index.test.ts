@@ -5,12 +5,12 @@
  */
 
 function greeter(name: string) {
-	return `Hello, ${name}!`;
+  return `Hello, ${name}!`;
 }
 
 // Test for greeter function
-describe('greeter', () => {
-	it('should return a greeting', () => {
-		expect(greeter('test')).toBe('Hello, test!');
-	});
+describe("greeter", () => {
+  it("should return a greeting", () => {
+    expect(greeter("test")).toBe("Hello, test!");
+  });
 });

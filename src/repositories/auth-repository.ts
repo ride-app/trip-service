@@ -1,11 +1,8 @@
-import { getAuth, UserRecord } from 'firebase-admin/auth';
+import { getAuth, UserRecord } from "firebase-admin/auth";
 
-const verifyIdToken = async (idToken: string): Promise<string> => {
-	return (await getAuth().verifyIdToken(idToken)).uid;
-};
+const verifyIdToken = async (idToken: string): Promise<string> =>
+  (await getAuth().verifyIdToken(idToken)).uid;
 
-const getUser = (id: string): Promise<UserRecord> => {
-	return getAuth().getUser(id);
-};
+const getUser = (id: string): Promise<UserRecord> => getAuth().getUser(id);
 
 export { verifyIdToken, getUser };

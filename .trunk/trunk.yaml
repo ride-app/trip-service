@@ -42,15 +42,8 @@ lint:
     - linters: [ALL]
       paths:
         - src/gen/**
+        - .vscode
     - linters: [prettier]
       paths:
         - protos/**
         - package-lock.json
-
-    # - linters:
-    #     - buf-lint
-    #     - buf-breaking
-    #   paths:
-    #     - protos
-    #   targets:
-    #     - protos
