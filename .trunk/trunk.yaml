@@ -4,9 +4,9 @@ cli:
 lint:
   files:
     - name: docker
-      filenames:
-        - Dockerfile
-        - dockerfile
+      regexes:
+        - .*Dockerfile.*
+        - .*dockerfile.*
   #   linters:
   #     - name: buf-breaking
   #       command:
