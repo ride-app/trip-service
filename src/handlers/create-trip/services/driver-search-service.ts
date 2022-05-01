@@ -2,19 +2,19 @@ import { GeoCollectionReference, initializeApp } from "geofirestore";
 import { encode, decode, LatLngTuple } from "@googlemaps/polyline-codec";
 import { GeoPoint, getFirestore } from "firebase-admin/firestore";
 
-import ScoreVector from "../../models/score-vector";
-import Driver from "../../models/driver";
-import { CreateTripRequest } from "../../gen/ride/trip/v1alpha1/trip_service";
-import MinHeap from "../../utils/min-heap";
+import ScoreVector from "../../../models/score-vector";
+import Driver from "../../../models/driver";
+import { CreateTripRequest } from "../../../gen/ride/trip/v1alpha1/trip_service";
+import MinHeap from "../../../utils/min-heap";
 import {
 	haversine,
 	pathLength,
 	distanceToPathSegment,
-} from "../../utils/distance";
+} from "../../../utils/distance";
 
-import { findIntersection, indexOfPointOnPath } from "../../utils/paths";
-import { TripType } from "../../gen/ride/trip/v1alpha1/types";
-import { VehicleType } from "../../gen/ride/type/v1alpha1/types";
+import { findIntersection, indexOfPointOnPath } from "../../../utils/paths";
+import { TripType } from "../../../gen/ride/trip/v1alpha1/types";
+import { VehicleType } from "../../../gen/ride/type/v1alpha1/types";
 
 interface Option {
 	driver: Driver;

@@ -1,5 +1,5 @@
 # Copy package.json and build node_modules 
-FROM node:alpine as build
+FROM node:lts-alpine as build
 
 WORKDIR /usr/src/app
 
@@ -7,7 +7,7 @@ COPY package*.json ./
 RUN npm ci --production
 
 # The instructions for second stage
-FROM node:alpine
+FROM node:lts-alpine
 
 ENV NODE_ENV production
 

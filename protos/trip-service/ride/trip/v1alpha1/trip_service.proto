@@ -13,6 +13,8 @@ service TripService {
 
   rpc GetTripUpdates(GetTripUpdatesRequest) returns (stream GetTripUpdatesResponse) {}
 
+  rpc SendTripVerificationCode(SendTripVerificationCodeRequest) returns (SendTripVerificationCodeResponse) {}
+
   rpc StartTrip(StartTripRequest) returns (StartTripResponse) {}
 
   rpc CancelTrip(CancelTripRequest) returns (CancelTripResponse) {}
@@ -51,9 +53,16 @@ message GetTripUpdatesResponse {
   google.protobuf.Timestamp timestamp = 2;
 }
 
+message SendTripVerificationCodeRequest{
+  string trip_id = 1;
+}
+
+message SendTripVerificationCodeResponse{
+  string token = 1;
+}
+
 message StartTripRequest {
   string trip_id = 1;
-  string verification_code = 2;
 }
 
 message StartTripResponse {}

@@ -1,7 +1,7 @@
 import { getMessaging } from "firebase-admin/messaging";
 import { FieldValue, GeoPoint, getFirestore } from "firebase-admin/firestore";
 import { Option } from "./driver-search-service";
-import { CreateTripRequest } from "../../gen/ride/trip/v1alpha1/trip_service";
+import { CreateTripRequest } from "../../../gen/ride/trip/v1alpha1/trip_service";
 
 interface DriverData {
 	vehicleId: string;
@@ -53,14 +53,14 @@ async function sendOffer(
 			// TODO: Don't forget about these null checks
 			new GeoPoint(
 				...(option.optimalRoute.tripPath[0] ?? [
-					tripRequest.pickup?.coordinates?.latitude,
-					tripRequest.pickup?.coordinates?.longitude,
+					tripRequest.origin?.coordinates?.latitude,
+					tripRequest.origin?.coordinates?.longitude,
 				])
 			),
 			new GeoPoint(
 				...(option.optimalRoute.tripPath[-1] ?? [
-					tripRequest.dropoff?.coordinates?.latitude,
-					tripRequest.dropoff?.coordinates?.longitude,
+					tripRequest.destination?.coordinates?.latitude,
+					tripRequest.destination?.coordinates?.longitude,
 				])
 			),
 		],

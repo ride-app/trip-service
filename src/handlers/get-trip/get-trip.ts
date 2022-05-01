@@ -1,13 +1,17 @@
 import {
 	GetTripRequest,
 	GetTripResponse,
-} from "./gen/ride/trip/v1alpha1/trip_service";
-import { TripStatus, TripType, Vehicle } from "./gen/ride/trip/v1alpha1/types";
-import { VehicleType } from "./gen/ride/type/v1alpha1/types";
+} from "../../gen/ride/trip/v1alpha1/trip_service";
+import {
+	TripStatus,
+	TripType,
+	Vehicle,
+} from "../../gen/ride/trip/v1alpha1/types";
+import { VehicleType } from "../../gen/ride/type/v1alpha1/types";
 
-import getTripFromRepo from "./repositories/trip-repository";
-import { ExpectedError, Reason } from "./utils/errors/expected-error";
-import getPersonFromUid from "./utils/get-person-from-uid";
+import getTripFromRepo from "../../repositories/trip-repository";
+import { ExpectedError, Reason } from "../../utils/errors/expected-error";
+import getPersonFromUid from "../../utils/get-person-from-uid";
 
 async function getTrip(
 	req: GetTripRequest,

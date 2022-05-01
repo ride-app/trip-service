@@ -1,8 +1,8 @@
 import { Metadata } from "@grpc/grpc-js";
 import { verifyIdToken } from "../repositories/auth-repository";
-import { ExpectedError, Reason } from "../utils/errors/expected-error";
+import { ExpectedError, Reason } from "./errors/expected-error";
 
-const authMiddleware = async (metadata: Metadata): Promise<string> => {
+const verifyAuthHeader = async (metadata: Metadata): Promise<string> => {
 	try {
 		if (metadata.get("authorization").length === 0) {
 			throw new ExpectedError("Missing Authorization", Reason.INVALID_AUTH);
@@ -19,4 +19,4 @@ const authMiddleware = async (metadata: Metadata): Promise<string> => {
 	}
 };
 
-export default authMiddleware;
+export default verifyAuthHeader;

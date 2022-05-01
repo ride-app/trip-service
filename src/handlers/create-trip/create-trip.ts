@@ -8,17 +8,18 @@ import {
 import {
 	CreateTripRequest,
 	CreateTripResponse,
-} from "../gen/ride/trip/v1alpha1/trip_service";
-import { VehicleType } from "../gen/ride/type/v1alpha1/types";
-import * as AuthRepository from "../repositories/auth-repository";
+} from "../../gen/ride/trip/v1alpha1/trip_service";
+import { VehicleType } from "../../gen/ride/type/v1alpha1/types";
+import * as AuthRepository from "../../repositories/auth-repository";
 
-import Vehicle from "../models/vehicle";
+import Vehicle from "../../models/vehicle";
 import { DriverSearchService } from "./services/driver-search-service";
 import {
 	sendOffer,
 	getDriverDataIfCapacityAvailable,
 } from "./services/driver-services";
-import { ExpectedError, Reason } from "../utils/errors/expected-error";
+import { ExpectedError, Reason } from "../../utils/errors/expected-error";
+import { haversine } from "../../utils/distance";
 
 const createTrip = async (
 	tripRequest: CreateTripRequest,
@@ -26,39 +27,52 @@ const createTrip = async (
 ): Promise<CreateTripResponse | undefined> => {
 	if (
 		tripRequest.origin === undefined ||
-		!tripRequest.destination === undefined
+		tripRequest.destination === undefined
 	) {
 		throw new ExpectedError("Invalid Argument", Reason.INVALID_ARGUMENT);
 	}
 
 	const user = await AuthRepository.getUser(uid);
 
-	const MAX_SEARCH_RADIUS = 2;
+	const MAX_SEARCH_RADIUS = Math.min(
+		2,
+		haversine(
+			[
+				tripRequest.origin.coordinates.latitude,
+				tripRequest.origin.coordinates.longitude,
+			],
+			[
+				tripRequest.destination.coordinates.latitude,
+				tripRequest.destination.coordinates.longitude,
+			]
+		) / 2
+	);
 	const firestore = getFirestore();
 
 	// Persist the trip request
 	const { id: tripId } = await firestore.collection("trips").add({
 		status: "pending",
 		createdAt: FieldValue.serverTimestamp(),
-		type: tripRequest.tripType,
-		vehicleType: tripRequest.vehicleType,
+		type: tripRequest.tripType.toString().toLowerCase(),
+		vehicleType: tripRequest.vehicleType.toString().toLowerCase(),
 		passengers: tripRequest.passengers,
 		locations: {
-			origin: {
+			pickup: {
 				location: new GeoPoint(
-					tripRequest.origin!.coordinates.latitude,
-					tripRequest.origin!.coordinates.longitude
+					tripRequest.origin.coordinates.latitude,
+					tripRequest.origin.coordinates.longitude
 				),
-				address: tripRequest.origin!.address,
+				address: tripRequest.origin.address,
 			},
 			dropOff: {
 				location: new GeoPoint(
-					tripRequest.destination!.coordinates.latitude,
-					tripRequest.destination!.coordinates.longitude
+					tripRequest.destination.coordinates.latitude,
+					tripRequest.destination.coordinates.longitude
 				),
-				address: tripRequest.destination!.address,
+				address: tripRequest.destination.address,
 			},
 		},
+		// Re-evaluate redundant information's need
 		user: {
 			uid: user.uid,
 			name: user.displayName,
@@ -77,17 +91,17 @@ const createTrip = async (
 	// Initialize the driver createTrip service
 	const driverSearchService = new DriverSearchService(0.5, tripRequest);
 
-	let result: Awaited<ReturnType<typeof driverSearchService.getBestOption>>;
+	let bestOption: Awaited<ReturnType<typeof driverSearchService.getBestOption>>;
 
 	/* eslint no-await-in-loop: "off" */
 	// Keep querying the driver createTrip service until we find a driver
-	while (driverSearchService.searchRadius <= MAX_SEARCH_RADIUS && !result) {
+	while (driverSearchService.searchRadius <= MAX_SEARCH_RADIUS && !bestOption) {
 		// Query the driver createTrip service for the best option
-		const tempResult = await driverSearchService.getBestOption();
+		const tempBestOption = await driverSearchService.getBestOption();
 
-		if (tempResult) {
+		if (tempBestOption) {
 			// get the driver from the result
-			const { driver } = tempResult;
+			const { driver } = tempBestOption;
 
 			// get the driver data if the driver has capacity to take the passengers
 			const driverData = await getDriverDataIfCapacityAvailable(
@@ -102,7 +116,7 @@ const createTrip = async (
 				const accepted = await sendOffer(
 					tripId,
 					tripRequest,
-					tempResult
+					tempBestOption
 					// driverData.get('notificationToken')
 				);
 
@@ -122,7 +136,7 @@ const createTrip = async (
 
 					// if the driver accepted the trip request then set the temporary result as final
 					// and break out of the createTrip loop
-					result = tempResult;
+					bestOption = tempBestOption;
 					break;
 				} else {
 					// if the driver rejects offer add driver to skip list
@@ -139,8 +153,8 @@ const createTrip = async (
 	}
 
 	// If we found a driver then update the trip request with the driver's data
-	if (result) {
-		const { driver } = result;
+	if (bestOption) {
+		const { driver } = bestOption;
 
 		await firestore.runTransaction(async (transaction) => {
 			const locationRef = firestore
@@ -163,7 +177,7 @@ const createTrip = async (
 			const tripRef = firestore.collection("trips").doc(tripId);
 
 			transaction.update(locationRef, {
-				currentPathString: result!.optimalRoute.newVehiclePathPolyline,
+				currentPathString: bestOption!.optimalRoute.newVehiclePathPolyline,
 			});
 
 			transaction.delete(
@@ -194,17 +208,17 @@ const createTrip = async (
 				},
 				walks: {
 					origin:
-						result!.optimalRoute.pickupWalk !== undefined
+						bestOption!.optimalRoute.pickupWalk !== undefined
 							? {
-									distance: result?.optimalRoute.pickupWalk.length,
-									polyline: result?.optimalRoute.pickupWalk.polyline,
+									distance: bestOption?.optimalRoute.pickupWalk.length,
+									polyline: bestOption?.optimalRoute.pickupWalk.polyline,
 							  }
 							: null,
 					dropOff:
-						result!.optimalRoute.dropOffWalk !== undefined
+						bestOption!.optimalRoute.dropOffWalk !== undefined
 							? {
-									distance: result?.optimalRoute.dropOffWalk.length,
-									polyline: result?.optimalRoute.dropOffWalk.polyline,
+									distance: bestOption?.optimalRoute.dropOffWalk.length,
+									polyline: bestOption?.optimalRoute.dropOffWalk.polyline,
 							  }
 							: null,
 				},
