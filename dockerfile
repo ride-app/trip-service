@@ -1,19 +1,19 @@
 # Copy package.json and build node_modules 
 FROM node:lts-alpine as build
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
 RUN npm ci --production
 
-# The instructions for second stage
-FROM node:lts-alpine
+# Copy node_modules from build and js files from local /build
+FROM gcr.io/distroless/nodejs:16
 
 ENV NODE_ENV production
 
-WORKDIR /usr/src/app
-COPY --from=build node_modules node_modules
+WORKDIR /app
+COPY --from=build /app/node_modules node_modules
 
-COPY . .
+COPY /build .
 
-CMD ["node", "build/index.js"]
+CMD ["index.js"]
