@@ -8,13 +8,14 @@
 		"lint": "eslint ./src",
 		"format": "eslint ./src --fix",
 		"debug": "nodemon -r dotenv/config src/index.ts",
+		"build": "tsc",
+		"build:prod": "tsc -p tsconfig.prod.json",
 		"test": "NODE_ENV=test jest",
 		"integration-test": "NODE_ENV=test jest --group=integration",
 		"start": "node build/index.js",
-		"docker": "tsc && docker build . -t debug-app && docker run --rm -it -p 5000:5000 debug-app:latest"
+		"docker": "npm run build && docker build . -t debug-app && docker run --rm -it -p 5000:5000 debug-app:latest"
 	},
 	"dependencies": {
-		"@buf/debkanchan_ts-grpc_ride_wallet": "^1.1.1",
 		"@googlemaps/polyline-codec": "^1.0.25",
 		"@grpc/grpc-js": "^1.5.10",
 		"@protobuf-ts/runtime": "^2.5.0",

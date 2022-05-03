@@ -5,3 +5,4 @@ plugins:
     opt:
       - server_grpc1
       - client_grpc1
+      - generate_dependencies

@@ -57,12 +57,11 @@ message SendTripVerificationCodeRequest{
   string trip_id = 1;
 }
 
-message SendTripVerificationCodeResponse{
-  string token = 1;
-}
+message SendTripVerificationCodeResponse{}
 
 message StartTripRequest {
   string trip_id = 1;
+  string verification_code = 2;
 }
 
 message StartTripResponse {}

@@ -2,9 +2,7 @@
 	"extends": "@tsconfig/node16/tsconfig.json",
 	"compilerOptions": {
 		"outDir": "build",
-		"sourceMap": true,
 		"removeComments": true
 	},
-	"compileOnSave": true,
 	"include": ["src"]
 }

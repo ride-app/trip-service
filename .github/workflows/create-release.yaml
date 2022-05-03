@@ -1,0 +1,26 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - v*
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
+
+    steps:
+      - name: Create Release
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.git.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: context.ref
+            })

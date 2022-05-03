@@ -34,16 +34,18 @@ const createTrip = async (
 
 	const user = await AuthRepository.getUser(uid);
 
+	// TODO: null check
+
 	const MAX_SEARCH_RADIUS = Math.min(
 		2,
 		haversine(
 			[
-				tripRequest.origin.coordinates.latitude,
-				tripRequest.origin.coordinates.longitude,
+				tripRequest.origin.coordinates!.latitude,
+				tripRequest.origin.coordinates!.longitude,
 			],
 			[
-				tripRequest.destination.coordinates.latitude,
-				tripRequest.destination.coordinates.longitude,
+				tripRequest.destination.coordinates!.latitude,
+				tripRequest.destination.coordinates!.longitude,
 			]
 		) / 2
 	);
@@ -59,15 +61,15 @@ const createTrip = async (
 		locations: {
 			pickup: {
 				location: new GeoPoint(
-					tripRequest.origin.coordinates.latitude,
-					tripRequest.origin.coordinates.longitude
+					tripRequest.origin.coordinates!.latitude,
+					tripRequest.origin.coordinates!.longitude
 				),
 				address: tripRequest.origin.address,
 			},
 			dropOff: {
 				location: new GeoPoint(
-					tripRequest.destination.coordinates.latitude,
-					tripRequest.destination.coordinates.longitude
+					tripRequest.destination.coordinates!.latitude,
+					tripRequest.destination.coordinates!.longitude
 				),
 				address: tripRequest.destination.address,
 			},

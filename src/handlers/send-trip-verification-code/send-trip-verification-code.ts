@@ -1,4 +1,5 @@
 import { getMessaging } from "firebase-admin/messaging";
+import { getDatabase } from "firebase-admin/database";
 import { sign } from "jsonwebtoken";
 import {
 	SendTripVerificationCodeRequest,
@@ -18,16 +19,39 @@ async function sendTripVerificationCode(
 	}
 
 	if (trip.driverUid !== uid) {
-		throw new ExpectedError("Unauthorized", Reason.INVALID_AUTH);
+		throw new ExpectedError("Unauthorized", Reason.UNAUTHORIZED);
 	}
+
+	const notificationTokenSnap = await getDatabase()
+		.ref(`notification_tokens/${trip.riderUid}/notificationToken`)
+		.get();
+
+	if (
+		!notificationTokenSnap.exists() ||
+		notificationTokenSnap.val() === undefined
+	) {
+		throw new ExpectedError("User has no notification token", Reason.BAD_STATE);
+	}
+
+	const notificationToken: string = notificationTokenSnap.val();
 
 	const ttlSeconds = 120;
 	const code: number = Math.floor(Math.random() * 900000) + 100000;
+	const createdAt = Date.now();
+	const token = sign(
+		{ iat: Date.now() },
+		Buffer.from(code.toString()).toString("base64"),
+		{ algorithm: "HS256", expiresIn: ttlSeconds }
+	);
+
+	await getDatabase()
+		.ref(`trip_verification_codes/${trip.tripId}`)
+		.set({ code_token: token, expiresAt: createdAt + ttlSeconds * 1000 });
 
 	await getMessaging().send({
 		token: notificationToken,
 		notification: {
-			title: "OTP for trip is ",
+			title: `OTP for trip is ${code}`,
 		},
 		data: {
 			click_action: "FLUTTER_NOTIFICATION_CLICK",
@@ -45,13 +69,7 @@ async function sendTripVerificationCode(
 		},
 	});
 
-	return {
-		token: sign(
-			{ iat: Date.now() },
-			Buffer.from(code.toString()).toString("base64"),
-			{ algorithm: "HS256", expiresIn: ttlSeconds }
-		),
-	};
+	return {};
 }
 
 export default sendTripVerificationCode;

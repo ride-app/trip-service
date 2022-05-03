@@ -2,6 +2,7 @@ import { getFirestore } from "firebase-admin/firestore";
 
 interface Trip {
 	tripId: string;
+	type: string;
 	createdAt: number;
 	status: string;
 	polyline?: string;
@@ -26,6 +27,7 @@ async function getTrip(tripId: string): Promise<Trip | undefined> {
 	return {
 		tripId: snap.id,
 		createdAt: snap.createTime?.toMillis(),
+		type: snap.get("type"),
 		status: snap.get("status"),
 		polyline: snap.get("polyline"),
 		driverUid: snap.get("driver.id"),

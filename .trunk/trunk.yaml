@@ -47,3 +47,4 @@ lint:
       paths:
         - protos/**
         - package-lock.json
+        - deployment/package-lock.json

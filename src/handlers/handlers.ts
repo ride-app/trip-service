@@ -17,6 +17,10 @@ function handleError(callback: CallableFunction, error: unknown) {
 				code = Status.UNAUTHENTICATED;
 				break;
 
+			case Reason.UNAUTHORIZED:
+				code = Status.PERMISSION_DENIED;
+				break;
+
 			case Reason.INVALID_ARGUMENT:
 				code = Status.INVALID_ARGUMENT;
 				break;
