@@ -1,8 +1,0 @@
-syntax = "proto3";
-
-package ride.type.v1alpha1;
-
-enum VehicleType {
-  VEHICLE_TYPE_UNSPECIFIED = 0;
-  VEHICLE_TYPE_E_RICKSHAW = 1;
-}

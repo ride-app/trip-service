@@ -1,8 +1,0 @@
-version: v1
-name: buf.build/ride/common-types
-breaking:
-  use:
-    - FILE
-lint:
-  use:
-    - DEFAULT

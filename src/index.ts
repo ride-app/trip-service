@@ -1,20 +1,20 @@
-import { ServerCredentials } from "@grpc/grpc-js";
 import { initializeApp } from "firebase-admin/app";
-import server from "./server";
+import server from "./server.js";
 
-const port = process.env.PORT || 50051;
+const port = process.env["PORT"] ? parseInt(process.env["PORT"], 2) : 50051;
 
-server.bindAsync(
-	`localhost:${port}`,
-	ServerCredentials.createInsecure(),
-	(err, p) => {
-		if (err) {
-			console.error(err);
-			return;
+try {
+	initializeApp();
+	server.listen(
+		{
+			host: "0.0.0.0",
+			port,
+		},
+		(_, address) => {
+			console.info(`[${Date.now()}]: server listening to ${address}`);
 		}
-
-		initializeApp();
-		server.start();
-		console.info(`${Date.now()}: server listening to port ${p}`);
-	}
-);
+	);
+} catch (err) {
+	console.error(err);
+	process.exit(1);
+}

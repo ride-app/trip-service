@@ -1,0 +1,4 @@
+config:
+  gcp:project: ride-app-prod
+  gcp:region: asia-south1
+  service:name: trip-service

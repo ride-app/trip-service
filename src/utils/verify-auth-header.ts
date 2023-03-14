@@ -1,21 +1,20 @@
-import { Metadata } from "@grpc/grpc-js";
-import { verifyIdToken } from "../repositories/auth-repository";
-import { ExpectedError, Reason } from "./errors/expected-error";
+import { Code, ConnectError, HandlerContext } from "@bufbuild/connect";
+import { verifyIdToken } from "../repositories/auth-repository.js";
 
-const verifyAuthHeader = async (metadata: Metadata): Promise<string> => {
+const verifyAuthHeader = async (context: HandlerContext): Promise<string> => {
 	try {
-		if (metadata.get("authorization").length === 0) {
-			throw new ExpectedError("Missing Authorization", Reason.INVALID_AUTH);
+		if (context.requestHeader.get("authorization").length === 0) {
+			throw new ConnectError("Missing Authorization", Code.Unauthenticated);
 		}
-		const token = metadata.get("authorization")[0].toString();
+		const token = context.requestHeader.get("authorization")[0].toString();
 
 		if (!token.startsWith("Bearer ")) {
-			throw new ExpectedError("Invalid Authorization", Reason.INVALID_AUTH);
+			throw new ConnectError("Invalid Authorization", Code.Unauthenticated);
 		}
 
 		return await verifyIdToken(token.split("Bearer ")[1]);
 	} catch (e) {
-		throw new ExpectedError("Invalid Authorization", Reason.INVALID_AUTH);
+		throw new ConnectError("Invalid Authorization", Code.Unauthenticated);
 	}
 };
 

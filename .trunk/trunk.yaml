@@ -1,12 +1,17 @@
 version: 0.1
+plugins:
+  sources:
+    - id: trunk
+      ref: v0.0.12
+      uri: https://github.com/trunk-io/plugins
 cli:
-  version: 0.11.0-beta
+  version: 1.6.0
 lint:
-  files:
-    - name: docker
-      regexes:
-        - .*Dockerfile.*
-        - .*dockerfile.*
+  # files:
+  #   - name: docker
+  #     regexes:
+  #       - .*Dockerfile.*
+  #       - .*dockerfile.*
   #   linters:
   #     - name: buf-breaking
   #       command:
@@ -28,16 +33,22 @@ lint:
   #       #   - --path
   #       #   - ${target}
   #       # run_from_root_file: buf.yaml
+  disabled:
+    - cspell
+  threshold:
+    - linters: [cspell]
+      level: none
   enabled:
-    - actionlint@1.6.12
-    - eslint@8.13.0
-    - gitleaks@8.7.2
-    - prettier@2.6.2
-    - buf-lint@1.3.1
-    - buf-breaking@1.3.1
-    - dotenv-linter@3.2.0
-    - hadolint@2.10.0
-
+    - sort-package-json@2.4.1
+    - git-diff-check
+    - hadolint@2.12.0
+    - actionlint@1.6.23
+    - eslint@8.35.0
+    - gitleaks@8.16.0
+    - prettier@2.8.4
+    - buf-lint@1.15.1
+    - buf-breaking@1.15.1
+    - dotenv-linter@3.3.0
   ignore:
     - linters: [ALL]
       paths:
@@ -46,5 +57,15 @@ lint:
     - linters: [prettier]
       paths:
         - protos/**
-        - package-lock.json
-        - deployment/package-lock.json
+        # - package-lock.json
+        # - deployment/package-lock.json
+actions:
+  enabled:
+    - trunk-announce
+    - trunk-check-pre-push
+    - trunk-fmt-pre-commit
+    - trunk-upgrade-available
+runtimes:
+  enabled:
+    - go@1.19.5
+    - node@18.12.1

@@ -2,7 +2,7 @@ function kmToMiles(distance: number): number {
 	return Math.round(distance * 0.621371 * 1000000) / 1000000;
 }
 
-function haversine(
+function distanceBetween(
 	[lat1, long1]: [number, number],
 	[lat2, long2]: [number, number]
 ) {
@@ -33,7 +33,7 @@ function pathLength(path: [lat: number, lng: number][]): number {
 	let distance = 0;
 
 	for (let i = 0; i < path.length - 1; i += 1)
-		distance += haversine(path[i], path[i + 1]) * 1000;
+		distance += distanceBetween(path[i]!, path[i + 1]!) * 1000;
 
 	return distance;
 }
@@ -83,4 +83,9 @@ function distanceToPathSegment(
 	};
 }
 
-export { haversine, kmToMiles, pathLength, distanceToPathSegment };
+export {
+	distanceBetween as haversine,
+	kmToMiles,
+	pathLength,
+	distanceToPathSegment,
+};

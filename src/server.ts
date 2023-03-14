@@ -1,9 +1,11 @@
-import { Server } from "@grpc/grpc-js";
-import { tripServiceDefinition } from "./gen/ride/trip/v1alpha1/trip_service.grpc-server";
-import handlers from "./handlers/handlers";
+import { fastify } from "fastify";
+import { fastifyConnectPlugin } from "@bufbuild/connect-fastify";
+import routes from "./trip-service/service.js";
 
-const server = new Server();
+const server = fastify({ trustProxy: true });
 
-server.addService(tripServiceDefinition, handlers);
+await server.register(fastifyConnectPlugin, {
+	routes,
+});
 
 export default server;

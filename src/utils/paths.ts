@@ -1,8 +1,8 @@
-import { LatLngTuple } from "@googlemaps/polyline-codec";
+import type { LatLngTuple } from "@googlemaps/polyline-codec";
 
 function indexOfPointOnPath(point: LatLngTuple, path: LatLngTuple[]): number {
 	for (let i = 0; i < path.length; i += 1) {
-		if (path[i][0] === point[0] && path[i][1] === point[1]) return i;
+		if (path[i]![0] === point[0] && path[i]![1] === point[1]) return i;
 	}
 	return -1;
 }
@@ -25,7 +25,7 @@ function findIntersection(
 	});
 
 	for (let i = 0; i < overPlayPath.length; i += 1) {
-		const e = overPlayPath[i];
+		const e = overPlayPath[i]!;
 		if (map[e.toString()]) {
 			commonPoints.push(e);
 			if (firstIndex < 0) firstIndex = i;
