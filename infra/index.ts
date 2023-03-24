@@ -13,7 +13,7 @@ const service = new gcp.cloudrun.Service(serviceName, {
 	template: {
 		metadata: {
 			annotations: {
-				"autoscaling.knative.dev/maxScale": "30",
+				"autoscaling.knative.dev/maxScale": "10",
 			},
 		},
 		spec: {
