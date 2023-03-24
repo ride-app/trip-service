@@ -1,0 +1,10 @@
+{
+	"name": "trip-service",
+	"dependencies": {
+		"@pulumi/gcp": "^6.52.0",
+		"@pulumi/pulumi": "^3.59.0"
+	},
+	"devDependencies": {
+		"@types/node": "^14.18.40"
+	}
+}

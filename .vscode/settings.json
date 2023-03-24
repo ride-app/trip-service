@@ -1,8 +1,9 @@
 {
-  "[typescript]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-    "editor.formatOnType": true,
-    "editor.formatOnSave": true
-  },
-  "jest.jestCommandLine": "npm test --",
+	"[typescript]": {
+		"editor.defaultFormatter": "Trunk.io",
+		"editor.formatOnType": true,
+		"editor.formatOnSave": true
+	},
+	"jest.jestCommandLine": "npm test --",
+	"typescript.tsdk": "node_modules/typescript/lib"
 }

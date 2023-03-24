@@ -1,5 +1,20 @@
-function greeter(greeting: string): string {
-	return `Hello, ${greeting}!`;
-}
+import { initializeApp } from "firebase-admin/app";
+import server from "./server.js";
 
-export default greeter;
+const port = process.env["PORT"] ? parseInt(process.env["PORT"], 2) : 50051;
+
+try {
+	initializeApp();
+	server.listen(
+		{
+			host: "0.0.0.0",
+			port,
+		},
+		(_, address) => {
+			console.info(`[${Date.now()}]: server listening to ${address}`);
+		}
+	);
+} catch (err) {
+	console.error(err);
+	process.exit(1);
+}

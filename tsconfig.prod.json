@@ -2,11 +2,9 @@
 	"extends": "@tsconfig/node-lts-strictest-esm/tsconfig.json",
 	"compilerOptions": {
 		"outDir": "build",
-		"sourceMap": true,
 		"removeComments": true,
 		"exactOptionalPropertyTypes": false,
 		"noUncheckedIndexedAccess": false
 	},
-	"compileOnSave": true,
 	"include": ["src"]
 }

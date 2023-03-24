@@ -1,0 +1,50 @@
+name: Nightly
+
+on:
+  schedule:
+    - cron: 0 0 * * 0-6
+  workflow_dispatch:
+
+jobs:
+  trunk-check:
+    name: Trunk Check Upload
+    runs-on: ubuntu-latest
+    env:
+      BUF_USER: debkanchan
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+
+      - name: Cache node_modules
+        uses: actions/cache@v3.2.6
+        with:
+          path: |
+            **/node_modules
+          key: |
+            node-${{ hashfiles('**/package-lock.json') }}
+          restore-keys: |
+            node-
+
+      - name: Install Packages
+        run: npm install
+
+      - uses: bufbuild/buf-setup-action@v1.14.0
+        with:
+          github_token: ${{ github.token }}
+
+      - name: Authenticate buf
+        run: echo ${{ secrets.BUF_TOKEN }} | buf registry login --username ${{ env.BUF_USER }} --token-stdin
+
+      - name: Build protobuf
+        run: buf generate
+
+      - name: Trunk Check
+        uses: trunk-io/trunk-action@v1
+        with:
+          trunk-token: ${{ secrets.TRUNK_TOKEN }}
