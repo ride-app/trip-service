@@ -1,7 +1,7 @@
 import { initializeApp } from "firebase-admin/app";
 import server from "./server.js";
 
-const port = process.env["PORT"] ? parseInt(process.env["PORT"], 2) : 50051;
+const port = process.env["PORT"] ? parseInt(process.env["PORT"], 10) : 50051;
 
 try {
 	initializeApp();
