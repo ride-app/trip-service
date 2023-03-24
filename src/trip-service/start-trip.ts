@@ -1,12 +1,15 @@
 import { Code, ConnectError, HandlerContext } from "@bufbuild/connect";
 import { getDatabase } from "firebase-admin/database";
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
-import { verify } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
+
 import {
 	StartTripRequest,
 	StartTripResponse,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import { getTrip } from "../repositories/trip-repository.js";
+
+const { verify } = jwt;
 
 async function startTrip(
 	req: StartTripRequest,
