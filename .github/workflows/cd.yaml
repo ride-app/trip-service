@@ -44,7 +44,7 @@ jobs:
         run: echo ${{ secrets.BUF_TOKEN }} | buf registry login --username ${{ env.BUF_USER }} --token-stdin
 
       - name: Build protobuf
-        run: buf generate
+        run: buf generate --include-imports
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
