@@ -5,7 +5,6 @@ const port = process.env["PORT"] ? parseInt(process.env["PORT"], 10) : 50051;
 
 try {
 	initializeApp();
-
 	server.listen(
 		{
 			host: "0.0.0.0",
