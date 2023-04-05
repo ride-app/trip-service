@@ -15,7 +15,7 @@
 	},
 	"dependencies": {
 		"@bufbuild/connect": "^0.8.3",
-		"@bufbuild/connect-fastify": "^0.8.4",
+		"@bufbuild/connect-fastify": "^0.8.5",
 		"@bufbuild/protobuf": "^1.2.0",
 		"@googlemaps/polyline-codec": "^1.0.28",
 		"fastify": "^4.15.0",
