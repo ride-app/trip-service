@@ -2,7 +2,7 @@ version: 0.1
 plugins:
   sources:
     - id: trunk
-      ref: v0.0.13
+      ref: v0.0.14
       uri: https://github.com/trunk-io/plugins
 cli:
   version: 1.7.0
@@ -43,11 +43,11 @@ lint:
     - sort-package-json@2.4.1
     - git-diff-check
     - hadolint@2.12.0
-    - actionlint@1.6.23
+    - actionlint@1.6.24
     - eslint@8.37.0
-    - gitleaks@8.16.1
+    - gitleaks@8.16.2
     - prettier@2.8.7
-    - buf-lint@1.15.1
+    - buf-lint@1.16.0
     - buf-breaking@1.15.1
     - dotenv-linter@3.3.0
   ignore:
