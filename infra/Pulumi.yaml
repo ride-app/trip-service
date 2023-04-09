@@ -3,5 +3,5 @@ runtime: nodejs
 description: A minimal Google Cloud TypeScript Pulumi program
 config:
   gcp:project: ride-app-prod
-  gcp:region: asia-south1
+  gcp:region: asia-south2
   service:name: trip-service
