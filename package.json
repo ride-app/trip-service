@@ -18,7 +18,7 @@
 		"@bufbuild/connect-fastify": "^0.8.5",
 		"@bufbuild/protobuf": "^1.2.0",
 		"@googlemaps/polyline-codec": "^1.0.28",
-		"fastify": "^4.15.0",
+		"fastify": "^4.17.0",
 		"firebase-admin": "^11.8.0",
 		"geofire-common": "^6.0.0",
 		"jsonwebtoken": "^9.0.0",
