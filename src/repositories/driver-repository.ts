@@ -179,4 +179,10 @@ async function getDriverWithVehicle(driverId: string): Promise<
 	};
 }
 
-export { sendOffer, getDriver, getDriverWithVehicle };
+async function updateDriverCurrentPath(driverId: string, currentPath: string) {
+	return getFirestore().collection("activeDrivers").doc(driverId).update({
+		currentPath,
+	});
+}
+
+export { sendOffer, getDriver, getDriverWithVehicle, updateDriverCurrentPath };

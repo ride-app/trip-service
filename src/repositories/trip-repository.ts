@@ -70,6 +70,7 @@ async function getTrip(tripId: string): Promise<Trip | undefined> {
 						.longitude as number,
 				}),
 			}),
+			// TODO: add the walks
 		}),
 		passengers: snapshot.get("passengers") as number,
 		// overviewPolyline: snapshot.get("polyline"),

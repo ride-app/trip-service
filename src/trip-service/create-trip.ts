@@ -11,6 +11,7 @@ import { DriverSearchService, Driver } from "./driver-search-service.js";
 import {
 	sendOffer,
 	getDriverWithVehicle,
+	updateDriverCurrentPath,
 } from "../repositories/driver-repository.js";
 import { haversine } from "../utils/distance.js";
 
@@ -108,47 +109,54 @@ const createTrip = async (
 
 		trip.vehicle = driverWithVehicle.vehicle;
 
-		await firestore.runTransaction(async (transaction) => {
-			const driverRef = firestore
-				.collection(trip.vehicleType.toLowerCase())
-				.doc(driverId);
+		await TripRepository.updateTrip(trip);
 
-			const tripRef = firestore.collection("trips").doc(tripId);
+		await updateDriverCurrentPath(
+			driverId,
+			bestOption.optimalRoute.newVehiclePathPolyline
+		);
 
-			transaction.update(driverRef, {
-				currentPathString: bestOption!.optimalRoute.newVehiclePathPolyline,
-			});
+		// await firestore.runTransaction(async (transaction) => {
+		// 	const driverRef = firestore
+		// 		.collection(trip.vehicleType.toLowerCase())
+		// 		.doc(driverId);
 
-			transaction.update(tripRef, {
-				status: "accepted",
-				driver: {
-					id: driverId,
-					name: trip.driver!.displayName,
-					phone: trip.driver!.phoneNumber,
-					photoUrl: trip.driver!.photoUri,
-				},
-				vehicle: {
-					id: trip.vehicle?.name.split("/").pop(),
-					licensePlate: trip.vehicle?.licensePlate,
-				},
-				walks: {
-					origin:
-						bestOption!.optimalRoute.pickupWalk !== undefined
-							? {
-									distance: bestOption?.optimalRoute.pickupWalk.length,
-									polyline: bestOption?.optimalRoute.pickupWalk.polyline,
-							  }
-							: null,
-					dropOff:
-						bestOption!.optimalRoute.dropOffWalk !== undefined
-							? {
-									distance: bestOption?.optimalRoute.dropOffWalk.length,
-									polyline: bestOption?.optimalRoute.dropOffWalk.polyline,
-							  }
-							: null,
-				},
-			});
-		});
+		// 	// const tripRef = firestore.collection("trips").doc(tripId);
+
+		// 	transaction.update(driverRef, {
+		// 		currentPathString: bestOption!.optimalRoute.newVehiclePathPolyline,
+		// 	});
+
+		// 	// transaction.update(tripRef, {
+		// 	// 	status: "accepted",
+		// 	// 	driver: {
+		// 	// 		id: driverId,
+		// 	// 		name: trip.driver!.displayName,
+		// 	// 		phone: trip.driver!.phoneNumber,
+		// 	// 		photoUrl: trip.driver!.photoUri,
+		// 	// 	},
+		// 	// 	vehicle: {
+		// 	// 		id: trip.vehicle?.name.split("/").pop(),
+		// 	// 		licensePlate: trip.vehicle?.licensePlate,
+		// 	// 	},
+		// 	// 	walks: {
+		// 	// 		origin:
+		// 	// 			bestOption!.optimalRoute.pickupWalk !== undefined
+		// 	// 				? {
+		// 	// 						distance: bestOption?.optimalRoute.pickupWalk.length,
+		// 	// 						polyline: bestOption?.optimalRoute.pickupWalk.polyline,
+		// 	// 				  }
+		// 	// 				: null,
+		// 	// 		dropOff:
+		// 	// 			bestOption!.optimalRoute.dropOffWalk !== undefined
+		// 	// 				? {
+		// 	// 						distance: bestOption?.optimalRoute.dropOffWalk.length,
+		// 	// 						polyline: bestOption?.optimalRoute.dropOffWalk.polyline,
+		// 	// 				  }
+		// 	// 				: null,
+		// 	// 	},
+		// 	// });
+		// });
 
 		// return { trip };
 		return new CreateTripResponse({ trip });

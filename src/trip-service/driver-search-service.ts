@@ -192,9 +192,10 @@ class DriverSearchService {
 		// this.geoCollection = initializeApp(getFirestore()).collection(
 		// 	tripRequest.trip.vehicleType.toLowerCase()
 		// );
-		this.geoCollection = getFirestore().collection(
-			tripRequest.trip.vehicleType.toLowerCase()
-		);
+		// this.geoCollection = getFirestore().collection(
+		// 	tripRequest.trip.vehicleType.toLowerCase()
+		// );
+		this.geoCollection = getFirestore().collection("activeDrivers");
 		this.searchRadius = searchRadius;
 		this.skipList = new Set(
 			this.tripRequest.ignore.map((d) => d.split("/").pop()!)
@@ -286,7 +287,15 @@ class DriverSearchService {
 			[];
 
 		bounds.forEach((b) => {
-			const q = this.geoCollection.orderBy("geohash").startAt(b[0]).endAt(b[1]);
+			const q = this.geoCollection
+				.orderBy("geohash")
+				.startAt(b[0])
+				.endAt(b[1])
+				.where(
+					"vehicleType",
+					"==",
+					this.tripRequest.trip!.vehicleType.toLowerCase()
+				);
 
 			promises.push(q.get());
 		});
@@ -307,7 +316,8 @@ class DriverSearchService {
 						results[doc.id] = {
 							location: [lat, lng],
 							distance: distanceInM,
-							currentPathString: doc.data()["currentPathString"] as string,
+							currentPathString:
+								(doc.data()["currentPathString"] as string) ?? undefined,
 						};
 					}
 				});
