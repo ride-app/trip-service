@@ -9,7 +9,7 @@ import {
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import { getTrip } from "../repositories/trip-repository.js";
 
-async function sendTripVerificationCode(
+async function startTripVerification(
 	req: StartTripVerificationRequest,
 	context: HandlerContext
 ): Promise<StartTripVerificationResponse> {
@@ -87,4 +87,4 @@ async function sendTripVerificationCode(
 	return new StartTripVerificationResponse();
 }
 
-export default sendTripVerificationCode;
+export default startTripVerification;
