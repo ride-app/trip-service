@@ -8,13 +8,6 @@ import {
 	Trip_Vehicle,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 
-// interface DriverData {
-// 	vehicleId: string;
-// 	vehicleNumber: string;
-// 	notificationToken: string;
-// 	capacity: number;
-// }
-
 async function sendNotification(notificationToken: string) {
 	return getMessaging().send({
 		token: notificationToken,
