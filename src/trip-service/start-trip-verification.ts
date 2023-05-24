@@ -2,12 +2,13 @@ import { getMessaging } from "firebase-admin/messaging";
 import { getDatabase } from "firebase-admin/database";
 import { Code, ConnectError, HandlerContext } from "@bufbuild/connect";
 import pkg from "jsonwebtoken";
-const { sign } = pkg;
 import {
 	StartTripVerificationRequest,
 	StartTripVerificationResponse,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import { getTrip } from "../repositories/trip-repository.js";
+
+const { sign } = pkg;
 
 async function startTripVerification(
 	req: StartTripVerificationRequest,
