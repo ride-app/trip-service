@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import {
 	StartTripRequest,
 	StartTripResponse,
+	Trip_Status,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import { getTrip } from "../repositories/trip-repository.js";
 
@@ -59,7 +60,7 @@ async function startTrip(
 	}
 
 	await getFirestore().collection("trips").doc(tripId).update({
-		status: "complete",
+		status: Trip_Status[Trip_Status.ACTIVE],
 		endAt: FieldValue.serverTimestamp(),
 	});
 
