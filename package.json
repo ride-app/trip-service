@@ -14,7 +14,7 @@
 		"test": "NODE_ENV=test jest"
 	},
 	"dependencies": {
-		"@bufbuild/connect": "^0.9.0",
+		"@bufbuild/connect": "^0.9.1",
 		"@bufbuild/connect-fastify": "^0.9.0",
 		"@bufbuild/protobuf": "^1.2.0",
 		"@googlemaps/polyline-codec": "^1.0.28",
