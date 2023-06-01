@@ -88,8 +88,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  deploy:
-    name: Deploy
+  deploy_prod:
+    name: Deploy to Production
     needs: build
     runs-on: ubuntu-latest
     permissions:
@@ -137,4 +137,55 @@ jobs:
           work-dir: infra
           command: up
           stack-name: ride/prod
+          refresh: true
+
+  deploy_staging:
+    name: Deploy to Staging
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - run: npm install
+        working-directory: infra
+
+      - name: Cache node_modules
+        uses: actions/cache@v3.3.1
+        with:
+          path: |
+            **/node_modules
+          key: |
+            node-${{ hashfiles('**/package-lock.json') }}
+          restore-keys: |
+            node-
+
+      - name: Authenticate Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: projects/486946551871/locations/global/workloadIdentityPools/github-actions/providers/github-actions-provider
+          service_account: cloud-run-service-manager@ride-app-prod.iam.gserviceaccount.com
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Set current sha in pulumi config
+        run: |
+          pulumi config set image:tag sha-${{ github.sha }} -s ride/staging
+        working-directory: infra
+
+      - uses: pulumi/actions@v4
+        with:
+          work-dir: infra
+          command: up
+          stack-name: ride/staging
           refresh: true
