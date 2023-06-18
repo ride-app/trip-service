@@ -62,7 +62,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            asia-south2-docker.pkg.dev/ride-app-${{ matrix.stack }}/docker-registry/wallet-service
+            asia-south2-docker.pkg.dev/ride-app-${{ matrix.stack }}/docker-registry/trip-service
           tags: |
             type=semver,pattern={{version}}
             type=sha
