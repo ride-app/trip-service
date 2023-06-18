@@ -47,8 +47,8 @@ lint:
     - eslint@8.41.0
     - gitleaks@8.16.3
     - prettier@2.8.8
-    - buf-lint@1.19.0
-    - buf-breaking@1.19.0
+    - buf-lint@1.20.0
+    - buf-breaking@1.20.0
     - dotenv-linter@3.3.0
   ignore:
     - linters: [ALL]
