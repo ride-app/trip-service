@@ -21,7 +21,7 @@ const service = new gcp.cloudrun.Service(serviceName, {
 				{
 					image: `asia-south2-docker.pkg.dev/${
 						gcp.config.project
-					}/delhi-container-registry/${serviceName}:${
+					}/docker-registry/${serviceName}:${
 						imageconfig.get("tag") ?? "latest"
 					}`,
 					ports: [{ containerPort: 50051, name: "h2c" }],
