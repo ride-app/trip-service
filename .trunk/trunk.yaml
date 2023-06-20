@@ -74,4 +74,3 @@ runtimes:
 merge:
   required_statuses:
     - test
-    - Preview Infra
