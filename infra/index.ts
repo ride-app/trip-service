@@ -8,7 +8,8 @@ const location = gcp.config.region || "asia-south2";
 const serviceName = serviceConfig.get("name") || pulumi.getProject();
 
 // Cloud Run
-const service = new gcp.cloudrun.Service(serviceName, {
+const service = new gcp.cloudrun.Service("service", {
+	name: serviceName,
 	location,
 	template: {
 		metadata: {
