@@ -7,13 +7,13 @@ on:
   push:
     branches:
       - trunk-merge/**
-  workflow_dispatch:
 
 env:
   SERVICE_NAME: trip-service
 
 jobs:
-  test:
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
