@@ -1,4 +1,4 @@
-import { Code, ConnectError, HandlerContext } from "@bufbuild/connect";
+import { Code, ConnectError, type HandlerContext } from "@bufbuild/connect";
 import { verifyIdToken } from "../repositories/auth-repository.js";
 
 const verifyAuthHeader = async (context: HandlerContext): Promise<string> => {

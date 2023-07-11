@@ -1,6 +1,10 @@
 import polyline from "@googlemaps/polyline-codec";
 import { getFirestore } from "firebase-admin/firestore";
-import { distanceBetween, geohashQueryBounds, Geopoint } from "geofire-common";
+import {
+	distanceBetween,
+	geohashQueryBounds,
+	type Geopoint,
+} from "geofire-common";
 import type { firestore } from "firebase-admin";
 
 import ScoreVector from "../models/score-vector.js";
@@ -328,4 +332,4 @@ class DriverSearchService {
 	}
 }
 
-export { DriverSearchService, Driver, Walk };
+export { DriverSearchService, type Driver, type Walk };

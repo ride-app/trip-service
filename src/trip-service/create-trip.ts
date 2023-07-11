@@ -7,7 +7,7 @@ import {
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import * as TripRepository from "../repositories/trip-repository.js";
 
-import { DriverSearchService, Driver } from "./driver-search-service.js";
+import { DriverSearchService, type Driver } from "./driver-search-service.js";
 import {
 	sendOffer,
 	getDriverWithVehicle,

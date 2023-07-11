@@ -1,4 +1,4 @@
-import { Code, ConnectError, HandlerContext } from "@bufbuild/connect";
+import { Code, ConnectError, type HandlerContext } from "@bufbuild/connect";
 import { getDatabase } from "firebase-admin/database";
 import { FieldValue, getFirestore } from "firebase-admin/firestore";
 import jwt from "jsonwebtoken";

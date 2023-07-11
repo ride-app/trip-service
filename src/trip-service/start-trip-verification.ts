@@ -1,6 +1,6 @@
 import { getMessaging } from "firebase-admin/messaging";
 import { getDatabase } from "firebase-admin/database";
-import { Code, ConnectError, HandlerContext } from "@bufbuild/connect";
+import { Code, ConnectError, type HandlerContext } from "@bufbuild/connect";
 import pkg from "jsonwebtoken";
 import {
 	StartTripVerificationRequest,
