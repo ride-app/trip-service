@@ -66,13 +66,13 @@ async function sendOffer(tripId: string, trip: Trip, driver: Driver) {
 					...(driver.optimalRoute.tripPath[0] ?? [
 						trip.route?.pickup?.coordinates?.latitude,
 						trip.route?.dropOff?.coordinates?.longitude,
-					])
+					]),
 				),
 				new GeoPoint(
 					...(driver.optimalRoute.tripPath[-1] ?? [
 						trip.route?.pickup?.coordinates?.latitude,
 						trip.route?.dropOff?.coordinates?.longitude,
-					])
+					]),
 				),
 			],
 		});

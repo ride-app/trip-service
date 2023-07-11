@@ -77,7 +77,7 @@ async function getTrip(tripId: string): Promise<Trip | undefined> {
 		paymentMethod:
 			Trip_PaymentMethod[
 				snapshot.get(
-					"paymentMethod"
+					"paymentMethod",
 				) as string as keyof typeof Trip_PaymentMethod
 			],
 	});
@@ -102,7 +102,7 @@ async function getTrip(tripId: string): Promise<Trip | undefined> {
 }
 
 async function createTrip(
-	trip: Trip
+	trip: Trip,
 ): Promise<{ tripId: string; createTime: Date }> {
 	const write = await getFirestore()
 		.collection("trips")
@@ -117,7 +117,7 @@ async function createTrip(
 					? {
 							location: new GeoPoint(
 								trip.route!.walkToPickup!.coordinates!.latitude,
-								trip.route!.walkToPickup!.coordinates!.longitude
+								trip.route!.walkToPickup!.coordinates!.longitude,
 							),
 							address: trip.route!.walkToPickup!.address,
 							polylineString: trip.route!.walkToPickup!.polylineString,
@@ -126,7 +126,7 @@ async function createTrip(
 				pickup: {
 					location: new GeoPoint(
 						trip.route!.pickup!.coordinates!.latitude,
-						trip.route!.pickup!.coordinates!.longitude
+						trip.route!.pickup!.coordinates!.longitude,
 					),
 					address: trip.route!.pickup!.address,
 					polylineString: trip.route!.pickup!.polylineString,
@@ -134,7 +134,7 @@ async function createTrip(
 				dropOff: {
 					location: new GeoPoint(
 						trip.route!.dropOff!.coordinates!.latitude,
-						trip.route!.dropOff!.coordinates!.longitude
+						trip.route!.dropOff!.coordinates!.longitude,
 					),
 					address: trip.route!.dropOff!.address,
 					polylineString: trip.route!.dropOff!.polylineString,
@@ -143,7 +143,7 @@ async function createTrip(
 					? {
 							location: new GeoPoint(
 								trip.route!.walkToDestination!.coordinates!.latitude,
-								trip.route!.walkToDestination!.coordinates!.longitude
+								trip.route!.walkToDestination!.coordinates!.longitude,
 							),
 							address: trip.route!.walkToDestination!.address,
 							polylineString: trip.route!.walkToDestination!.polylineString,
@@ -159,7 +159,7 @@ async function createTrip(
 						.where(
 							FieldPath.documentId(),
 							"==",
-							trip.rider?.name.split("/").pop()
+							trip.rider?.name.split("/").pop(),
 						)
 						.select("token")
 						.get()
@@ -188,7 +188,7 @@ async function updateTrip(trip: Trip) {
 								.where(
 									FieldPath.documentId(),
 									"==",
-									trip.driver.name.split("/").pop()
+									trip.driver.name.split("/").pop(),
 								)
 								.select("token")
 								.get()
@@ -206,7 +206,7 @@ async function updateTrip(trip: Trip) {
 					? {
 							location: new GeoPoint(
 								trip.route!.walkToPickup!.coordinates!.latitude,
-								trip.route!.walkToPickup!.coordinates!.longitude
+								trip.route!.walkToPickup!.coordinates!.longitude,
 							),
 							address: trip.route!.walkToPickup!.address,
 							polylineString: trip.route!.walkToPickup!.polylineString,
@@ -215,7 +215,7 @@ async function updateTrip(trip: Trip) {
 				pickup: {
 					location: new GeoPoint(
 						trip.route!.pickup!.coordinates!.latitude,
-						trip.route!.pickup!.coordinates!.longitude
+						trip.route!.pickup!.coordinates!.longitude,
 					),
 					address: trip.route!.pickup!.address,
 					polylineString: trip.route!.pickup!.polylineString,
@@ -223,7 +223,7 @@ async function updateTrip(trip: Trip) {
 				dropOff: {
 					location: new GeoPoint(
 						trip.route!.dropOff!.coordinates!.latitude,
-						trip.route!.dropOff!.coordinates!.longitude
+						trip.route!.dropOff!.coordinates!.longitude,
 					),
 					address: trip.route!.dropOff!.address,
 					polylineString: trip.route!.dropOff!.polylineString,
@@ -232,7 +232,7 @@ async function updateTrip(trip: Trip) {
 					? {
 							location: new GeoPoint(
 								trip.route!.walkToDestination!.coordinates!.latitude,
-								trip.route!.walkToDestination!.coordinates!.longitude
+								trip.route!.walkToDestination!.coordinates!.longitude,
 							),
 							address: trip.route!.walkToDestination!.address,
 							polylineString: trip.route!.walkToDestination!.polylineString,

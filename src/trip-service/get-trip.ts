@@ -8,7 +8,7 @@ import { getTrip as getTripFromRepo } from "../repositories/trip-repository.js";
 
 async function getTrip(
 	req: GetTripRequest,
-	context: HandlerContext
+	context: HandlerContext,
 ): Promise<GetTripResponse> {
 	try {
 		const uid = context.requestHeader.get("uid");

@@ -12,7 +12,7 @@ const { sign } = pkg;
 
 async function startTripVerification(
 	req: StartTripVerificationRequest,
-	context: HandlerContext
+	context: HandlerContext,
 ): Promise<StartTripVerificationResponse> {
 	const uid = context.requestHeader.get("uid");
 	const tripId = req.name.split("/").pop();
@@ -35,7 +35,7 @@ async function startTripVerification(
 		.ref(
 			`notification_tokens/${trip.rider?.name
 				.split("/")
-				.pop()}/notificationToken`
+				.pop()}/notificationToken`,
 		)
 		.get();
 
@@ -45,7 +45,7 @@ async function startTripVerification(
 	) {
 		throw new ConnectError(
 			"User has no notification token",
-			Code.FailedPrecondition
+			Code.FailedPrecondition,
 		);
 	}
 
@@ -57,7 +57,7 @@ async function startTripVerification(
 	const token = sign(
 		{ iat: Date.now() },
 		Buffer.from(code.toString()).toString("base64"),
-		{ algorithm: "HS256", expiresIn: ttlSeconds }
+		{ algorithm: "HS256", expiresIn: ttlSeconds },
 	);
 
 	await getDatabase()

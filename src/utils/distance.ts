@@ -4,7 +4,7 @@ function kmToMiles(distance: number): number {
 
 function distanceBetween(
 	[lat1, long1]: [number, number],
-	[lat2, long2]: [number, number]
+	[lat2, long2]: [number, number],
 ) {
 	const toRadian = (angle: number) => (Math.PI / 180) * angle;
 	const distance = (a: number, b: number) => (Math.PI / 180) * (a - b);
@@ -46,7 +46,7 @@ http://csharphelper.com/blog/2016/09/find-the-shortest-distance-between-a-point-
 function distanceToPathSegment(
 	[lat, lng]: [number, number],
 	[x1, y1]: [number, number],
-	[x2, y2]: [number, number]
+	[x2, y2]: [number, number],
 ): {
 	distance: number;
 	intersectionPoint: [number, number];

@@ -16,7 +16,7 @@ import {
 import { haversine } from "../utils/distance.js";
 
 const createTrip = async (
-	req: CreateTripRequest
+	req: CreateTripRequest,
 ): Promise<CreateTripResponse> => {
 	const { trip } = req;
 
@@ -47,8 +47,8 @@ const createTrip = async (
 			[
 				trip.route!.dropOff.coordinates!.latitude,
 				trip.route!.dropOff.coordinates!.longitude,
-			]
-		) / 2
+			],
+		) / 2,
 	);
 	const firestore = getFirestore();
 
@@ -76,7 +76,7 @@ const createTrip = async (
 			const accepted = await sendOffer(
 				tripId,
 				trip,
-				driver
+				driver,
 				// driverData.get('notificationToken')
 			);
 
@@ -113,7 +113,7 @@ const createTrip = async (
 
 		await updateDriverCurrentPath(
 			driverId,
-			bestOption.optimalRoute.newVehiclePathPolyline
+			bestOption.optimalRoute.newVehiclePathPolyline,
 		);
 
 		// await firestore.runTransaction(async (transaction) => {

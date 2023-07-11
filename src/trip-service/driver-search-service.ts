@@ -44,7 +44,7 @@ interface Walk {
 function checkVehicleCrossedPoint(
 	location: [number, number],
 	point: [number, number],
-	path: [number, number][]
+	path: [number, number][],
 ): boolean {
 	let edgeStartPoint: number = path.length - 2;
 	let shortestDistance = Infinity;
@@ -66,7 +66,7 @@ function getOptimalRoute(
 	location: [number, number],
 	currentPath: [number, number][] | undefined,
 	overlayPath: [number, number][],
-	allowWalk = false
+	allowWalk = false,
 ): {
 	pickupWalk?: Walk;
 	dropOffWalk?: Walk;
@@ -104,7 +104,7 @@ function getOptimalRoute(
 			checkVehicleCrossedPoint(
 				location,
 				overlayPath[intersection.firstIndex],
-				currentPath
+				currentPath,
 			)
 		) {
 			return null;
@@ -198,7 +198,7 @@ class DriverSearchService {
 		this.geoCollection = getFirestore().collection("activeDrivers");
 		this.searchRadius = searchRadius;
 		this.skipList = new Set(
-			this.tripRequest.ignore.map((d) => d.split("/").pop()!)
+			this.tripRequest.ignore.map((d) => d.split("/").pop()!),
 		);
 	}
 
@@ -228,7 +228,7 @@ class DriverSearchService {
 						? polyline.decode(result.currentPathString)
 						: undefined,
 					this.path,
-					this.tripRequest.trip?.type === Trip_Type.SHARED
+					this.tripRequest.trip?.type === Trip_Type.SHARED,
 				);
 
 				this.allDriversCache[id] = {
@@ -248,7 +248,7 @@ class DriverSearchService {
 					scoreVector: new ScoreVector(
 						currentDriver.distance,
 						(currentDriver.optimalRoute.pickupWalk?.length ?? 0) +
-							(currentDriver.optimalRoute.dropOffWalk?.length ?? 0)
+							(currentDriver.optimalRoute.dropOffWalk?.length ?? 0),
 					),
 				});
 			}
@@ -294,7 +294,7 @@ class DriverSearchService {
 				.where(
 					"vehicleType",
 					"==",
-					this.tripRequest.trip!.vehicleType.toLowerCase()
+					this.tripRequest.trip!.vehicleType.toLowerCase(),
 				);
 
 			promises.push(q.get());

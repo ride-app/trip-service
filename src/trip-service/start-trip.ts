@@ -14,7 +14,7 @@ const { verify } = jwt;
 
 async function startTrip(
 	req: StartTripRequest,
-	context: HandlerContext
+	context: HandlerContext,
 ): Promise<StartTripResponse> {
 	const uid = context.requestHeader.get("uid");
 	const tripId = req.name.split("/").pop();
@@ -40,14 +40,14 @@ async function startTrip(
 	if (!verCodeSnap.exists() || !verCodeSnap.val()) {
 		throw new ConnectError(
 			"Trip has no verification code",
-			Code.FailedPrecondition
+			Code.FailedPrecondition,
 		);
 	}
 
 	if (verCodeSnap.val().expiresAt < Date.now()) {
 		throw new ConnectError(
 			"Trip verification code expired",
-			Code.FailedPrecondition
+			Code.FailedPrecondition,
 		);
 	}
 

@@ -9,7 +9,7 @@ function indexOfPointOnPath(point: LatLngTuple, path: LatLngTuple[]): number {
 
 function findIntersection(
 	basePath: LatLngTuple[],
-	overPlayPath: LatLngTuple[]
+	overPlayPath: LatLngTuple[],
 ) {
 	if (basePath.length === 0 || overPlayPath.length === 0) return null;
 
