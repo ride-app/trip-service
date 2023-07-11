@@ -9,7 +9,6 @@
 		"airbnb-base",
 		"plugin:@typescript-eslint/recommended",
 		"airbnb-typescript/base",
-		// "plugin:prettier/recommended",
 		"plugin:jest/recommended",
 		"prettier"
 	],
@@ -17,14 +16,13 @@
 	"parserOptions": {
 		"ecmaVersion": "latest",
 		"sourceType": "module",
-		"project": ["**/tsconfig.json"]
+		"project": ["tsconfig.json", "test/tsconfig.json"]
 	},
-	// "plugins": ["@typescript-eslint", "prettier", "jest"],
 	"plugins": ["@typescript-eslint", "jest"],
 	"rules": {
 		"no-console": ["warn", { "allow": ["info", "warn", "error"] }],
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/member-ordering": "warn"
 	},
-	"ignorePatterns": "*.js"
+	"ignorePatterns": ["*.js", "**/gen"]
 }

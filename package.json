@@ -15,7 +15,7 @@
 	},
 	"dependencies": {
 		"@bufbuild/connect": "^0.11.0",
-		"@bufbuild/connect-fastify": "^0.11.0",
+		"@bufbuild/connect-node": "^0.11.0",
 		"@bufbuild/protobuf": "^1.2.1",
 		"@googlemaps/polyline-codec": "^1.0.28",
 		"fastify": "^4.19.2",
@@ -25,7 +25,9 @@
 		"rxjs": "^7.8.1"
 	},
 	"devDependencies": {
-		"@tsconfig/node-lts-strictest-esm": "^18.12.1",
+		"@tsconfig/esm": "^1.0.4",
+		"@tsconfig/node-lts": "^18.12.3",
+		"@tsconfig/strictest": "^2.0.1",
 		"@types/jest": "^27.5.2",
 		"@types/jsonwebtoken": "^9.0.2",
 		"@types/node": "^20.4.1",

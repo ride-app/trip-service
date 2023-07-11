@@ -1,11 +1,7 @@
-import { fastify } from "fastify";
-import { fastifyConnectPlugin } from "@bufbuild/connect-fastify";
+import { createServer } from "http2";
+import { connectNodeAdapter } from "@bufbuild/connect-node";
 import routes from "./trip-service/service.js";
 
-const server = fastify({ trustProxy: true });
-
-await server.register(fastifyConnectPlugin, {
-	routes,
-});
+const server = createServer(connectNodeAdapter({ routes }));
 
 export default server;
