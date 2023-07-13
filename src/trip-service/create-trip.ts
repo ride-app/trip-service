@@ -4,6 +4,8 @@ import { Code, ConnectError } from "@bufbuild/connect";
 import {
 	CreateTripRequest,
 	CreateTripResponse,
+	Trip_PaymentMethod,
+	Trip_Type,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import * as TripRepository from "../repositories/trip-repository.js";
 
@@ -14,11 +16,27 @@ import {
 	updateDriverCurrentPath,
 } from "../repositories/driver-repository.js";
 import { haversine } from "../utils/distance.js";
+import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb.js";
 
 const createTrip = async (
 	req: CreateTripRequest,
 ): Promise<CreateTripResponse> => {
 	const { trip } = req;
+
+	if (trip?.type !== Trip_Type.UNSPECIFIED) {
+		throw new ConnectError("trip type not specified", Code.InvalidArgument);
+	}
+
+	if (trip?.vehicleType !== Vehicle_Type.UNSPECIFIED) {
+		throw new ConnectError("vehicle type not specified", Code.InvalidArgument);
+	}
+
+	if (trip?.paymentMethod !== Trip_PaymentMethod.UNSPECIFIED) {
+		throw new ConnectError(
+			"payment method not specified",
+			Code.InvalidArgument,
+		);
+	}
 
 	if (
 		!trip?.route?.pickup &&
@@ -26,7 +44,7 @@ const createTrip = async (
 		!trip?.route?.pickup?.address &&
 		!trip?.route?.pickup?.polylineString
 	) {
-		throw new ConnectError("Invalid Argument", Code.InvalidArgument);
+		throw new ConnectError("invalid pickup", Code.InvalidArgument);
 	}
 
 	if (
@@ -34,7 +52,7 @@ const createTrip = async (
 		!trip?.route?.dropOff?.coordinates &&
 		!trip?.route?.dropOff?.address
 	) {
-		throw new ConnectError("Invalid Argument", Code.InvalidArgument);
+		throw new ConnectError("invalid dropoff", Code.InvalidArgument);
 	}
 
 	const MAX_SEARCH_RADIUS = Math.min(
