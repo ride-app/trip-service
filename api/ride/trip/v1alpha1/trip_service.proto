@@ -7,6 +7,7 @@ import "google/type/latlng.proto";
 import "google/type/phone_number.proto";
 import "google/api/annotations.proto";
 import "validate/validate.proto";
+import "ride/driver/v1alpha1/driver_service.proto";
 
 service TripService {
   rpc CreateTrip(CreateTripRequest) returns (CreateTripResponse) {
@@ -87,7 +88,7 @@ message Trip {
   uint32 passengers = 7 [(validate.rules).uint32.gte = 1];
 
   // The type of vehicle requested by the rider
-  string vehicle_type = 8;
+  ride.driver.v1alpha1.Vehicle.Type vehicle_type = 8;
 
   // The type of trip requested by the rider. Example: shared, private, etc.
   Type type = 9;

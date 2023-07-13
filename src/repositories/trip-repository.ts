@@ -20,6 +20,7 @@ import {
 
 import { PhoneNumber } from "../gen/google/type/phone_number_pb.js";
 import { LatLng } from "../gen/google/type/latlng_pb.js";
+import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb.js";
 
 async function getTrip(tripId: string): Promise<Trip | undefined> {
 	const snapshot = await getFirestore().collection("trips").doc(tripId).get();
@@ -44,7 +45,10 @@ async function getTrip(tripId: string): Promise<Trip | undefined> {
 		type: Trip_Type[snapshot.get("type") as string as keyof typeof Trip_Type],
 		status:
 			Trip_Status[snapshot.get("status") as string as keyof typeof Trip_Status],
-		vehicleType: snapshot.get("vehicleType").toString().toUppercase(),
+		vehicleType:
+			Vehicle_Type[
+				snapshot.get("vehicleType") as string as keyof typeof Vehicle_Type
+			],
 		rider: new Trip_Rider({
 			name: `users/${snapshot.get("rider.uid")}`,
 			displayName: riderUserRecord.displayName!,
@@ -110,7 +114,7 @@ async function createTrip(
 			status: Trip_Status[Trip_Status.PENDING],
 			createdAt: FieldValue.serverTimestamp(),
 			type: Trip_Type[trip.type],
-			vehicleType: trip.vehicleType.toLowerCase(),
+			vehicleType: trip.vehicleType.toString().toLowerCase(),
 			passengers: trip.passengers,
 			route: {
 				walk_to_pickup: trip.route?.walkToPickup

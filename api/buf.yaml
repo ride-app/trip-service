@@ -3,6 +3,7 @@ name: buf.build/ride/trip
 deps:
   - buf.build/googleapis/googleapis
   - buf.build/envoyproxy/protoc-gen-validate
+  - buf.build/ride/driver
 breaking:
   use:
     - FILE
