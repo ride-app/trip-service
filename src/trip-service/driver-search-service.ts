@@ -298,7 +298,7 @@ class DriverSearchService {
 				.where(
 					"vehicleType",
 					"==",
-					this.tripRequest.trip!.vehicleType.toLowerCase(),
+					this.tripRequest.trip!.vehicleType.toString().toLowerCase(),
 				);
 
 			promises.push(q.get());
