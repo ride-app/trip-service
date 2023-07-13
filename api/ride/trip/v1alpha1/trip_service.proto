@@ -88,10 +88,10 @@ message Trip {
   uint32 passengers = 7 [(validate.rules).uint32.gte = 1];
 
   // The type of vehicle requested by the rider
-  ride.driver.v1alpha1.Vehicle.Type vehicle_type = 8;
+  ride.driver.v1alpha1.Vehicle.Type vehicle_type = 8 [(validate.rules).enum = {not_in: [0]}];
 
   // The type of trip requested by the rider. Example: shared, private, etc.
-  Type type = 9;
+  Type type = 9 [(validate.rules).enum = {not_in: [0]}];
 
   // Information about the rider
   Rider rider = 10 [(validate.rules).message.required = true];
@@ -105,7 +105,7 @@ message Trip {
   // Encoded polyline string representing the path of the Trip
   // string overview_polyline = 13;
 
-  PaymentMethod payment_method = 14;
+  PaymentMethod payment_method = 14 [(validate.rules).enum = {not_in: [0]}];
 
   enum Status {
     STATUS_UNSPECIFIED = 0;
