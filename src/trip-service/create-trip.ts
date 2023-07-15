@@ -44,6 +44,8 @@ const createTrip = async (
 		!trip?.route?.pickup?.address &&
 		!trip?.route?.pickup?.polylineString
 	) {
+		console.debug(trip?.route?.pickup);
+
 		throw new ConnectError("invalid pickup", Code.InvalidArgument);
 	}
 
