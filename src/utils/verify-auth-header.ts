@@ -3,7 +3,7 @@ import { verifyIdToken } from "../repositories/auth-repository.js";
 
 const verifyAuthHeader = async (context: HandlerContext): Promise<string> => {
 	try {
-		if (context.requestHeader.get("authorization").length === 0) {
+		if (context.requestHeader.get("authorization") === null) {
 			throw new ConnectError("missing authorization", Code.Unauthenticated);
 		}
 		const token = context.requestHeader.get("authorization").toString();
