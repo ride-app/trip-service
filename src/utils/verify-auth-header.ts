@@ -14,6 +14,7 @@ const verifyAuthHeader = async (context: HandlerContext): Promise<string> => {
 
 		return await verifyIdToken(token.split("Bearer ")[1]);
 	} catch (e) {
+		console.error(e);
 		throw new ConnectError("invalid authorization", Code.Unauthenticated);
 	}
 };
