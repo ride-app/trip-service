@@ -23,15 +23,15 @@ const createTrip = async (
 ): Promise<CreateTripResponse> => {
 	const { trip } = req;
 
-	if (trip?.type !== Trip_Type.UNSPECIFIED) {
+	if (trip?.type === Trip_Type.UNSPECIFIED) {
 		throw new ConnectError("trip type not specified", Code.InvalidArgument);
 	}
 
-	if (trip?.vehicleType !== Vehicle_Type.UNSPECIFIED) {
+	if (trip?.vehicleType === Vehicle_Type.UNSPECIFIED) {
 		throw new ConnectError("vehicle type not specified", Code.InvalidArgument);
 	}
 
-	if (trip?.paymentMethod !== Trip_PaymentMethod.UNSPECIFIED) {
+	if (trip?.paymentMethod === Trip_PaymentMethod.UNSPECIFIED) {
 		throw new ConnectError(
 			"payment method not specified",
 			Code.InvalidArgument,
