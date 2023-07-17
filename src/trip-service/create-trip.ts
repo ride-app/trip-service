@@ -201,7 +201,7 @@ const createTrip = async (
 	await firestore.collection("trips").doc(tripId).delete();
 	console.info("trip deleted");
 
-	throw new ConnectError("No driver found", Code.Unavailable);
+	throw new ConnectError("No driver found", Code.FailedPrecondition);
 };
 
 export default createTrip;
