@@ -22,6 +22,7 @@ import {
 import { PhoneNumber } from "../gen/google/type/phone_number_pb.js";
 import { LatLng } from "../gen/google/type/latlng_pb.js";
 import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb.js";
+import { getDatabase } from "firebase-admin/database";
 
 async function getTrip(tripId: string): Promise<Trip | undefined> {
 	const snapshot = await getFirestore().collection("trips").doc(tripId).get();
@@ -162,16 +163,10 @@ async function createTrip(
 				rider: {
 					uid: trip.rider?.name.split("/").pop(),
 					notificationToken: (
-						await getFirestore()
-							.collection("users")
-							.where(
-								FieldPath.documentId(),
-								"==",
-								trip.rider?.name.split("/").pop(),
-							)
-							.select("token")
+						await getDatabase()
+							.ref(`messaging_tokens/${trip.rider?.name.split("/").pop()}`)
 							.get()
-					).docs[0]!.data()["token"] as string,
+					).val() as string,
 				},
 			});
 
