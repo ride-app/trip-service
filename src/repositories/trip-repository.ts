@@ -4,6 +4,7 @@ import {
 	GeoPoint,
 	getFirestore,
 } from "firebase-admin/firestore";
+import { getDatabase } from "firebase-admin/database";
 import { getAuth, UserRecord } from "firebase-admin/auth";
 import { Code, ConnectError } from "@bufbuild/connect";
 import { Timestamp } from "@bufbuild/protobuf";
@@ -22,7 +23,6 @@ import {
 import { PhoneNumber } from "../gen/google/type/phone_number_pb.js";
 import { LatLng } from "../gen/google/type/latlng_pb.js";
 import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb.js";
-import { getDatabase } from "firebase-admin/database";
 
 async function getTrip(tripId: string): Promise<Trip | undefined> {
 	const snapshot = await getFirestore().collection("trips").doc(tripId).get();
