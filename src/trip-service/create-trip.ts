@@ -39,19 +39,14 @@ const createTrip = async (
 	}
 
 	if (
-		!trip?.route?.pickup &&
-		!trip?.route?.pickup?.coordinates &&
-		!trip?.route?.pickup?.address &&
-		!trip?.route?.pickup?.polylineString
+		!trip?.route?.pickup?.coordinates ||
+		!trip.route.pickup.address ||
+		!trip.route.pickup.polylineString
 	) {
 		throw new ConnectError("invalid pickup", Code.InvalidArgument);
 	}
 
-	if (
-		!trip?.route?.dropOff &&
-		!trip?.route?.dropOff?.coordinates &&
-		!trip?.route?.dropOff?.address
-	) {
+	if (!trip.route.dropOff?.coordinates || !trip.route.dropOff.address) {
 		throw new ConnectError("invalid dropoff", Code.InvalidArgument);
 	}
 
@@ -59,12 +54,12 @@ const createTrip = async (
 		2,
 		haversine(
 			[
-				trip.route!.pickup.coordinates!.latitude,
-				trip.route!.pickup.coordinates!.longitude,
+				trip.route.pickup.coordinates.latitude,
+				trip.route.pickup.coordinates.longitude,
 			],
 			[
-				trip.route!.dropOff.coordinates!.latitude,
-				trip.route!.dropOff.coordinates!.longitude,
+				trip.route.dropOff.coordinates.latitude,
+				trip.route.dropOff.coordinates.longitude,
 			],
 		) / 2,
 	);

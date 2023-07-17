@@ -139,7 +139,7 @@ function getOptimalRoute(
 		tripPath = tripPath.concat(path);
 	} else if (overlayPath.length > intersection.lastIndex + 1) {
 		if (
-			allowWalk === false ||
+			!allowWalk ||
 			haversine(overlayPath[intersection.lastIndex], overlayPath[-1]) * 1000 >
 				MAX_WALK_DISTANCE_METER
 		) {
@@ -176,7 +176,7 @@ class DriverSearchService {
 
 	private allDriversCache: Record<string, CachedDriver> = {};
 
-	private skipList: Set<string> = new Set([]);
+	private skipList: Set<string> = new Set<string>([]);
 
 	private path: [number, number][];
 
@@ -212,7 +212,10 @@ class DriverSearchService {
 
 	async findDriver(): Promise<Driver | undefined> {
 		const scoreMap: MinHeap<{ id: string; scoreVector: ScoreVector }> =
-			new MinHeap((n) => n.scoreVector.length);
+			new MinHeap<{
+				id: string;
+				scoreVector: ScoreVector;
+			}>((n) => n.scoreVector.length);
 
 		/// Get nearest Vehicles
 		const nearestDrivers = await this.findNearestDrivers();
@@ -222,7 +225,6 @@ class DriverSearchService {
 			const cachedDriver = this.allDriversCache[id];
 
 			if (
-				cachedDriver === undefined ||
 				cachedDriver.currentPathString !== result.currentPathString ||
 				cachedDriver.location.toString() !== result.location.toString()
 			) {
@@ -265,20 +267,24 @@ class DriverSearchService {
 			: undefined;
 	}
 
-	private async findNearestDrivers(): Promise<{
-		[id: string]: {
-			location: [number, number];
-			distance: number;
-			currentPathString?: string;
-		};
-	}> {
-		const results: {
-			[id: string]: {
+	private async findNearestDrivers(): Promise<
+		Record<
+			string,
+			{
 				location: [number, number];
 				distance: number;
 				currentPathString?: string;
-			};
-		} = {};
+			}
+		>
+	> {
+		const results: Record<
+			string,
+			{
+				location: [number, number];
+				distance: number;
+				currentPathString?: string;
+			}
+		> = {};
 
 		const center: Geopoint = [
 			this.tripRequest.trip!.route!.pickup!.coordinates!.latitude,
@@ -287,8 +293,7 @@ class DriverSearchService {
 
 		const bounds = geohashQueryBounds(center, this.searchRadius);
 
-		const promises: Promise<firestore.QuerySnapshot<firestore.DocumentData>>[] =
-			[];
+		const promises: Promise<firestore.QuerySnapshot>[] = [];
 
 		bounds.forEach((b) => {
 			const q = this.geoCollection
@@ -309,8 +314,8 @@ class DriverSearchService {
 				snap.docs.forEach((doc) => {
 					if (this.skipList.has(doc.id)) return;
 
-					const lat = doc.get("location.latitude");
-					const lng = doc.get("location.longitude");
+					const lat = doc.get("location.latitude") as number;
+					const lng = doc.get("location.longitude") as number;
 
 					// We have to filter out a few false positives due to GeoHash
 					// accuracy, but most will match
@@ -320,8 +325,7 @@ class DriverSearchService {
 						results[doc.id] = {
 							location: [lat, lng],
 							distance: distanceInM,
-							currentPathString:
-								(doc.data()["currentPathString"] as string) ?? undefined,
+							currentPathString: doc.data()["currentPathString"] as string,
 						};
 					}
 				});

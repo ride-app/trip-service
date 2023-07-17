@@ -13,7 +13,7 @@ function findIntersection(
 ) {
 	if (basePath.length === 0 || overPlayPath.length === 0) return null;
 
-	const map: { [key: string]: boolean } = {};
+	const map: Record<string, boolean> = {};
 
 	const commonPoints: LatLngTuple[] = [];
 

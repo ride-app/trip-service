@@ -49,7 +49,7 @@ async function sendOffer(tripId: string, trip: Trip, driver: Driver) {
 			return false;
 		}
 
-		notificationToken = driverData.get("notificationToken");
+		notificationToken = driverData.get("notificationToken") as string;
 
 		transaction.update(driverRef, {
 			capacity: FieldValue.increment(-trip.passengers),
@@ -91,6 +91,7 @@ async function sendOffer(tripId: string, trip: Trip, driver: Driver) {
 	}
 
 	const timeout = setTimeout(() => {
+		// trunk-ignore(eslint/@typescript-eslint/no-floating-promises)
 		tripRequestRef.delete();
 	}, expiresAt - Date.now());
 
@@ -117,7 +118,7 @@ async function sendOffer(tripId: string, trip: Trip, driver: Driver) {
 	clearTimeout(timeout);
 
 	if (!accepted) {
-		driverRef.update({
+		await driverRef.update({
 			capacity: FieldValue.increment(trip.passengers),
 		});
 	}
@@ -166,7 +167,7 @@ async function getDriverWithVehicle(driverId: string): Promise<
 		}),
 		vehicle: new Trip_Vehicle({
 			name: `vehicles/${driverData.get("vehicleId")}`,
-			licensePlate: driverData.get("licensePlate"),
+			licensePlate: driverData.get("licensePlate") as string,
 			description: "E-Rickshaw",
 		}),
 	};

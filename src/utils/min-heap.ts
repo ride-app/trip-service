@@ -84,7 +84,8 @@ class MinHeap<T> {
 		const element = this.content[n];
 		const elemScore = this.scoreFunction(element);
 
-		// eslint-disable-next-line no-constant-condition
+		// trunk-ignore(eslint/no-constant-condition)
+		// trunk-ignore(eslint/@typescript-eslint/no-unnecessary-condition)
 		while (true) {
 			// Compute the indices of the child elements.
 			const child2N = (n + 1) * 2;

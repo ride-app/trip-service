@@ -16,6 +16,10 @@ async function startTrip(
 	req: StartTripRequest,
 	context: HandlerContext,
 ): Promise<StartTripResponse> {
+	// TODO: Remove ignores when type if fixed
+	// trunk-ignore(eslint/@typescript-eslint/no-unsafe-member-access)
+	// trunk-ignore(eslint/@typescript-eslint/no-unsafe-assignment)
+	// trunk-ignore(eslint/@typescript-eslint/no-unsafe-call)
 	const uid = context.requestHeader.get("uid");
 	const tripId = req.name.split("/").pop();
 
@@ -44,14 +48,14 @@ async function startTrip(
 		);
 	}
 
-	if (verCodeSnap.val().expiresAt < Date.now()) {
+	if (verCodeSnap.child("expiresAt").val() < Date.now()) {
 		throw new ConnectError(
 			"Trip verification code expired",
 			Code.FailedPrecondition,
 		);
 	}
 
-	const token = verCodeSnap.val().codeToken;
+	const token = verCodeSnap.child("codeToken").val() as string;
 
 	try {
 		verify(token, Buffer.from(req.verificationCode, "base64").toString());

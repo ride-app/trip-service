@@ -14,6 +14,10 @@ async function startTripVerification(
 	req: StartTripVerificationRequest,
 	context: HandlerContext,
 ): Promise<StartTripVerificationResponse> {
+	// TODO: Remove ignores when type if fixed
+	// trunk-ignore(eslint/@typescript-eslint/no-unsafe-member-access)
+	// trunk-ignore(eslint/@typescript-eslint/no-unsafe-assignment)
+	// trunk-ignore(eslint/@typescript-eslint/no-unsafe-call)
 	const uid = context.requestHeader.get("uid");
 	const tripId = req.name.split("/").pop();
 
@@ -49,7 +53,7 @@ async function startTripVerification(
 		);
 	}
 
-	const notificationToken: string = notificationTokenSnap.val();
+	const notificationToken: string = notificationTokenSnap.val() as string;
 
 	const ttlSeconds = 120;
 	const code: number = Math.floor(Math.random() * 900000) + 100000;

@@ -29,13 +29,17 @@ async function getTrip(tripId: string): Promise<Trip | undefined> {
 		return undefined;
 	}
 
-	const riderUserRecord = await getAuth().getUser(snapshot.get("rider.uid"));
+	const riderUserRecord = await getAuth().getUser(
+		snapshot.get("rider.uid") as string,
+	);
 
 	const hasDriver = snapshot.get("driver.uid") !== undefined;
 	let driverUserRecord: UserRecord | undefined;
 
 	if (hasDriver) {
-		driverUserRecord = await getAuth().getUser(snapshot.get("driver.uid"));
+		driverUserRecord = await getAuth().getUser(
+			snapshot.get("driver.uid") as string,
+		);
 	}
 
 	const trip = new Trip({
@@ -59,19 +63,15 @@ async function getTrip(tripId: string): Promise<Trip | undefined> {
 		route: new Trip_Route({
 			pickup: new Trip_Location({
 				coordinates: new LatLng({
-					latitude: (snapshot.get("pickup.location") as GeoPoint)
-						.latitude as number,
-					longitude: (snapshot.get("pickup.location") as GeoPoint)
-						.longitude as number,
+					latitude: (snapshot.get("pickup.location") as GeoPoint).latitude,
+					longitude: (snapshot.get("pickup.location") as GeoPoint).longitude,
 				}),
-				address: snapshot.get("pickup.address"),
+				address: snapshot.get("pickup.address") as string,
 			}),
 			dropOff: new Trip_Location({
 				coordinates: new LatLng({
-					latitude: (snapshot.get("dropOff.location") as GeoPoint)
-						.latitude as number,
-					longitude: (snapshot.get("dropOff.location") as GeoPoint)
-						.longitude as number,
+					latitude: (snapshot.get("dropOff.location") as GeoPoint).latitude,
+					longitude: (snapshot.get("dropOff.location") as GeoPoint).longitude,
 				}),
 			}),
 			// TODO: add the walks
@@ -98,7 +98,7 @@ async function getTrip(tripId: string): Promise<Trip | undefined> {
 	if (snapshot.get("vehicle")) {
 		trip.vehicle = new Trip_Vehicle({
 			description: "Toto",
-			licensePlate: snapshot.get("vehicle.regNo"),
+			licensePlate: snapshot.get("vehicle.regNo") as string,
 		});
 	}
 
@@ -108,6 +108,8 @@ async function getTrip(tripId: string): Promise<Trip | undefined> {
 async function createTrip(
 	trip: Trip,
 ): Promise<{ tripId: string; createTime: Date }> {
+	console.info("writing trip to firestore...");
+
 	const write = await getFirestore()
 		.collection("trips")
 		.add({
@@ -120,11 +122,11 @@ async function createTrip(
 				walk_to_pickup: trip.route?.walkToPickup
 					? {
 							location: new GeoPoint(
-								trip.route!.walkToPickup!.coordinates!.latitude,
-								trip.route!.walkToPickup!.coordinates!.longitude,
+								trip.route.walkToPickup.coordinates!.latitude,
+								trip.route.walkToPickup.coordinates!.longitude,
 							),
-							address: trip.route!.walkToPickup!.address,
-							polylineString: trip.route!.walkToPickup!.polylineString,
+							address: trip.route.walkToPickup.address,
+							polylineString: trip.route.walkToPickup.polylineString,
 					  }
 					: undefined,
 				pickup: {
@@ -146,11 +148,11 @@ async function createTrip(
 				walk_to_destination: trip.route?.walkToDestination
 					? {
 							location: new GeoPoint(
-								trip.route!.walkToDestination!.coordinates!.latitude,
-								trip.route!.walkToDestination!.coordinates!.longitude,
+								trip.route.walkToDestination.coordinates!.latitude,
+								trip.route.walkToDestination.coordinates!.longitude,
 							),
-							address: trip.route!.walkToDestination!.address,
-							polylineString: trip.route!.walkToDestination!.polylineString,
+							address: trip.route.walkToDestination.address,
+							polylineString: trip.route.walkToDestination.polylineString,
 					  }
 					: undefined,
 			},
@@ -167,9 +169,11 @@ async function createTrip(
 						)
 						.select("token")
 						.get()
-				).docs[0]!.data()["token"],
+				).docs[0]!.data()["token"] as string,
 			},
 		});
+
+	console.info("trip written to firestore");
 
 	return {
 		tripId: write.id,
@@ -196,7 +200,7 @@ async function updateTrip(trip: Trip) {
 								)
 								.select("token")
 								.get()
-						).docs[0]!.data()["token"],
+						).docs[0]!.data()["token"] as string,
 				  }
 				: undefined,
 			vehicle: trip.vehicle
@@ -209,11 +213,11 @@ async function updateTrip(trip: Trip) {
 				walk_to_pickup: trip.route?.walkToPickup
 					? {
 							location: new GeoPoint(
-								trip.route!.walkToPickup!.coordinates!.latitude,
-								trip.route!.walkToPickup!.coordinates!.longitude,
+								trip.route.walkToPickup.coordinates!.latitude,
+								trip.route.walkToPickup.coordinates!.longitude,
 							),
-							address: trip.route!.walkToPickup!.address,
-							polylineString: trip.route!.walkToPickup!.polylineString,
+							address: trip.route.walkToPickup.address,
+							polylineString: trip.route.walkToPickup.polylineString,
 					  }
 					: undefined,
 				pickup: {
@@ -235,11 +239,11 @@ async function updateTrip(trip: Trip) {
 				walk_to_destination: trip.route?.walkToDestination
 					? {
 							location: new GeoPoint(
-								trip.route!.walkToDestination!.coordinates!.latitude,
-								trip.route!.walkToDestination!.coordinates!.longitude,
+								trip.route.walkToDestination.coordinates!.latitude,
+								trip.route.walkToDestination.coordinates!.longitude,
 							),
-							address: trip.route!.walkToDestination!.address,
-							polylineString: trip.route!.walkToDestination!.polylineString,
+							address: trip.route.walkToDestination.address,
+							polylineString: trip.route.walkToDestination.polylineString,
 					  }
 					: undefined,
 			},
