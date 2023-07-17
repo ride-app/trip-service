@@ -24,14 +24,17 @@ const createTrip = async (
 	const { trip } = req;
 
 	if (trip?.type === Trip_Type.UNSPECIFIED) {
+		console.info("trip type not specified");
 		throw new ConnectError("trip type not specified", Code.InvalidArgument);
 	}
 
 	if (trip?.vehicleType === Vehicle_Type.UNSPECIFIED) {
+		console.info("vehicle type not specified");
 		throw new ConnectError("vehicle type not specified", Code.InvalidArgument);
 	}
 
 	if (trip?.paymentMethod === Trip_PaymentMethod.UNSPECIFIED) {
+		console.info("payment method not specified");
 		throw new ConnectError(
 			"payment method not specified",
 			Code.InvalidArgument,
@@ -43,10 +46,12 @@ const createTrip = async (
 		!trip.route.pickup.address ||
 		!trip.route.pickup.polylineString
 	) {
+		console.info("invalid pickup");
 		throw new ConnectError("invalid pickup", Code.InvalidArgument);
 	}
 
 	if (!trip.route.dropOff?.coordinates || !trip.route.dropOff.address) {
+		console.info("invalid dropoff");
 		throw new ConnectError("invalid dropoff", Code.InvalidArgument);
 	}
 
@@ -63,9 +68,13 @@ const createTrip = async (
 			],
 		) / 2,
 	);
+
+	console.info(`max search radius: ${MAX_SEARCH_RADIUS}`);
+
 	const firestore = getFirestore();
 
 	const { tripId, createTime } = await TripRepository.createTrip(trip);
+	console.info(`trip created: ${tripId}`);
 
 	trip.name = `trips/${tripId}`;
 	trip.createTime = Timestamp.fromDate(createTime);
@@ -84,6 +93,7 @@ const createTrip = async (
 		if (driver) {
 			// get the driver from the result
 			const { driverId } = driver;
+			console.info(`found driver ${driverId}`);
 
 			// Send the driver trip offer
 			const accepted = await sendOffer(
@@ -92,27 +102,37 @@ const createTrip = async (
 				driver,
 				// driverData.get('notificationToken')
 			);
+			console.info(`sent trip request to driver ${driverId}`);
 
 			if (accepted) {
 				// if the driver accepted the trip request then set the temporary result as final
 				// and break out of the createTrip loop
 				bestOption = driver;
+				console.info(`driver ${driverId} accepted trip request`);
 				break;
 			} else {
 				// if the driver rejects offer add driver to skip list
 				driverSearchService.addToSkipList(driverId);
+				console.info(`driver ${driverId} rejected trip request`);
 			}
 		} else {
 			// if query returns no result then multiply the search radius by 2 and try again
 			driverSearchService.searchRadius *= 2;
+			console.info(
+				`increasing search radius to ${driverSearchService.searchRadius}`,
+			);
 		}
 	}
 
 	// If we found a driver then update the trip request with the driver's data
 	if (bestOption) {
 		const { driverId } = bestOption;
+		console.info(`driver found: ${driverId}`);
 
 		const driverWithVehicle = await getDriverWithVehicle(driverId);
+		console.info(
+			`driver with vehicle found: ${driverWithVehicle?.vehicle.name}`,
+		);
 
 		if (!driverWithVehicle) {
 			throw new ConnectError("Driver not found", Code.FailedPrecondition);
@@ -123,11 +143,13 @@ const createTrip = async (
 		trip.vehicle = driverWithVehicle.vehicle;
 
 		await TripRepository.updateTrip(trip);
+		console.info("trip updated");
 
 		await updateDriverCurrentPath(
 			driverId,
 			bestOption.optimalRoute.newVehiclePathPolyline,
 		);
+		console.info("driver current path updated");
 
 		// await firestore.runTransaction(async (transaction) => {
 		// 	const driverRef = firestore
@@ -177,6 +199,7 @@ const createTrip = async (
 
 	// If no driver was found then delete the trip request
 	await firestore.collection("trips").doc(tripId).delete();
+	console.info("trip deleted");
 
 	throw new ConnectError("No driver found", Code.Unavailable);
 };
