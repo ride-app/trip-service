@@ -21,6 +21,7 @@ import {
 import { PhoneNumber } from "../gen/google/type/phone_number_pb.js";
 import { LatLng } from "../gen/google/type/latlng_pb.js";
 import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb.js";
+import { Code, ConnectError } from "@bufbuild/connect";
 
 async function getTrip(tripId: string): Promise<Trip | undefined> {
 	const snapshot = await getFirestore().collection("trips").doc(tripId).get();
@@ -110,75 +111,83 @@ async function createTrip(
 ): Promise<{ tripId: string; createTime: Date }> {
 	console.info("writing trip to firestore...");
 
-	const write = await getFirestore()
-		.collection("trips")
-		.add({
-			status: Trip_Status[Trip_Status.PENDING],
-			createdAt: FieldValue.serverTimestamp(),
-			type: Trip_Type[trip.type],
-			vehicleType: trip.vehicleType.toString().toLowerCase(),
-			passengers: trip.passengers,
-			route: {
-				walk_to_pickup: trip.route?.walkToPickup
-					? {
-							location: new GeoPoint(
-								trip.route.walkToPickup.coordinates!.latitude,
-								trip.route.walkToPickup.coordinates!.longitude,
-							),
-							address: trip.route.walkToPickup.address,
-							polylineString: trip.route.walkToPickup.polylineString,
-					  }
-					: undefined,
-				pickup: {
-					location: new GeoPoint(
-						trip.route!.pickup!.coordinates!.latitude,
-						trip.route!.pickup!.coordinates!.longitude,
-					),
-					address: trip.route!.pickup!.address,
-					polylineString: trip.route!.pickup!.polylineString,
+	try {
+		const write = await getFirestore()
+			.collection("trips")
+			.add({
+				status: Trip_Status[Trip_Status.PENDING],
+				createdAt: FieldValue.serverTimestamp(),
+				type: Trip_Type[trip.type],
+				vehicleType: trip.vehicleType.toString().toLowerCase(),
+				passengers: trip.passengers,
+				route: {
+					walk_to_pickup: trip.route?.walkToPickup
+						? {
+								location: new GeoPoint(
+									trip.route.walkToPickup.coordinates!.latitude,
+									trip.route.walkToPickup.coordinates!.longitude,
+								),
+								address: trip.route.walkToPickup.address,
+								polylineString: trip.route.walkToPickup.polylineString,
+						  }
+						: undefined,
+					pickup: {
+						location: new GeoPoint(
+							trip.route!.pickup!.coordinates!.latitude,
+							trip.route!.pickup!.coordinates!.longitude,
+						),
+						address: trip.route!.pickup!.address,
+						polylineString: trip.route!.pickup!.polylineString,
+					},
+					dropOff: {
+						location: new GeoPoint(
+							trip.route!.dropOff!.coordinates!.latitude,
+							trip.route!.dropOff!.coordinates!.longitude,
+						),
+						address: trip.route!.dropOff!.address,
+						polylineString: trip.route!.dropOff!.polylineString,
+					},
+					walk_to_destination: trip.route?.walkToDestination
+						? {
+								location: new GeoPoint(
+									trip.route.walkToDestination.coordinates!.latitude,
+									trip.route.walkToDestination.coordinates!.longitude,
+								),
+								address: trip.route.walkToDestination.address,
+								polylineString: trip.route.walkToDestination.polylineString,
+						  }
+						: undefined,
 				},
-				dropOff: {
-					location: new GeoPoint(
-						trip.route!.dropOff!.coordinates!.latitude,
-						trip.route!.dropOff!.coordinates!.longitude,
-					),
-					address: trip.route!.dropOff!.address,
-					polylineString: trip.route!.dropOff!.polylineString,
+				// Re-evaluate redundant information's need
+				rider: {
+					uid: trip.rider?.name.split("/").pop(),
+					notificationToken: (
+						await getFirestore()
+							.collection("users")
+							.where(
+								FieldPath.documentId(),
+								"==",
+								trip.rider?.name.split("/").pop(),
+							)
+							.select("token")
+							.get()
+					).docs[0]!.data()["token"] as string,
 				},
-				walk_to_destination: trip.route?.walkToDestination
-					? {
-							location: new GeoPoint(
-								trip.route.walkToDestination.coordinates!.latitude,
-								trip.route.walkToDestination.coordinates!.longitude,
-							),
-							address: trip.route.walkToDestination.address,
-							polylineString: trip.route.walkToDestination.polylineString,
-					  }
-					: undefined,
-			},
-			// Re-evaluate redundant information's need
-			rider: {
-				uid: trip.rider?.name.split("/").pop(),
-				notificationToken: (
-					await getFirestore()
-						.collection("users")
-						.where(
-							FieldPath.documentId(),
-							"==",
-							trip.rider?.name.split("/").pop(),
-						)
-						.select("token")
-						.get()
-				).docs[0]!.data()["token"] as string,
-			},
-		});
+			});
 
-	console.info("trip written to firestore");
+		console.info("trip written to firestore");
 
-	return {
-		tripId: write.id,
-		createTime: (await write.get()).createTime!.toDate(),
-	};
+		return {
+			tripId: write.id,
+			createTime: (await write.get()).createTime!.toDate(),
+		};
+	} catch (error) {
+		console.error(error);
+		throw new ConnectError(
+			"Something went wrong. Please try again later.",
+			Code.Internal,
+		);
+	}
 }
 
 async function updateTrip(trip: Trip) {
