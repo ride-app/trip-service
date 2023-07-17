@@ -1,3 +1,3 @@
 config:
-  gcp:project: ride-app-dev-2
+  gcp:project: ride-app-prod
   firebase:databaseURL: https://ride-app-dev-2-default-rtdb.asia-southeast1.firebasedatabase.app

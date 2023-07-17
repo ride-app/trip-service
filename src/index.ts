@@ -4,7 +4,9 @@ import server from "./server.js";
 const port = process.env["PORT"] ? parseInt(process.env["PORT"], 10) : 50051;
 
 try {
-	initializeApp();
+	initializeApp({
+		databaseURL: process.env["FIREBASE_DATABASE_URL"],
+	});
 	server
 		.listen({
 			host: "0.0.0.0",
