@@ -151,49 +151,7 @@ const createTrip = async (
 		);
 		logInfo("driver current path updated");
 
-		// await firestore.runTransaction(async (transaction) => {
-		// 	const driverRef = firestore
-		// 		.collection(trip.vehicleType.toLowerCase())
-		// 		.doc(driverId);
-
-		// 	// const tripRef = firestore.collection("trips").doc(tripId);
-
-		// 	transaction.update(driverRef, {
-		// 		currentPathString: bestOption!.optimalRoute.newVehiclePathPolyline,
-		// 	});
-
-		// 	// transaction.update(tripRef, {
-		// 	// 	status: "accepted",
-		// 	// 	driver: {
-		// 	// 		id: driverId,
-		// 	// 		name: trip.driver!.displayName,
-		// 	// 		phone: trip.driver!.phoneNumber,
-		// 	// 		photoUrl: trip.driver!.photoUri,
-		// 	// 	},
-		// 	// 	vehicle: {
-		// 	// 		id: trip.vehicle?.name.split("/").pop(),
-		// 	// 		licensePlate: trip.vehicle?.licensePlate,
-		// 	// 	},
-		// 	// 	walks: {
-		// 	// 		origin:
-		// 	// 			bestOption!.optimalRoute.pickupWalk !== undefined
-		// 	// 				? {
-		// 	// 						distance: bestOption?.optimalRoute.pickupWalk.length,
-		// 	// 						polyline: bestOption?.optimalRoute.pickupWalk.polyline,
-		// 	// 				  }
-		// 	// 				: null,
-		// 	// 		dropOff:
-		// 	// 			bestOption!.optimalRoute.dropOffWalk !== undefined
-		// 	// 				? {
-		// 	// 						distance: bestOption?.optimalRoute.dropOffWalk.length,
-		// 	// 						polyline: bestOption?.optimalRoute.dropOffWalk.polyline,
-		// 	// 				  }
-		// 	// 				: null,
-		// 	// 	},
-		// 	// });
-		// });
-
-		// return { trip };
+		logInfo("Successfully created trip");
 		return new CreateTripResponse({ trip });
 	}
 

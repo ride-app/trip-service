@@ -36,26 +36,32 @@ export default class TripRepository {
 		this.#firestore = firestore;
 		this.#auth = auth;
 		this.#notificationService = notificationService;
+		logInfo("TripRepository initialized");
 	}
 
 	async getTrip(tripId: string): Promise<Trip | undefined> {
+		logInfo(`Getting trip`);
 		const snapshot = await this.#firestore
 			.collection("trips")
 			.doc(tripId)
 			.get();
 
 		if (!snapshot.exists) {
+			logInfo(`Trip not found`);
 			return undefined;
 		}
 
+		logInfo("Fetching rider user record");
 		const riderUserRecord = await this.#auth.getUser(
 			snapshot.get("rider.uid") as string,
 		);
 
+		logInfo("Checking if trip has driver");
 		const hasDriver = snapshot.get("driver.uid") !== undefined;
 		let driverUserRecord: UserRecord | undefined;
 
 		if (hasDriver) {
+			logInfo("Trip has driver. Fetching driver user record");
 			driverUserRecord = await this.#auth.getUser(
 				snapshot.get("driver.uid") as string,
 			);
@@ -108,6 +114,7 @@ export default class TripRepository {
 		});
 
 		if (hasDriver) {
+			logInfo("Trip has driver. Adding driver to trip");
 			trip.driver = new Trip_Driver({
 				name: `drivers/${snapshot.get("driver.uid")}`,
 				displayName: driverUserRecord!.displayName!,
@@ -117,6 +124,7 @@ export default class TripRepository {
 		}
 
 		if (snapshot.get("vehicle")) {
+			logInfo("Trip has vehicle. Adding vehicle to trip");
 			trip.vehicle = new Trip_Vehicle({
 				description: "Toto",
 				licensePlate: snapshot.get("vehicle.regNo") as string,
@@ -131,7 +139,7 @@ export default class TripRepository {
 		authToken: string,
 	): Promise<{ tripId: string; createTime: Date }> {
 		try {
-			logInfo("getting rider notification token...");
+			logInfo("Getting rider notification token");
 
 			const riderNotificationToken = (
 				await this.#notificationService.getNotificationToken(
@@ -146,7 +154,7 @@ export default class TripRepository {
 				)
 			).token;
 
-			logInfo("writing trip to firestore...");
+			logInfo("Writing trip to firestore");
 			const write = await this.#firestore.collection("trips").add({
 				status: Trip_Status[Trip_Status.PENDING],
 				createdAt: FieldValue.serverTimestamp(),
@@ -198,8 +206,7 @@ export default class TripRepository {
 				},
 			});
 
-			logInfo("trip written to firestore");
-
+			logInfo("Trip written to firestore");
 			return {
 				tripId: write.id,
 				createTime: (await write.get()).createTime!.toDate(),
@@ -214,6 +221,7 @@ export default class TripRepository {
 	}
 
 	async updateTrip(trip: Trip) {
+		logInfo("Updating trip in firestore");
 		await this.#firestore
 			.collection("trips")
 			.doc(trip.name.split("/").pop()!)
@@ -281,10 +289,13 @@ export default class TripRepository {
 				},
 				paymentMethod: Trip_PaymentMethod[trip.paymentMethod],
 			});
+		logInfo("Trip updated in firestore");
 	}
 
 	async deleteTrip(tripId: string) {
+		logInfo("Deleting trip from firestore");
 		await this.#firestore.collection("trips").doc(tripId).delete();
+		logInfo("Trip deleted from firestore");
 	}
 }
 // export { getTrip, createTrip, updateTrip };
