@@ -8,11 +8,12 @@ import {
 	StartTripResponse,
 	Trip_Status,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
-import { getTrip } from "../repositories/trip-repository.js";
+import type { Service } from "./service.js";
 
 const { verify } = jwt;
 
 async function startTrip(
+	_service: Service,
 	req: StartTripRequest,
 	context: HandlerContext,
 ): Promise<StartTripResponse> {
@@ -27,7 +28,7 @@ async function startTrip(
 		throw new ConnectError("Invalid Argument", Code.InvalidArgument);
 	}
 
-	const trip = await getTrip(tripId);
+	const trip = await _service.tripRepository.getTrip(tripId);
 
 	if (!trip) {
 		throw new ConnectError("Trip not found", Code.NotFound);
