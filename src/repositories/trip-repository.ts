@@ -135,7 +135,7 @@ export default class TripRepository {
 			const riderNotificationToken = (
 				await this.#notificationService.getNotificationToken(
 					{
-						name: `users/${trip.rider!.name}/token`,
+						name: `${trip.rider!.name}/token`,
 					},
 					{
 						headers: {
