@@ -1,4 +1,5 @@
 import server from "./server.js";
+import logger from "./utils/logger.js";
 
 const port = process.env["PORT"] ? parseInt(process.env["PORT"], 10) : 50051;
 
@@ -9,7 +10,7 @@ try {
 			port,
 		})
 		.addListener("listening", () => {
-			console.info(`[${Date.now()}]: server listening to ${port}`);
+			logger.info(`server listening to ${port}`);
 		});
 } catch (err) {
 	console.error(err);
