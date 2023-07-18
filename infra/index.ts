@@ -32,6 +32,10 @@ const service = new gcp.cloudrun.Service("service", {
 							name: "FIREBASE_DATABASE_URL",
 							value: firebaseConfig.require("databaseURL"),
 						},
+						{
+							name: "NOTIFICATION_SERVICE_URL",
+							value: new pulumi.Config().require("notificationServiceUrl"),
+						},
 					],
 				},
 			],

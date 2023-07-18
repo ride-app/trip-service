@@ -1,3 +1,4 @@
 config:
-  gcp:project: ride-app-dev-2
   firebase:databaseURL: https://ride-app-dev-2-default-rtdb.asia-southeast1.firebasedatabase.app
+  gcp:project: ride-app-dev-2
+  trip-service:notificationServiceUrl: https://notification-service-gbbsdms5pq-el.a.run.app
