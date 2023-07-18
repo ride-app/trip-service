@@ -46,7 +46,7 @@ class Service implements ServiceImpl<typeof TripService> {
 
 	async createTrip(req: CreateTripRequest, context: HandlerContext) {
 		await verifyAuthHeader(context);
-		return createTrip(this, req);
+		return createTrip(this, req, context);
 	}
 
 	async getTrip(req: GetTripRequest, context: HandlerContext) {

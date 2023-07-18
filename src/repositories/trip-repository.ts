@@ -125,14 +125,24 @@ export default class TripRepository {
 		return trip;
 	}
 
-	async createTrip(trip: Trip): Promise<{ tripId: string; createTime: Date }> {
+	async createTrip(
+		trip: Trip,
+		authToken: string,
+	): Promise<{ tripId: string; createTime: Date }> {
 		console.info("writing trip to firestore...");
 
 		try {
 			const riderNotificationToken = (
-				await this.#notificationService.getNotificationToken({
-					name: `users/${trip.rider!.name}/token`,
-				})
+				await this.#notificationService.getNotificationToken(
+					{
+						name: `users/${trip.rider!.name}/token`,
+					},
+					{
+						headers: {
+							authorization: authToken,
+						},
+					},
+				)
 			).token;
 
 			const write = await this.#firestore.collection("trips").add({

@@ -1,6 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { Timestamp } from "@bufbuild/protobuf";
-import { Code, ConnectError } from "@bufbuild/connect";
+import { Code, ConnectError, type HandlerContext } from "@bufbuild/connect";
 import {
 	CreateTripRequest,
 	CreateTripResponse,
@@ -16,6 +16,7 @@ import type { Service } from "./service.js";
 const createTrip = async (
 	_service: Service,
 	req: CreateTripRequest,
+	context: HandlerContext,
 ): Promise<CreateTripResponse> => {
 	const { trip } = req;
 
@@ -69,7 +70,12 @@ const createTrip = async (
 
 	const firestore = getFirestore();
 
-	const { tripId, createTime } = await _service.tripRepository.createTrip(trip);
+	const { tripId, createTime } = await _service.tripRepository.createTrip(
+		trip,
+		// trunk-ignore(eslint/@typescript-eslint/no-unsafe-member-access)
+		// trunk-ignore(eslint/@typescript-eslint/no-unsafe-call)
+		context.requestHeader.get("authorization") as string,
+	);
 	console.info(`trip created: ${tripId}`);
 
 	trip.name = `trips/${tripId}`;
