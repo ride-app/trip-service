@@ -320,15 +320,14 @@ class DriverSearchService {
 			logInfo("Constructing query");
 			logDebug(`Querying geohash range ${b[0]} to ${b[1]}`);
 			const query = this.geoCollection
-				.orderBy("geohash")
-				.startAt(b[0])
-				.endAt(b[1])
 				.where(
 					"vehicleType",
 					"==",
-					// this.tripRequest.trip!.vehicleType.toString().toLowerCase(),
-					"car",
-				);
+					this.tripRequest.trip!.vehicleType.toString().toLowerCase(),
+				)
+				.orderBy("geohash")
+				.startAt(b[0])
+				.endAt(b[1]);
 
 			logInfo("Adding query to promise list");
 			promises.push(query.get());
