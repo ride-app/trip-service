@@ -66,7 +66,7 @@ const createTrip = async (
 		) / 2,
 	);
 
-	logDebug(`max search radius: ${MAX_SEARCH_RADIUS}`);
+	logDebug(`max search radius: ${MAX_SEARCH_RADIUS * 1000}m`);
 
 	const { tripId, createTime } = await _service.tripRepository.createTrip(
 		trip,

@@ -319,18 +319,18 @@ class DriverSearchService {
 		bounds.forEach((b) => {
 			logInfo("Constructing query");
 			logDebug(`Querying geohash range ${b[0]} to ${b[1]}`);
-			const q = this.geoCollection
-				.orderBy("geohash")
-				.startAt(b[0])
-				.endAt(b[1])
-				.where(
-					"vehicleType",
-					"==",
-					this.tripRequest.trip!.vehicleType.toString().toLowerCase(),
-				);
+			// const query = this.geoCollection
+			// 	.orderBy("geohash")
+			// 	.startAt(b[0])
+			// 	.endAt(b[1])
+			// 	.where(
+			// 		"vehicleType",
+			// 		"==",
+			// 		this.tripRequest.trip!.vehicleType.toString().toLowerCase(),
+			// );
 
 			logInfo("Adding query to promise list");
-			promises.push(q.get());
+			// promises.push(query.get());
 		});
 
 		logInfo("Waiting for queries to complete");
