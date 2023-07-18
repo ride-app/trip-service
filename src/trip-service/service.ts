@@ -36,12 +36,16 @@ class Service implements ServiceImpl<typeof TripService> {
 
 	readonly tripRepository: TripRepository;
 
+	readonly firestore: FirebaseFirestore.Firestore;
+
 	constructor(
 		driverRepository: DriverRepository,
 		tripRepository: TripRepository,
+		firestore: FirebaseFirestore.Firestore,
 	) {
 		this.driverRepository = driverRepository;
 		this.tripRepository = tripRepository;
+		this.firestore = firestore;
 	}
 
 	async createTrip(req: CreateTripRequest, context: HandlerContext) {
@@ -111,7 +115,7 @@ function initializeService(router: ConnectRouter) {
 		notificationServiceClient,
 	);
 
-	const service = new Service(driverRepository, tripRepository);
+	const service = new Service(driverRepository, tripRepository, firestore);
 
 	router.service(TripService, service);
 }

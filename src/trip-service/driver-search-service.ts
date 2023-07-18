@@ -1,5 +1,5 @@
+import type { Firestore } from "firebase-admin/firestore";
 import polyline from "@googlemaps/polyline-codec";
-import { getFirestore } from "firebase-admin/firestore";
 import {
 	distanceBetween,
 	geohashQueryBounds,
@@ -183,7 +183,11 @@ class DriverSearchService {
 
 	private geoCollection: firestore.CollectionReference;
 
-	constructor(searchRadius: number, tripRequest: CreateTripRequest) {
+	constructor(
+		searchRadius: number,
+		tripRequest: CreateTripRequest,
+		firestore: Firestore,
+	) {
 		if (!tripRequest.trip) {
 			throw new Error("Trip request must contain a trip");
 		}
@@ -199,7 +203,7 @@ class DriverSearchService {
 		logInfo("Decoding polyline");
 		this.path = polyline.decode(tripRequest.trip.route.pickup.polylineString);
 
-		this.geoCollection = getFirestore().collection("activeDrivers");
+		this.geoCollection = firestore.collection("activeDrivers");
 		logInfo("Geocollection initialized");
 
 		this.searchRadius = searchRadius;

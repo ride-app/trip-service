@@ -80,7 +80,11 @@ const createTrip = async (
 	trip.createTime = Timestamp.fromDate(createTime);
 	trip.updateTime = Timestamp.fromDate(createTime);
 
-	const driverSearchService = new DriverSearchService(0.1, req);
+	const driverSearchService = new DriverSearchService(
+		0.1,
+		req,
+		_service.firestore,
+	);
 
 	let bestOption: Driver | undefined;
 
