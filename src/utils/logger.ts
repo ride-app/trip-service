@@ -6,13 +6,7 @@ import { LoggingWinston } from "@google-cloud/logging-winston";
 // Logs will be written to: "projects/YOUR_PROJECT_ID/logs/winston_log"
 const logger = createLogger({
 	level: process.env["DEBUG"] ? "debug" : "info",
-	format: format.combine(
-		format.timestamp(),
-		format.json(),
-		format.prettyPrint({
-			colorize: true,
-		}),
-	),
+	format: format.combine(format.timestamp(), format.json(), format.colorize()),
 	transports: [new transports.Console()],
 });
 
