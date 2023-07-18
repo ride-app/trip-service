@@ -6,11 +6,12 @@ import {
 	StartTripVerificationRequest,
 	StartTripVerificationResponse,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
-import { getTrip } from "../repositories/trip-repository.js";
+import type { Service } from "./service.js";
 
 const { sign } = pkg;
 
 async function startTripVerification(
+	_service: Service,
 	req: StartTripVerificationRequest,
 	context: HandlerContext,
 ): Promise<StartTripVerificationResponse> {
@@ -25,7 +26,7 @@ async function startTripVerification(
 		throw new ConnectError("Invalid Argument", Code.InvalidArgument);
 	}
 
-	const trip = await getTrip(tripId);
+	const trip = await _service.tripRepository.getTrip(tripId);
 
 	if (!trip) {
 		throw new ConnectError("Trip not found", Code.NotFound);

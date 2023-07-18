@@ -10,15 +10,12 @@ import {
 import * as TripRepository from "../repositories/trip-repository.js";
 
 import { DriverSearchService, type Driver } from "./driver-search-service.js";
-import {
-	sendOffer,
-	getDriverWithVehicle,
-	updateDriverCurrentPath,
-} from "../repositories/driver-repository.js";
 import { haversine } from "../utils/distance.js";
 import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb.js";
+import type { Service } from "./service.js";
 
 const createTrip = async (
+	_service: Service,
 	req: CreateTripRequest,
 ): Promise<CreateTripResponse> => {
 	const { trip } = req;
@@ -96,7 +93,7 @@ const createTrip = async (
 			console.info(`found driver ${driverId}`);
 
 			// Send the driver trip offer
-			const accepted = await sendOffer(
+			const accepted = await _service.driverRepository.sendOffer(
 				tripId,
 				trip,
 				driver,
@@ -129,7 +126,8 @@ const createTrip = async (
 		const { driverId } = bestOption;
 		console.info(`driver found: ${driverId}`);
 
-		const driverWithVehicle = await getDriverWithVehicle(driverId);
+		const driverWithVehicle =
+			await _service.driverRepository.getDriverWithVehicle(driverId);
 		console.info(
 			`driver with vehicle found: ${driverWithVehicle?.vehicle.name}`,
 		);
@@ -145,7 +143,7 @@ const createTrip = async (
 		await TripRepository.updateTrip(trip);
 		console.info("trip updated");
 
-		await updateDriverCurrentPath(
+		await _service.driverRepository.updateDriverCurrentPath(
 			driverId,
 			bestOption.optimalRoute.newVehiclePathPolyline,
 		);
