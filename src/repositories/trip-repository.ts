@@ -1,7 +1,8 @@
 import { FieldPath, FieldValue, GeoPoint } from "firebase-admin/firestore";
 import { Auth, UserRecord } from "firebase-admin/auth";
 import { Code, ConnectError, type PromiseClient } from "@bufbuild/connect";
-import { NotificationService } from "@buf/ride_notification.bufbuild_connect-es/ride/notification/v1alpha1/notification_service_connect";
+// trunk-ignore(eslint/import/extensions)
+import { NotificationService } from "@buf/ride_notification.bufbuild_connect-es/ride/notification/v1alpha1/notification_service_connect.js";
 import { Timestamp } from "@bufbuild/protobuf";
 import {
 	Trip,

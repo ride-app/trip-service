@@ -1,9 +1,6 @@
 import { Messaging } from "firebase-admin/messaging";
 import { FieldValue, GeoPoint } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
-import { NotificationService } from "@buf/ride_notification.bufbuild_connect-es/ride/notification/v1alpha1/notification_service_connect";
-import { createConnectTransport } from "@bufbuild/connect-node";
-import { createPromiseClient, type PromiseClient } from "@bufbuild/connect";
 import type { Driver } from "../trip-service/driver-search-service.js";
 import {
 	Trip,
@@ -16,23 +13,7 @@ export default class DriverRepository {
 
 	readonly #fcm: Messaging;
 
-	readonly #notificationService: PromiseClient<typeof NotificationService>;
-
 	constructor(firestore: FirebaseFirestore.Firestore, fcm: Messaging) {
-		this.#notificationService = createPromiseClient(
-			NotificationService,
-			createConnectTransport({
-				// Requests will be made to <baseUrl>/<package>.<service>/method
-				baseUrl: "https://demo.connect.build",
-
-				// You have to tell the Node.js http API which HTTP version to use.
-				httpVersion: "2",
-
-				// Interceptors apply to all calls running through this transport.
-				interceptors: [],
-			}),
-		);
-
 		this.#firestore = firestore;
 		this.#fcm = fcm;
 	}

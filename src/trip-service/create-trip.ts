@@ -7,7 +7,6 @@ import {
 	Trip_PaymentMethod,
 	Trip_Type,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
-import * as TripRepository from "../repositories/trip-repository.js";
 
 import { DriverSearchService, type Driver } from "./driver-search-service.js";
 import { haversine } from "../utils/distance.js";
@@ -70,7 +69,7 @@ const createTrip = async (
 
 	const firestore = getFirestore();
 
-	const { tripId, createTime } = await TripRepository.createTrip(trip);
+	const { tripId, createTime } = await _service.tripRepository.createTrip(trip);
 	console.info(`trip created: ${tripId}`);
 
 	trip.name = `trips/${tripId}`;
@@ -140,7 +139,7 @@ const createTrip = async (
 
 		trip.vehicle = driverWithVehicle.vehicle;
 
-		await TripRepository.updateTrip(trip);
+		await _service.tripRepository.updateTrip(trip);
 		console.info("trip updated");
 
 		await _service.driverRepository.updateDriverCurrentPath(

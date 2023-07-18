@@ -9,7 +9,8 @@ import {
 import { getFirestore } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
 import { createConnectTransport } from "@bufbuild/connect-node";
-import { NotificationService } from "@buf/ride_notification.bufbuild_connect-es/ride/notification/v1alpha1/notification_service_connect";
+// trunk-ignore(eslint/import/extensions)
+import { NotificationService } from "@buf/ride_notification.bufbuild_connect-es/ride/notification/v1alpha1/notification_service_connect.js";
 import { getMessaging } from "firebase-admin/messaging";
 import { initializeApp } from "firebase-admin/app";
 import { TripService } from "../gen/ride/trip/v1alpha1/trip_service_connect.js";
@@ -66,18 +67,21 @@ class Service implements ServiceImpl<typeof TripService> {
 		return startTripVerification(this, req, context);
 	}
 
+	// @ts-expect-error we will use req in the future
 	// trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
 	// trunk-ignore(eslint/class-methods-use-this)
 	async cancelTrip(req: CancelTripRequest) {
 		throw new ConnectError("Method not implemented.", Code.Unimplemented);
 	}
 
+	// @ts-expect-error we will use req in the future
 	// trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
 	// trunk-ignore(eslint/class-methods-use-this)
 	async endTrip(req: EndTripRequest) {
 		throw new ConnectError("Method not implemented.", Code.Unimplemented);
 	}
 
+	// @ts-expect-error we will use req in the future
 	// trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
 	// trunk-ignore(eslint/require-yield)
 	// trunk-ignore(eslint/class-methods-use-this)
