@@ -36,6 +36,10 @@ const service = new gcp.cloudrun.Service("service", {
 							name: "NOTIFICATION_SERVICE_URL",
 							value: new pulumi.Config().require("notificationServiceUrl"),
 						},
+						{
+							name: "DEBUG",
+							value: new pulumi.Config().get("debug") ?? "false",
+						},
 					],
 				},
 			],
