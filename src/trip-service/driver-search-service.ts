@@ -20,6 +20,7 @@ import {
 } from "../utils/distance.js";
 
 import { findIntersection, indexOfPointOnPath } from "../utils/paths.js";
+import { logDebug, logInfo } from "../utils/logger.js";
 
 interface Driver {
 	// driver: Driver;
@@ -191,15 +192,16 @@ class DriverSearchService {
 			throw new Error("Trip request must contain a pickup polyline");
 		}
 
+		logInfo(`Initializing driver search service for ${tripRequest.trip.name}`);
+
 		this.tripRequest = tripRequest;
+
+		logInfo("Decoding polyline");
 		this.path = polyline.decode(tripRequest.trip.route.pickup.polylineString);
-		// this.geoCollection = initializeApp(getFirestore()).collection(
-		// 	tripRequest.trip.vehicleType.toLowerCase()
-		// );
-		// this.geoCollection = getFirestore().collection(
-		// 	tripRequest.trip.vehicleType.toLowerCase()
-		// );
+
 		this.geoCollection = getFirestore().collection("activeDrivers");
+		logInfo("Geocollection initialized");
+
 		this.searchRadius = searchRadius;
 		this.skipList = new Set(
 			this.tripRequest.ignore.map((d) => d.split("/").pop()!),
@@ -211,6 +213,7 @@ class DriverSearchService {
 	}
 
 	async findDriver(): Promise<Driver | undefined> {
+		logInfo("Finding nearest drivers");
 		const scoreMap: MinHeap<{ id: string; scoreVector: ScoreVector }> =
 			new MinHeap<{
 				id: string;
@@ -219,8 +222,10 @@ class DriverSearchService {
 
 		/// Get nearest Vehicles
 		const nearestDrivers = await this.findNearestDrivers();
+		logInfo(`Found ${Object.keys(nearestDrivers).length} drivers nearby`);
 
 		Object.keys(nearestDrivers).forEach((id) => {
+			logInfo(`Processing driver ${id}`);
 			const result = nearestDrivers[id];
 			const cachedDriver = this.allDriversCache[id];
 
@@ -228,6 +233,9 @@ class DriverSearchService {
 				cachedDriver.currentPathString !== result.currentPathString ||
 				cachedDriver.location.toString() !== result.location.toString()
 			) {
+				logInfo(
+					`Driver ${id} path/location changed or didn't exist. Recommputing optimal route`,
+				);
 				const optimalRoute = getOptimalRoute(
 					result.location,
 					result.currentPathString
@@ -237,6 +245,7 @@ class DriverSearchService {
 					this.tripRequest.trip?.type === Trip_Type.SHARED,
 				);
 
+				logInfo(`Updating driver ${id}`);
 				this.allDriversCache[id] = {
 					driverId: id,
 					location: result.location,
@@ -249,6 +258,12 @@ class DriverSearchService {
 			const currentDriver = this.allDriversCache[id];
 
 			if (currentDriver.optimalRoute !== null) {
+				logInfo(`Driver ${id} has optimal route. Adding to score map`);
+				logDebug({
+					distance: currentDriver.distance,
+					pickupWalkLength: currentDriver.optimalRoute.pickupWalk?.length,
+					dropOffWalkLength: currentDriver.optimalRoute.dropOffWalk?.length,
+				});
 				scoreMap.push({
 					id,
 					scoreVector: new ScoreVector(
@@ -261,6 +276,7 @@ class DriverSearchService {
 		});
 
 		const bestScore = scoreMap.pop();
+		logInfo(`Best score: ${bestScore?.id ?? "undefined"}`);
 
 		return bestScore !== undefined
 			? (this.allDriversCache[bestScore.id] as Driver)
@@ -291,11 +307,14 @@ class DriverSearchService {
 			this.tripRequest.trip!.route!.pickup!.coordinates!.longitude,
 		];
 
+		logInfo("Calculating geohash query bounds");
 		const bounds = geohashQueryBounds(center, this.searchRadius);
 
 		const promises: Promise<firestore.QuerySnapshot>[] = [];
 
 		bounds.forEach((b) => {
+			logInfo("Constructing query");
+			logDebug(`Querying geohash range ${b[0]} to ${b[1]}`);
 			const q = this.geoCollection
 				.orderBy("geohash")
 				.startAt(b[0])
@@ -306,13 +325,20 @@ class DriverSearchService {
 					this.tripRequest.trip!.vehicleType.toString().toLowerCase(),
 				);
 
+			logInfo("Adding query to promise list");
 			promises.push(q.get());
 		});
 
+		logInfo("Waiting for queries to complete");
 		await Promise.all(promises).then((snapshots) => {
+			logInfo("Queries completed");
+			logDebug(`Snapshots: ${snapshots.length}`);
 			snapshots.forEach((snap) => {
 				snap.docs.forEach((doc) => {
-					if (this.skipList.has(doc.id)) return;
+					if (this.skipList.has(doc.id)) {
+						logInfo(`Skipping driver ${doc.id}`);
+						return;
+					}
 
 					const lat = doc.get("location.latitude") as number;
 					const lng = doc.get("location.longitude") as number;
@@ -320,6 +346,7 @@ class DriverSearchService {
 					// We have to filter out a few false positives due to GeoHash
 					// accuracy, but most will match
 					const distanceInM = distanceBetween([lat, lng], center) * 1000;
+					logDebug(`Distance: ${distanceInM}m`);
 
 					if (distanceInM <= this.searchRadius) {
 						results[doc.id] = {

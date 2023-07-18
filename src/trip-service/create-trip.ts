@@ -87,7 +87,11 @@ const createTrip = async (
 	/* eslint no-await-in-loop: "off" */
 	// Keep querying the driver createTrip service until we find a driver
 	while (driverSearchService.searchRadius <= MAX_SEARCH_RADIUS && !bestOption) {
-		logDebug(`searching for driver within ${driverSearchService.searchRadius}`);
+		logDebug(
+			`searching for driver within ${
+				driverSearchService.searchRadius * 1000
+			} meters`,
+		);
 		// Query the driver createTrip service for the best option
 		const driver = await driverSearchService.findDriver();
 
