@@ -322,7 +322,13 @@ class DriverSearchService {
 			const query = this.geoCollection
 				.orderBy("geohash")
 				.startAt(b[0])
-				.endAt(b[1]);
+				.endAt(b[1])
+				.where(
+					"vehicleType",
+					"==",
+					// this.tripRequest.trip!.vehicleType.toString().toLowerCase(),
+					"car",
+				);
 
 			logInfo("Adding query to promise list");
 			promises.push(query.get());
