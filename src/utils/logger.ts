@@ -1,18 +1,56 @@
-import { createLogger, transports, format } from "winston";
-// Imports the Google Cloud client library for Winston
-import { LoggingWinston } from "@google-cloud/logging-winston";
+const debug = (message: unknown) => {
+	// trunk-ignore(eslint/no-console)
+	console.log(
+		JSON.stringify({
+			severity: "DEBUG",
+			message,
+			timestamp: new Date().toISOString(),
+		}),
+	);
+};
 
-// Create a Winston logger that streams to Cloud Logging
-// Logs will be written to: "projects/YOUR_PROJECT_ID/logs/winston_log"
-const logger = createLogger({
-	level: process.env["DEBUG"] ? "debug" : "info",
-	format: format.combine(format.timestamp(), format.json(), format.colorize()),
-	transports: [new transports.Console()],
-});
+const info = (message: unknown) => {
+	// trunk-ignore(eslint/no-console)
+	console.log(
+		JSON.stringify({
+			severity: "INFO",
+			message,
+			timestamp: new Date().toISOString(),
+		}),
+	);
+};
 
-// Add Cloud Logging
-if (process.env["NODE_ENV"] !== "production") {
-	logger.add(new LoggingWinston());
-}
+const notice = (message: unknown) => {
+	// trunk-ignore(eslint/no-console)
+	console.log(
+		JSON.stringify({
+			severity: "NOTICE",
+			message,
+			timestamp: new Date().toISOString(),
+		}),
+	);
+};
 
-export default logger;
+const warn = (message: unknown) => {
+	// trunk-ignore(eslint/no-console)
+	console.log(
+		JSON.stringify({
+			severity: "WARN",
+			message,
+			timestamp: new Date().toISOString(),
+		}),
+	);
+};
+
+const error = (message: unknown) => {
+	// trunk-ignore(eslint/no-console)
+	console.log(
+		JSON.stringify({
+			severity: "ERROR",
+			message,
+			timestamp: new Date().toISOString(),
+		}),
+	);
+};
+
+export { debug, info, notice, warn, error };
