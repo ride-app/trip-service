@@ -10,7 +10,7 @@ try {
 			port,
 		})
 		.addListener("listening", () => {
-			log.info(`server listening to ${port}`);
+			log.notice(`server listening to ${port}`);
 		});
 } catch (err) {
 	console.error(err);
