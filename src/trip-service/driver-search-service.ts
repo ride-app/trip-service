@@ -181,6 +181,7 @@ class DriverSearchService {
 
 	private path: [number, number][];
 
+	// @ts-expect-error: we will use it later
 	private geoCollection: firestore.CollectionReference;
 
 	constructor(
