@@ -19,6 +19,7 @@ import {
 import { PhoneNumber } from "../gen/google/type/phone_number_pb.js";
 import { LatLng } from "../gen/google/type/latlng_pb.js";
 import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb.js";
+import { logError, logInfo } from "../utils/logger.js";
 
 export default class TripRepository {
 	readonly #firestore: FirebaseFirestore.Firestore;
@@ -130,8 +131,8 @@ export default class TripRepository {
 		authToken: string,
 	): Promise<{ tripId: string; createTime: Date }> {
 		try {
-			console.info("getting rider notification token...");
-			console.info(`token name: ${trip.rider!.name}/token`);
+			logInfo("getting rider notification token...");
+
 			const riderNotificationToken = (
 				await this.#notificationService.getNotificationToken(
 					{
@@ -145,7 +146,7 @@ export default class TripRepository {
 				)
 			).token;
 
-			console.info("writing trip to firestore...");
+			logInfo("writing trip to firestore...");
 			const write = await this.#firestore.collection("trips").add({
 				status: Trip_Status[Trip_Status.PENDING],
 				createdAt: FieldValue.serverTimestamp(),
@@ -197,14 +198,14 @@ export default class TripRepository {
 				},
 			});
 
-			console.info("trip written to firestore");
+			logInfo("trip written to firestore");
 
 			return {
 				tripId: write.id,
 				createTime: (await write.get()).createTime!.toDate(),
 			};
 		} catch (error) {
-			console.error(error);
+			logError(error);
 			throw new ConnectError(
 				"Something went wrong. Please try again later.",
 				Code.Internal,
@@ -280,6 +281,10 @@ export default class TripRepository {
 				},
 				paymentMethod: Trip_PaymentMethod[trip.paymentMethod],
 			});
+	}
+
+	async deleteTrip(tripId: string) {
+		await this.#firestore.collection("trips").doc(tripId).delete();
 	}
 }
 // export { getTrip, createTrip, updateTrip };

@@ -1,4 +1,3 @@
-import { getFirestore } from "firebase-admin/firestore";
 import { Timestamp } from "@bufbuild/protobuf";
 import { Code, ConnectError, type HandlerContext } from "@bufbuild/connect";
 import {
@@ -12,6 +11,7 @@ import { DriverSearchService, type Driver } from "./driver-search-service.js";
 import { haversine } from "../utils/distance.js";
 import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb.js";
 import type { Service } from "./service.js";
+import { logDebug, logInfo } from "../utils/logger.js";
 
 const createTrip = async (
 	_service: Service,
@@ -21,17 +21,17 @@ const createTrip = async (
 	const { trip } = req;
 
 	if (trip?.type === Trip_Type.UNSPECIFIED) {
-		console.info("trip type not specified");
+		logInfo("Trip type not specified");
 		throw new ConnectError("trip type not specified", Code.InvalidArgument);
 	}
 
 	if (trip?.vehicleType === Vehicle_Type.UNSPECIFIED) {
-		console.info("vehicle type not specified");
+		logInfo("Vehicle type not specified");
 		throw new ConnectError("vehicle type not specified", Code.InvalidArgument);
 	}
 
 	if (trip?.paymentMethod === Trip_PaymentMethod.UNSPECIFIED) {
-		console.info("payment method not specified");
+		logInfo("Payment method not specified");
 		throw new ConnectError(
 			"payment method not specified",
 			Code.InvalidArgument,
@@ -43,12 +43,12 @@ const createTrip = async (
 		!trip.route.pickup.address ||
 		!trip.route.pickup.polylineString
 	) {
-		console.info("invalid pickup");
+		logInfo("Invalid pickup");
 		throw new ConnectError("invalid pickup", Code.InvalidArgument);
 	}
 
 	if (!trip.route.dropOff?.coordinates || !trip.route.dropOff.address) {
-		console.info("invalid dropoff");
+		logInfo("Invalid dropoff");
 		throw new ConnectError("invalid dropoff", Code.InvalidArgument);
 	}
 
@@ -66,9 +66,7 @@ const createTrip = async (
 		) / 2,
 	);
 
-	console.info(`max search radius: ${MAX_SEARCH_RADIUS}`);
-
-	const firestore = getFirestore();
+	logDebug(`max search radius: ${MAX_SEARCH_RADIUS}`);
 
 	const { tripId, createTime } = await _service.tripRepository.createTrip(
 		trip,
@@ -76,7 +74,7 @@ const createTrip = async (
 		// trunk-ignore(eslint/@typescript-eslint/no-unsafe-call)
 		context.requestHeader.get("authorization") as string,
 	);
-	console.info(`trip created: ${tripId}`);
+	logInfo(`trip created: ${tripId}`);
 
 	trip.name = `trips/${tripId}`;
 	trip.createTime = Timestamp.fromDate(createTime);
@@ -89,13 +87,14 @@ const createTrip = async (
 	/* eslint no-await-in-loop: "off" */
 	// Keep querying the driver createTrip service until we find a driver
 	while (driverSearchService.searchRadius <= MAX_SEARCH_RADIUS && !bestOption) {
+		logDebug(`searching for driver within ${driverSearchService.searchRadius}`);
 		// Query the driver createTrip service for the best option
 		const driver = await driverSearchService.findDriver();
 
 		if (driver) {
 			// get the driver from the result
 			const { driverId } = driver;
-			console.info(`found driver ${driverId}`);
+			logInfo(`found driver ${driverId}`);
 
 			// Send the driver trip offer
 			const accepted = await _service.driverRepository.sendOffer(
@@ -104,23 +103,23 @@ const createTrip = async (
 				driver,
 				// driverData.get('notificationToken')
 			);
-			console.info(`sent trip request to driver ${driverId}`);
+			logInfo(`sent trip request to driver ${driverId}`);
 
 			if (accepted) {
 				// if the driver accepted the trip request then set the temporary result as final
 				// and break out of the createTrip loop
 				bestOption = driver;
-				console.info(`driver ${driverId} accepted trip request`);
+				logInfo(`driver ${driverId} accepted trip request`);
 				break;
 			} else {
 				// if the driver rejects offer add driver to skip list
 				driverSearchService.addToSkipList(driverId);
-				console.info(`driver ${driverId} rejected trip request`);
+				logInfo(`driver ${driverId} rejected trip request`);
 			}
 		} else {
 			// if query returns no result then multiply the search radius by 2 and try again
 			driverSearchService.searchRadius *= 2;
-			console.info(
+			logInfo(
 				`increasing search radius to ${driverSearchService.searchRadius}`,
 			);
 		}
@@ -129,13 +128,11 @@ const createTrip = async (
 	// If we found a driver then update the trip request with the driver's data
 	if (bestOption) {
 		const { driverId } = bestOption;
-		console.info(`driver found: ${driverId}`);
+		logInfo(`driver found: ${driverId}`);
 
 		const driverWithVehicle =
 			await _service.driverRepository.getDriverWithVehicle(driverId);
-		console.info(
-			`driver with vehicle found: ${driverWithVehicle?.vehicle.name}`,
-		);
+		logInfo(`driver with vehicle found: ${driverWithVehicle?.vehicle.name}`);
 
 		if (!driverWithVehicle) {
 			throw new ConnectError("Driver not found", Code.FailedPrecondition);
@@ -146,13 +143,13 @@ const createTrip = async (
 		trip.vehicle = driverWithVehicle.vehicle;
 
 		await _service.tripRepository.updateTrip(trip);
-		console.info("trip updated");
+		logInfo("trip updated");
 
 		await _service.driverRepository.updateDriverCurrentPath(
 			driverId,
 			bestOption.optimalRoute.newVehiclePathPolyline,
 		);
-		console.info("driver current path updated");
+		logInfo("driver current path updated");
 
 		// await firestore.runTransaction(async (transaction) => {
 		// 	const driverRef = firestore
@@ -201,8 +198,8 @@ const createTrip = async (
 	}
 
 	// If no driver was found then delete the trip request
-	await firestore.collection("trips").doc(tripId).delete();
-	console.info("trip deleted");
+	await _service.tripRepository.deleteTrip(tripId);
+	logInfo("trip deleted");
 
 	throw new ConnectError("No driver found", Code.FailedPrecondition);
 };

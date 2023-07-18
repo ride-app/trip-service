@@ -5,6 +5,7 @@ import {
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 
 import type { Service } from "./service.js";
+import { logError } from "../utils/logger.js";
 
 async function getTrip(
 	_service: Service,
@@ -32,7 +33,7 @@ async function getTrip(
 
 		return new GetTripResponse({ trip });
 	} catch (err) {
-		console.error(err);
+		logError(err);
 		throw new ConnectError("Internal server error", Code.Internal);
 	}
 }

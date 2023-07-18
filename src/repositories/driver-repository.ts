@@ -7,6 +7,7 @@ import {
 	Trip_Driver,
 	Trip_Vehicle,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
+import { logError } from "../utils/logger.js";
 
 export default class DriverRepository {
 	readonly #firestore: FirebaseFirestore.Firestore;
@@ -102,7 +103,7 @@ export default class DriverRepository {
 		try {
 			if (notificationToken) await this.sendNotification(notificationToken);
 		} catch (error) {
-			console.error(error);
+			logError(error);
 		}
 
 		const timeout = setTimeout(() => {

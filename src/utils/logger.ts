@@ -9,6 +9,8 @@ const debug = (message: unknown) => {
 	);
 };
 
+const logDebug = debug;
+
 const info = (message: unknown) => {
 	// trunk-ignore(eslint/no-console)
 	console.log(
@@ -19,6 +21,8 @@ const info = (message: unknown) => {
 		}),
 	);
 };
+
+const logInfo = info;
 
 const notice = (message: unknown) => {
 	// trunk-ignore(eslint/no-console)
@@ -31,6 +35,8 @@ const notice = (message: unknown) => {
 	);
 };
 
+const logNotice = notice;
+
 const warn = (message: unknown) => {
 	// trunk-ignore(eslint/no-console)
 	console.log(
@@ -41,6 +47,8 @@ const warn = (message: unknown) => {
 		}),
 	);
 };
+
+const logWarn = warn;
 
 const error = (message: unknown) => {
 	// trunk-ignore(eslint/no-console)
@@ -53,4 +61,17 @@ const error = (message: unknown) => {
 	);
 };
 
-export { debug, info, notice, warn, error };
+const logError = error;
+
+export {
+	debug,
+	info,
+	notice,
+	warn,
+	error,
+	logDebug,
+	logInfo,
+	logNotice,
+	logWarn,
+	logError,
+};
