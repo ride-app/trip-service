@@ -129,9 +129,9 @@ export default class TripRepository {
 		trip: Trip,
 		authToken: string,
 	): Promise<{ tripId: string; createTime: Date }> {
-		console.info("writing trip to firestore...");
-
 		try {
+			console.info("getting rider notification token...");
+			console.info(`token name: ${trip.rider!.name}/token`);
 			const riderNotificationToken = (
 				await this.#notificationService.getNotificationToken(
 					{
@@ -145,6 +145,7 @@ export default class TripRepository {
 				)
 			).token;
 
+			console.info("writing trip to firestore...");
 			const write = await this.#firestore.collection("trips").add({
 				status: Trip_Status[Trip_Status.PENDING],
 				createdAt: FieldValue.serverTimestamp(),
