@@ -329,9 +329,11 @@ class DriverSearchService {
 				.startAt(b[0])
 				.endAt(b[1]);
 
-			logInfo("Adding query to promise list");
 			promises.push(query.get());
+			logInfo("Query added to promise list");
 		});
+
+		logDebug(`Promises: ${promises.length}`);
 
 		logInfo("Waiting for queries to complete");
 		await Promise.all(promises).then((snapshots) => {
