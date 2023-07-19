@@ -336,32 +336,34 @@ class DriverSearchService {
 		logDebug(`Promises: ${promises.length}`);
 
 		logInfo("Waiting for queries to complete");
-		await Promise.all(promises).then((snapshots) => {
-			logInfo("Queries completed");
-			logDebug(`Snapshots: ${snapshots.length}`);
-			snapshots.forEach((snap) => {
-				snap.docs.forEach((doc) => {
-					if (this.skipList.has(doc.id)) {
-						logInfo(`Skipping driver ${doc.id}`);
-						return;
-					}
 
-					const lat = doc.get("location.latitude") as number;
-					const lng = doc.get("location.longitude") as number;
+		const snapshots = await Promise.all(promises);
 
-					// We have to filter out a few false positives due to GeoHash
-					// accuracy, but most will match
-					const distanceInM = distanceBetween([lat, lng], center) * 1000;
-					logDebug(`Distance: ${distanceInM}m`);
+		logInfo("Queries completed");
+		logDebug(`Snapshots: ${snapshots.length}`);
 
-					if (distanceInM <= this.searchRadius) {
-						results[doc.id] = {
-							location: [lat, lng],
-							distance: distanceInM,
-							currentPathString: doc.data()["currentPathString"] as string,
-						};
-					}
-				});
+		snapshots.forEach((snap) => {
+			snap.docs.forEach((doc) => {
+				if (this.skipList.has(doc.id)) {
+					logInfo(`Skipping driver ${doc.id}`);
+					return;
+				}
+
+				const lat = doc.get("location.latitude") as number;
+				const lng = doc.get("location.longitude") as number;
+
+				// We have to filter out a few false positives due to GeoHash
+				// accuracy, but most will match
+				const distanceInM = distanceBetween([lat, lng], center) * 1000;
+				logDebug(`Distance: ${distanceInM}m`);
+
+				if (distanceInM <= this.searchRadius) {
+					results[doc.id] = {
+						location: [lat, lng],
+						distance: distanceInM,
+						currentPathString: doc.data()["currentPathString"] as string,
+					};
+				}
 			});
 		});
 
