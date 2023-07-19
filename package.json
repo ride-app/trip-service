@@ -3,10 +3,8 @@
 	"type": "module",
 	"main": "build/index.js",
 	"scripts": {
-		"build": "tsc",
-		"build:prod": "tsc -p tsconfig.prod.json",
+		"build": "tsc -p tsconfig.prod.json",
 		"debug": "nodemon -r dotenv/config src/index.ts",
-		"docker": "npm run build && docker build . -t debug-app && docker run --rm -it -p 5000:5000 debug-app:latest",
 		"format": "eslint ./src --fix",
 		"integration-test": "NODE_ENV=test jest --group=integration",
 		"lint": "eslint ./src",
