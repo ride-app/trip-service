@@ -30,7 +30,6 @@ import type {
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import DriverRepository from "../repositories/driver-repository.js";
 import TripRepository from "../repositories/trip-repository.js";
-import { logDebug } from "../utils/logger.js";
 
 class Service implements ServiceImpl<typeof TripService> {
 	readonly driverRepository: DriverRepository;
@@ -51,7 +50,6 @@ class Service implements ServiceImpl<typeof TripService> {
 
 	async createTrip(req: CreateTripRequest, context: HandlerContext) {
 		await verifyAuthHeader(context);
-		logDebug(context.requestHeader);
 		return createTrip(this, req, context);
 	}
 
