@@ -343,7 +343,9 @@ class DriverSearchService {
 		logDebug(`Snapshots: ${snapshots.length}`);
 
 		snapshots.forEach((snap) => {
+			logInfo(`Processing snapshot with ${snap.docs.length} docs`);
 			snap.docs.forEach((doc) => {
+				logInfo(`Constructing result for driver ${doc.id}`);
 				if (this.skipList.has(doc.id)) {
 					logInfo(`Skipping driver ${doc.id}`);
 					return;
