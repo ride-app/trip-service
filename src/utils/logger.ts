@@ -50,12 +50,12 @@ const warn = (message: unknown) => {
 
 const logWarn = warn;
 
-const error = (message: unknown) => {
+const error = (...message: unknown[]) => {
 	// trunk-ignore(eslint/no-console)
 	console.log(
 		JSON.stringify({
 			severity: "ERROR",
-			message,
+			...message,
 			timestamp: new Date().toISOString(),
 		}),
 	);

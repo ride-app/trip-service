@@ -1,4 +1,8 @@
-import type { Firestore } from "firebase-admin/firestore";
+import type {
+	DocumentData,
+	Firestore,
+	QuerySnapshot,
+} from "firebase-admin/firestore";
 import polyline from "@googlemaps/polyline-codec";
 import {
 	distanceBetween,
@@ -20,7 +24,8 @@ import {
 } from "../utils/distance.js";
 
 import { findIntersection, indexOfPointOnPath } from "../utils/paths.js";
-import { logDebug, logInfo } from "../utils/logger.js";
+import { logDebug, logError, logInfo } from "../utils/logger.js";
+import { Code, ConnectError } from "@bufbuild/connect";
 
 interface Driver {
 	// driver: Driver;
@@ -313,60 +318,66 @@ class DriverSearchService {
 
 		logInfo("Calculating geohash query bounds");
 		const bounds = geohashQueryBounds(center, this.searchRadius);
-		const b = bounds[0];
 
-		// const promises: Promise<firestore.QuerySnapshot>[] = bounds.map((b) => {
-		logInfo("Constructing query");
-		logDebug(`Querying geohash range ${b[0]} to ${b[1]}`);
-		const query = this.geoCollection
-			.where(
-				"vehicleType",
-				"==",
-				this.tripRequest.trip!.vehicleType.toString().toLowerCase(),
-			)
-			.orderBy("geohash")
-			.startAt(b[0])
-			.endAt(b[1]);
+		const promises: Promise<firestore.QuerySnapshot>[] = bounds.map((b) => {
+			logInfo("Constructing query");
+			logDebug(`Querying geohash range ${b[0]} to ${b[1]}`);
+			const query = this.geoCollection
+				.where(
+					"vehicleType",
+					"==",
+					this.tripRequest.trip!.vehicleType.toString().toLowerCase(),
+				)
+				.orderBy("geohash")
+				.startAt(b[0])
+				.endAt(b[1]);
 
-		logInfo("Adding query to promise list");
-		const snap = await query.get();
-		// });
+			logInfo("Adding query to promise list");
+			return query.get();
+		});
 
-		// logDebug(`Promises: ${promises.length}`);
+		logDebug(`Promises: ${promises.length}`);
 
-		// logInfo("Waiting for queries to complete");
+		logInfo("Waiting for queries to complete");
 
-		// const snapshots = await Promise.all(promises);
+		let snapshots: QuerySnapshot<DocumentData>[] = await Promise.all(promises);
+
+		try {
+			snapshots = await Promise.all(promises);
+		} catch (error) {
+			logError("Failed to query drivers: ", error);
+			throw new ConnectError("Failed to query drivers", Code.Internal);
+		}
 
 		logInfo("Queries completed");
-		// logDebug(`Snapshots: ${snapshots.length}`);
+		logDebug(`Snapshots: ${snapshots.length}`);
 
-		// snapshots.forEach((snap) => {
-		logInfo(`Processing snapshot with ${snap.docs.length} docs`);
-		snap.docs.forEach((doc) => {
-			logInfo(`Constructing result for driver ${doc.id}`);
-			if (this.skipList.has(doc.id)) {
-				logInfo(`Skipping driver ${doc.id}`);
-				return;
-			}
+		snapshots.forEach((snap) => {
+			logInfo(`Processing snapshot with ${snap.docs.length} docs`);
+			snap.docs.forEach((doc) => {
+				logInfo(`Constructing result for driver ${doc.id}`);
+				if (this.skipList.has(doc.id)) {
+					logInfo(`Skipping driver ${doc.id}`);
+					return;
+				}
 
-			const lat = doc.get("location.latitude") as number;
-			const lng = doc.get("location.longitude") as number;
+				const lat = doc.get("location.latitude") as number;
+				const lng = doc.get("location.longitude") as number;
 
-			// We have to filter out a few false positives due to GeoHash
-			// accuracy, but most will match
-			const distanceInM = distanceBetween([lat, lng], center) * 1000;
-			logDebug(`Distance: ${distanceInM}m`);
+				// We have to filter out a few false positives due to GeoHash
+				// accuracy, but most will match
+				const distanceInM = distanceBetween([lat, lng], center) * 1000;
+				logDebug(`Distance: ${distanceInM}m`);
 
-			if (distanceInM <= this.searchRadius) {
-				results[doc.id] = {
-					location: [lat, lng],
-					distance: distanceInM,
-					currentPathString: doc.data()["currentPathString"] as string,
-				};
-			}
+				if (distanceInM <= this.searchRadius) {
+					results[doc.id] = {
+						location: [lat, lng],
+						distance: distanceInM,
+						currentPathString: doc.data()["currentPathString"] as string,
+					};
+				}
+			});
 		});
-		// });
 
 		return results;
 	}
