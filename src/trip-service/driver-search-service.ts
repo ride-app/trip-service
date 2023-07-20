@@ -315,7 +315,7 @@ class DriverSearchService {
 		logInfo("Calculating geohash query bounds");
 		const bounds = geohashQueryBounds(center, this.searchRadius);
 
-		const promises: Promise<firestore.QuerySnapshot>[] = bounds.map((b) => {
+		const promises: Promise<QuerySnapshot>[] = bounds.map((b) => {
 			logInfo("Constructing query");
 			logDebug(`Querying geohash range ${b[0]} to ${b[1]}`);
 			const query = this.geoCollection
