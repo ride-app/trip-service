@@ -9,8 +9,7 @@ import {
 import { getFirestore } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
 import { createConnectTransport } from "@bufbuild/connect-node";
-// trunk-ignore(eslint/import/extensions)
-import { NotificationService } from "@buf/ride_notification.bufbuild_connect-es/ride/notification/v1alpha1/notification_service_connect.js";
+import { NotificationService } from "@buf/ride_notification.bufbuild_connect-es/ride/notification/v1alpha1/notification_service_connect";
 import { getMessaging } from "firebase-admin/messaging";
 import { initializeApp } from "firebase-admin/app";
 import { TripService } from "../gen/ride/trip/v1alpha1/trip_service_connect.js";
@@ -120,5 +119,4 @@ function initializeService(router: ConnectRouter) {
 	router.service(TripService, service);
 }
 
-// export default routes;
 export { Service, initializeService };
