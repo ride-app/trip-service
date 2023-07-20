@@ -167,7 +167,7 @@ const createTrip = async (
 	await _service.tripRepository.deleteTrip(tripId);
 	logInfo("trip deleted");
 
-	throw new ConnectError("No driver found", Code.FailedPrecondition);
+	throw new ConnectError("No driver nearby", Code.FailedPrecondition);
 };
 
 export default createTrip;
