@@ -1,8 +1,4 @@
-import type {
-	DocumentData,
-	Firestore,
-	QuerySnapshot,
-} from "firebase-admin/firestore";
+import type { Firestore, QuerySnapshot } from "firebase-admin/firestore";
 import polyline from "@googlemaps/polyline-codec";
 import {
 	distanceBetween,
@@ -10,6 +6,7 @@ import {
 	type Geopoint,
 } from "geofire-common";
 import type { firestore } from "firebase-admin";
+import { Code, ConnectError } from "@bufbuild/connect";
 
 import ScoreVector from "../models/score-vector.js";
 import {
@@ -25,7 +22,6 @@ import {
 
 import { findIntersection, indexOfPointOnPath } from "../utils/paths.js";
 import { logDebug, logError, logInfo } from "../utils/logger.js";
-import { Code, ConnectError } from "@bufbuild/connect";
 
 interface Driver {
 	// driver: Driver;
@@ -340,7 +336,7 @@ class DriverSearchService {
 
 		logInfo("Waiting for queries to complete");
 
-		let snapshots: QuerySnapshot<DocumentData>[] = await Promise.all(promises);
+		let snapshots: QuerySnapshot[];
 
 		try {
 			snapshots = await Promise.all(promises);

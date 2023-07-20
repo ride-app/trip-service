@@ -1,6 +1,6 @@
 import { Messaging } from "firebase-admin/messaging";
 import { FieldValue, GeoPoint } from "firebase-admin/firestore";
-import { getAuth } from "firebase-admin/auth";
+import { Auth } from "firebase-admin/auth";
 import type { Driver } from "../trip-service/driver-search-service.js";
 import {
 	Trip,
@@ -10,11 +10,18 @@ import {
 import { logError } from "../utils/logger.js";
 
 export default class DriverRepository {
+	readonly #auth: Auth;
+
 	readonly #firestore: FirebaseFirestore.Firestore;
 
 	readonly #fcm: Messaging;
 
-	constructor(firestore: FirebaseFirestore.Firestore, fcm: Messaging) {
+	constructor(
+		auth: Auth,
+		firestore: FirebaseFirestore.Firestore,
+		fcm: Messaging,
+	) {
+		this.#auth = auth;
 		this.#firestore = firestore;
 		this.#fcm = fcm;
 	}
@@ -146,7 +153,7 @@ export default class DriverRepository {
 		const driverRef = this.#firestore.collection("activeDrivers").doc(driverId);
 
 		const driverData = await driverRef.get();
-		const driverAuthData = await getAuth().getUser(driverId);
+		const driverAuthData = await this.#auth.getUser(driverId);
 
 		if (!driverData.exists || !driverData.data()) {
 			return undefined;
@@ -169,7 +176,7 @@ export default class DriverRepository {
 		const driverRef = this.#firestore.collection("activeDrivers").doc(driverId);
 
 		const driverData = await driverRef.get();
-		const driverAuthData = await getAuth().getUser(driverId);
+		const driverAuthData = await this.#auth.getUser(driverId);
 
 		if (!driverData.exists || !driverData.data()) {
 			return undefined;

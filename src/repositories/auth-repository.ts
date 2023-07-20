@@ -1,8 +1,17 @@
-import { getAuth, UserRecord } from "firebase-admin/auth";
+import { Auth, UserRecord } from "firebase-admin/auth";
 
-const verifyIdToken = async (idToken: string): Promise<string> =>
-	(await getAuth().verifyIdToken(idToken)).uid;
+export default class AuthRepository {
+	readonly #auth: Auth;
 
-const getUser = (id: string): Promise<UserRecord> => getAuth().getUser(id);
+	constructor(auth: Auth) {
+		this.#auth = auth;
+	}
 
-export { verifyIdToken, getUser };
+	async verifyIdToken(idToken: string): Promise<string> {
+		return (await this.#auth.verifyIdToken(idToken)).uid;
+	}
+
+	getUser(id: string): Promise<UserRecord> {
+		return this.#auth.getUser(id);
+	}
+}
