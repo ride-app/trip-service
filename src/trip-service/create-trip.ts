@@ -52,19 +52,21 @@ const createTrip = async (
 		throw new ConnectError("invalid dropoff", Code.InvalidArgument);
 	}
 
-	const MAX_SEARCH_RADIUS = Math.min(
-		2,
-		haversine(
-			[
-				trip.route.pickup.coordinates.latitude,
-				trip.route.pickup.coordinates.longitude,
-			],
-			[
-				trip.route.dropOff.coordinates.latitude,
-				trip.route.dropOff.coordinates.longitude,
-			],
-		) / 2,
-	);
+	// const MAX_SEARCH_RADIUS = Math.min(
+	// 	2,
+	// 	haversine(
+	// 		[
+	// 			trip.route.pickup.coordinates.latitude,
+	// 			trip.route.pickup.coordinates.longitude,
+	// 		],
+	// 		[
+	// 			trip.route.dropOff.coordinates.latitude,
+	// 			trip.route.dropOff.coordinates.longitude,
+	// 		],
+	// 	) / 2,
+	// );
+
+	const MAX_SEARCH_RADIUS = 2;
 
 	logDebug(`max search radius: ${MAX_SEARCH_RADIUS * 1000}m`);
 
