@@ -82,7 +82,7 @@ const createTrip = async (
 	trip.updateTime = Timestamp.fromDate(createTime);
 
 	const driverSearchService = new DriverSearchService(
-		0.1,
+		0.125,
 		req,
 		_service.firestore,
 	);
