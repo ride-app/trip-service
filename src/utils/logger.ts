@@ -55,7 +55,7 @@ const error = (...message: unknown[]) => {
 	console.log(
 		JSON.stringify({
 			severity: "ERROR",
-			...message,
+			message,
 			timestamp: new Date().toISOString(),
 		}),
 	);
