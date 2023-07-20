@@ -49,15 +49,15 @@ class Service implements ServiceImpl<typeof TripService> {
 	}
 
 	async createTrip(req: CreateTripRequest, context: HandlerContext) {
-		await verifyAuthHeader(context);
 		try {
+			await verifyAuthHeader(context);
 			return createTrip(this, req, context);
 		} catch (error) {
-			logError(error);
 			if (error instanceof ConnectError) {
 				throw error;
 			}
 
+			logError(error);
 			throw new ConnectError("Internal server error", Code.Internal);
 		}
 	}
