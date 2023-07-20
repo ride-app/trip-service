@@ -54,7 +54,11 @@ class Service implements ServiceImpl<typeof TripService> {
 			return createTrip(this, req, context);
 		} catch (error) {
 			logError(error);
-			throw error;
+			if (error instanceof ConnectError) {
+				throw error;
+			}
+
+			throw new ConnectError("Internal server error", Code.Internal);
 		}
 	}
 
