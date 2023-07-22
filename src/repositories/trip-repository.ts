@@ -159,7 +159,7 @@ export default class TripRepository {
 				status: Trip_Status[Trip_Status.PENDING],
 				createdAt: FieldValue.serverTimestamp(),
 				type: Trip_Type[trip.type],
-				vehicleType: trip.vehicleType.toString().toLowerCase(),
+				vehicleType: Vehicle_Type[trip.vehicleType],
 				passengers: trip.passengers,
 				route: {
 					walk_to_pickup: trip.route?.walkToPickup
