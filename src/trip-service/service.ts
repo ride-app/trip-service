@@ -31,6 +31,7 @@ import type {
 import DriverRepository from "../repositories/driver-repository.js";
 import TripRepository from "../repositories/trip-repository.js";
 import { logDebug, logError, logInfo } from "../utils/logger.js";
+import NotificationTokenRepository from "../repositories/notification-token-repository.js";
 
 class Service implements ServiceImpl<typeof TripService> {
 	readonly authRepository: AuthRepository;
@@ -39,17 +40,21 @@ class Service implements ServiceImpl<typeof TripService> {
 
 	readonly tripRepository: TripRepository;
 
+	readonly notificationTokenRepository: NotificationTokenRepository;
+
 	readonly firestore: FirebaseFirestore.Firestore;
 
 	constructor(
 		authRepository: AuthRepository,
 		driverRepository: DriverRepository,
 		tripRepository: TripRepository,
+		notificationTokenRepository: NotificationTokenRepository,
 		firestore: FirebaseFirestore.Firestore,
 	) {
 		this.authRepository = authRepository;
 		this.driverRepository = driverRepository;
 		this.tripRepository = tripRepository;
+		this.notificationTokenRepository = notificationTokenRepository;
 		this.firestore = firestore;
 	}
 
@@ -196,11 +201,15 @@ function initializeService(router: ConnectRouter) {
 		auth,
 		notificationServiceClient,
 	);
+	const notificationTokenRepository = new NotificationTokenRepository(
+		notificationServiceClient,
+	);
 
 	const service = new Service(
 		authRepository,
 		driverRepository,
 		tripRepository,
+		notificationTokenRepository,
 		firestore,
 	);
 

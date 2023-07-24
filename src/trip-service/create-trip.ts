@@ -105,12 +105,25 @@ const createTrip = async (
 			const { driverId } = driver;
 			logInfo(`found driver ${driverId}`);
 
+			// Fetch the driver's notification token
+			const notificationToken =
+				await _service.notificationTokenRepository.getNotificationToken(
+					driverId,
+				);
+
+			if (notificationToken === undefined) {
+				throw new ConnectError(
+					"Driver notification token not found",
+					Code.FailedPrecondition,
+				);
+			}
+
 			// Send the driver trip offer
 			const accepted = await _service.driverRepository.sendOffer(
 				tripId,
 				trip,
 				driver,
-				// driverData.get('notificationToken')
+				notificationToken,
 			);
 			logInfo(`sent trip request to driver ${driverId}`);
 

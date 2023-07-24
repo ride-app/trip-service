@@ -36,25 +36,17 @@ async function startTripVerification(
 		throw new ConnectError("Unauthorized", Code.PermissionDenied);
 	}
 
-	const notificationTokenSnap = await getDatabase()
-		.ref(
-			`notification_tokens/${trip.rider?.name
-				.split("/")
-				.pop()}/notificationToken`,
-		)
-		.get();
+	const notificationToken =
+		await _service.notificationTokenRepository.getNotificationToken(
+			uid as string,
+		);
 
-	if (
-		!notificationTokenSnap.exists() ||
-		notificationTokenSnap.val() === undefined
-	) {
+	if (!notificationToken) {
 		throw new ConnectError(
 			"User has no notification token",
 			Code.FailedPrecondition,
 		);
 	}
-
-	const notificationToken: string = notificationTokenSnap.val() as string;
 
 	const ttlSeconds = 120;
 	const code: number = Math.floor(Math.random() * 900000) + 100000;

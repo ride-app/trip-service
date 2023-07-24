@@ -50,7 +50,12 @@ export default class DriverRepository {
 		});
 	}
 
-	async sendOffer(tripId: string, trip: Trip, driver: Driver) {
+	async sendOffer(
+		tripId: string,
+		trip: Trip,
+		driver: Driver,
+		notificationToken: string,
+	) {
 		const driverRef = this.#firestore
 			.collection("activeDrivers")
 			.doc(driver.driverId);
@@ -58,7 +63,7 @@ export default class DriverRepository {
 		const tripRequestRef = driverRef.collection("tripOffers").doc(tripId);
 
 		const expiresAt = Date.now() + 30000;
-		let notificationToken: string | undefined;
+		// let notificationToken: string | undefined;
 
 		const offerSent = await this.#firestore.runTransaction(
 			async (transaction) => {
@@ -71,7 +76,7 @@ export default class DriverRepository {
 					return false;
 				}
 
-				notificationToken = driverData.get("notificationToken") as string;
+				// notificationToken = driverData.get("notificationToken") as string;
 
 				transaction.update(driverRef, {
 					capacity: FieldValue.increment(-trip.passengers),
