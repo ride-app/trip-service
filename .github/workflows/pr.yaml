@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - trunk-merge/**
+  workflow_dispatch:
 
 env:
   SERVICE_NAME: trip-service
