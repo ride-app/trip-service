@@ -30,7 +30,7 @@ import type {
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import DriverRepository from "../repositories/driver-repository.js";
 import TripRepository from "../repositories/trip-repository.js";
-import { logDebug, logError, logInfo } from "../utils/logger.js";
+import { logDebug, logError, logInfo, logWarn } from "../utils/logger.js";
 import NotificationTokenRepository from "../repositories/notification-token-repository.js";
 
 class Service implements ServiceImpl<typeof TripService> {
@@ -70,7 +70,7 @@ class Service implements ServiceImpl<typeof TripService> {
 				throw error;
 			}
 
-			logError(error);
+			logError("CreateTrip failed", error);
 			throw new ConnectError("Internal server error", Code.Internal);
 		}
 	}
@@ -84,7 +84,7 @@ class Service implements ServiceImpl<typeof TripService> {
 				throw error;
 			}
 
-			logError(error);
+			logError("GetTrip failed", error);
 			throw new ConnectError("Internal server error", Code.Internal);
 		}
 	}
@@ -98,7 +98,7 @@ class Service implements ServiceImpl<typeof TripService> {
 				throw error;
 			}
 
-			logError(error);
+			logError("StartTRip failed", error);
 			throw new ConnectError("Internal server error", Code.Internal);
 		}
 	}
@@ -115,7 +115,7 @@ class Service implements ServiceImpl<typeof TripService> {
 				throw error;
 			}
 
-			logError(error);
+			logError("StartTripVerification failed", error);
 			throw new ConnectError("Internal server error", Code.Internal);
 		}
 	}
@@ -174,7 +174,7 @@ class Service implements ServiceImpl<typeof TripService> {
 			context.requestHeader.set("uid", uid);
 		} catch (e) {
 			logInfo("Invalid authorization");
-			logError(e);
+			logWarn("Auth header verification failed", e);
 			throw new ConnectError("invalid authorization", Code.Unauthenticated);
 		}
 	}

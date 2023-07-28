@@ -37,12 +37,13 @@ const notice = (message: unknown) => {
 
 const logNotice = notice;
 
-const warn = (message: unknown) => {
+const warn = (message: unknown, err?: unknown) => {
 	// trunk-ignore(eslint/no-console)
 	console.log(
 		JSON.stringify({
 			severity: "WARN",
 			message,
+			error: err,
 			timestamp: new Date().toISOString(),
 		}),
 	);
@@ -50,12 +51,13 @@ const warn = (message: unknown) => {
 
 const logWarn = warn;
 
-const error = (...message: unknown[]) => {
+const error = (message: unknown, err: unknown) => {
 	// trunk-ignore(eslint/no-console)
 	console.log(
 		JSON.stringify({
 			severity: "ERROR",
 			message,
+			error: err,
 			timestamp: new Date().toISOString(),
 		}),
 	);

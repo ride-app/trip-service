@@ -115,7 +115,7 @@ export default class DriverRepository {
 		try {
 			if (notificationToken) await this.sendNotification(notificationToken);
 		} catch (error) {
-			logError(error);
+			logError("Could not send notification", error);
 		}
 
 		const timeout = setTimeout(() => {

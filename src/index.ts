@@ -10,9 +10,9 @@ try {
 			port,
 		})
 		.addListener("listening", () => {
-			logNotice(`server listening to ${port}`);
+			logNotice(`Server listening to ${port}`);
 		});
 } catch (err) {
-	logError(err);
+	logError("Error starting server", err);
 	process.exit(1);
 }

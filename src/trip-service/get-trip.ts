@@ -33,7 +33,7 @@ async function getTrip(
 
 		return new GetTripResponse({ trip });
 	} catch (err) {
-		logError(err);
+		logError("Could not get trip", err);
 		throw new ConnectError("Internal server error", Code.Internal);
 	}
 }

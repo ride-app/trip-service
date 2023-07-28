@@ -341,7 +341,7 @@ class DriverSearchService {
 		try {
 			snapshots = await Promise.all(promises);
 		} catch (error) {
-			logError("Failed to query drivers: ", error);
+			logError("Failed to query drivers", error);
 			throw new ConnectError("Failed to query drivers", Code.Internal);
 		}
 

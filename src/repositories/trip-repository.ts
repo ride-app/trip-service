@@ -212,7 +212,7 @@ export default class TripRepository {
 				createTime: (await write.get()).createTime!.toDate(),
 			};
 		} catch (error) {
-			logError(error);
+			logError("Could not write trip to firestore", error);
 			throw new ConnectError(
 				"Something went wrong. Please try again later.",
 				Code.Internal,
