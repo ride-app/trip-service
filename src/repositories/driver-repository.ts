@@ -63,7 +63,6 @@ export default class DriverRepository {
 		const tripRequestRef = driverRef.collection("tripOffers").doc(tripId);
 
 		const expiresAt = Date.now() + 30000;
-		// let notificationToken: string | undefined;
 
 		const offerSent = await this.#firestore.runTransaction(
 			async (transaction) => {
@@ -75,8 +74,6 @@ export default class DriverRepository {
 				) {
 					return false;
 				}
-
-				// notificationToken = driverData.get("notificationToken") as string;
 
 				transaction.update(driverRef, {
 					capacity: FieldValue.increment(-trip.passengers),

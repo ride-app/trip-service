@@ -1,5 +1,5 @@
 import { Timestamp } from "@bufbuild/protobuf";
-import { Code, ConnectError, type HandlerContext } from "@bufbuild/connect";
+import { Code, ConnectError } from "@bufbuild/connect";
 import {
 	CreateTripRequest,
 	CreateTripResponse,
@@ -15,7 +15,6 @@ import { logDebug, logInfo } from "../utils/logger.js";
 const createTrip = async (
 	_service: Service,
 	req: CreateTripRequest,
-	context: HandlerContext,
 ): Promise<CreateTripResponse> => {
 	const { trip } = req;
 
@@ -69,12 +68,7 @@ const createTrip = async (
 
 	logDebug(`max search radius: ${MAX_SEARCH_RADIUS * 1000}m`);
 
-	const { tripId, createTime } = await _service.tripRepository.createTrip(
-		trip,
-		// trunk-ignore(eslint/@typescript-eslint/no-unsafe-member-access)
-		// trunk-ignore(eslint/@typescript-eslint/no-unsafe-call)
-		context.requestHeader.get("authorization") as string,
-	);
+	const { tripId, createTime } = await _service.tripRepository.createTrip(trip);
 	logInfo(`trip created: ${tripId}`);
 
 	trip.name = `trips/${tripId}`;

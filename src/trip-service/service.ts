@@ -64,7 +64,7 @@ class Service implements ServiceImpl<typeof TripService> {
 	): Promise<CreateTripResponse> {
 		try {
 			await this.verifyAuthHeader(context);
-			return await createTrip(this, req, context);
+			return await createTrip(this, req);
 		} catch (error) {
 			if (error instanceof ConnectError) {
 				throw error;
@@ -196,11 +196,7 @@ function initializeService(router: ConnectRouter) {
 	);
 	const authRepository = new AuthRepository(auth);
 	const driverRepository = new DriverRepository(auth, firestore, fcm);
-	const tripRepository = new TripRepository(
-		firestore,
-		auth,
-		notificationServiceClient,
-	);
+	const tripRepository = new TripRepository(firestore, auth);
 	const notificationTokenRepository = new NotificationTokenRepository(
 		notificationServiceClient,
 	);

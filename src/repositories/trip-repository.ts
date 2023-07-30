@@ -1,8 +1,6 @@
-import { FieldPath, FieldValue, GeoPoint } from "firebase-admin/firestore";
+import { FieldValue, GeoPoint } from "firebase-admin/firestore";
 import { Auth, UserRecord } from "firebase-admin/auth";
-import { Code, ConnectError, type PromiseClient } from "@bufbuild/connect";
-// trunk-ignore(eslint/import/extensions)
-import { NotificationService } from "@buf/ride_notification.bufbuild_connect-es/ride/notification/v1alpha1/notification_service_connect.js";
+import { Code, ConnectError } from "@bufbuild/connect";
 import { Timestamp } from "@bufbuild/protobuf";
 import {
 	Trip,
@@ -26,16 +24,9 @@ export default class TripRepository {
 
 	readonly #auth: Auth;
 
-	readonly #notificationService: PromiseClient<typeof NotificationService>;
-
-	constructor(
-		firestore: FirebaseFirestore.Firestore,
-		auth: Auth,
-		notificationService: PromiseClient<typeof NotificationService>,
-	) {
+	constructor(firestore: FirebaseFirestore.Firestore, auth: Auth) {
 		this.#firestore = firestore;
 		this.#auth = auth;
-		this.#notificationService = notificationService;
 		logInfo("TripRepository initialized");
 	}
 
@@ -134,25 +125,9 @@ export default class TripRepository {
 		return trip;
 	}
 
-	async createTrip(
-		trip: Trip,
-		authToken: string,
-	): Promise<{ tripId: string; createTime: Date }> {
+	async createTrip(trip: Trip): Promise<{ tripId: string; createTime: Date }> {
 		try {
 			logInfo("Getting rider notification token");
-
-			const riderNotificationToken = (
-				await this.#notificationService.getNotificationToken(
-					{
-						name: `${trip.rider!.name}/token`,
-					},
-					{
-						headers: {
-							authorization: authToken,
-						},
-					},
-				)
-			).token;
 
 			logInfo("Writing trip to firestore");
 			const write = await this.#firestore.collection("trips").add({
@@ -202,7 +177,6 @@ export default class TripRepository {
 				// Re-evaluate redundant information's need
 				rider: {
 					uid: trip.rider?.name.split("/").pop(),
-					notificationToken: riderNotificationToken,
 				},
 			});
 
@@ -230,17 +204,6 @@ export default class TripRepository {
 				driver: trip.driver
 					? {
 							uid: trip.driver.name.split("/").pop(),
-							notificationToken: (
-								await this.#firestore
-									.collection("users")
-									.where(
-										FieldPath.documentId(),
-										"==",
-										trip.driver.name.split("/").pop(),
-									)
-									.select("token")
-									.get()
-							).docs[0]!.data()["token"] as string,
 					  }
 					: undefined,
 				vehicle: trip.vehicle
