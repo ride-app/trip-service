@@ -67,6 +67,7 @@ class Service implements ServiceImpl<typeof TripService> {
 			return await createTrip(this, req);
 		} catch (error) {
 			if (error instanceof ConnectError) {
+				logDebug("Error is ConnectError. Rethrowing");
 				throw error;
 			}
 
@@ -81,6 +82,7 @@ class Service implements ServiceImpl<typeof TripService> {
 			return await getTrip(this, req, context);
 		} catch (error) {
 			if (error instanceof ConnectError) {
+				logDebug("Error is ConnectError. Rethrowing");
 				throw error;
 			}
 
@@ -95,6 +97,7 @@ class Service implements ServiceImpl<typeof TripService> {
 			return await startTrip(this, req, context);
 		} catch (error) {
 			if (error instanceof ConnectError) {
+				logDebug("Error is ConnectError. Rethrowing");
 				throw error;
 			}
 
@@ -112,6 +115,7 @@ class Service implements ServiceImpl<typeof TripService> {
 			return await startTripVerification(this, req, context);
 		} catch (error) {
 			if (error instanceof ConnectError) {
+				logDebug("Error is ConnectError. Rethrowing");
 				throw error;
 			}
 
