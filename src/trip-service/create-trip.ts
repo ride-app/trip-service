@@ -50,23 +50,9 @@ const createTrip = async (
 		throw new ConnectError("invalid dropoff", Code.InvalidArgument);
 	}
 
-	// const MAX_SEARCH_RADIUS = Math.min(
-	// 	2,
-	// 	haversine(
-	// 		[
-	// 			trip.route.pickup.coordinates.latitude,
-	// 			trip.route.pickup.coordinates.longitude,
-	// 		],
-	// 		[
-	// 			trip.route.dropOff.coordinates.latitude,
-	// 			trip.route.dropOff.coordinates.longitude,
-	// 		],
-	// 	) / 2,
-	// );
+	const MAX_SEARCH_RADIUS_KM = 2;
 
-	const MAX_SEARCH_RADIUS = 2;
-
-	logDebug(`max search radius: ${MAX_SEARCH_RADIUS * 1000}m`);
+	logDebug(`max search radius: ${MAX_SEARCH_RADIUS_KM * 1000}m`);
 
 	const { tripId, createTime } = await _service.tripRepository.createTrip(trip);
 	logInfo(`trip created: ${tripId}`);
@@ -85,7 +71,10 @@ const createTrip = async (
 
 	/* eslint no-await-in-loop: "off" */
 	// Keep querying the driver createTrip service until we find a driver
-	while (driverSearchService.searchRadius <= MAX_SEARCH_RADIUS && !bestOption) {
+	while (
+		driverSearchService.searchRadius <= MAX_SEARCH_RADIUS_KM &&
+		!bestOption
+	) {
 		logDebug(
 			`searching for driver within ${
 				driverSearchService.searchRadius * 1000
@@ -161,9 +150,9 @@ const createTrip = async (
 		await _service.tripRepository.updateTrip(trip);
 		logInfo("trip updated");
 
-		await _service.driverRepository.updateDriverCurrentPath(
+		await _service.driverRepository.updateDriverPath(
 			driverId,
-			bestOption.optimalRoute.newVehiclePathPolyline,
+			bestOption.optimalRoute.encodedNewDriverPath,
 		);
 		logInfo("driver current path updated");
 

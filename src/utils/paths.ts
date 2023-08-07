@@ -1,4 +1,7 @@
-import type { LatLngTuple } from "@googlemaps/polyline-codec";
+import type {
+	LatLngTuple,
+	polylineEncodeLine,
+} from "@googlemaps/polyline-codec";
 
 function indexOfPointOnPath(point: LatLngTuple, path: LatLngTuple[]): number {
 	for (let i = 0; i < path.length; i += 1) {
@@ -44,4 +47,6 @@ function findIntersection(
 		: null;
 }
 
-export { indexOfPointOnPath, findIntersection };
+type Polyline = ReturnType<typeof polylineEncodeLine>;
+
+export { indexOfPointOnPath, findIntersection, type Polyline };

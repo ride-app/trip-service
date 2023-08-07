@@ -8,6 +8,7 @@ import {
 	Trip_Vehicle,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import { logError } from "../utils/logger.js";
+import type { Polyline } from "../utils/paths.js";
 
 export default class DriverRepository {
 	readonly #auth: Auth;
@@ -83,7 +84,7 @@ export default class DriverRepository {
 					accepted: false,
 					expiresAt,
 					passengers: trip.passengers,
-					polyline: driver.optimalRoute.newVehiclePathPolyline,
+					polyline: driver.optimalRoute.encodedNewDriverPath,
 					locations: [
 						// TODO: Don't forget about these null checks
 						new GeoPoint(
@@ -198,9 +199,9 @@ export default class DriverRepository {
 		};
 	}
 
-	async updateDriverCurrentPath(driverId: string, currentPath: string) {
+	async updateDriverPath(driverId: string, encodedDriverPath: Polyline) {
 		return this.#firestore.collection("activeDrivers").doc(driverId).update({
-			currentPath,
+			encodedDriverPath,
 		});
 	}
 }

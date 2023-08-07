@@ -14,22 +14,18 @@ import {
 	Trip_Type,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import MinHeap from "../utils/min-heap.js";
-import {
-	haversine,
-	pathLength,
-	distanceToPathSegment,
-} from "../utils/distance.js";
 
-import { findIntersection, indexOfPointOnPath } from "../utils/paths.js";
+import { type Polyline } from "../utils/paths.js";
 import { logDebug, logError, logInfo } from "../utils/logger.js";
+import { RouteGenerator, type Route } from "./route-generator.js";
 
 interface Driver {
 	// driver: Driver;
 	driverId: string;
 	location: [number, number];
 	distance: number;
-	currentPathString: string | undefined;
-	optimalRoute: NonNullable<ReturnType<typeof getOptimalRoute>>;
+	encodedDriverPath: Polyline | undefined;
+	optimalRoute: Route;
 }
 
 interface CachedDriver {
@@ -37,138 +33,8 @@ interface CachedDriver {
 	driverId: string;
 	location: [number, number];
 	distance: number;
-	currentPathString: string | undefined;
-	optimalRoute: ReturnType<typeof getOptimalRoute>;
-}
-
-interface Walk {
-	path: [number, number][];
-	polyline: string;
-	length: number;
-}
-
-function checkVehicleCrossedPoint(
-	location: [number, number],
-	point: [number, number],
-	path: [number, number][],
-): boolean {
-	let edgeStartPoint: number = path.length - 2;
-	let shortestDistance = Infinity;
-	const indexOfPoint: number = indexOfPointOnPath(point, path);
-
-	for (let i = 0; i < path.length - 1; i += 1) {
-		const distanceRes = distanceToPathSegment(location, path[i], path[i + 1]);
-		if (distanceRes.distance < shortestDistance) {
-			edgeStartPoint = i;
-			if (edgeStartPoint > indexOfPoint) return true;
-			shortestDistance = distanceRes.distance;
-		}
-	}
-
-	return false;
-}
-
-function getOptimalRoute(
-	location: [number, number],
-	currentPath: [number, number][] | undefined,
-	overlayPath: [number, number][],
-	allowWalk = false,
-): {
-	pickupWalk?: Walk;
-	dropOffWalk?: Walk;
-	tripPath: [number, number][];
-	tripPathPolyline: string;
-	newVehiclePathPolyline: string;
-} | null {
-	if (overlayPath.length === 0) return null;
-	// If there is no current path, then overlayPath is the optimal path
-	if (currentPath === undefined || currentPath.length === 0) {
-		const path = polyline.encode(overlayPath);
-		return {
-			tripPath: overlayPath,
-			tripPathPolyline: path,
-			newVehiclePathPolyline: path,
-		};
-	}
-
-	const intersection = findIntersection(currentPath, overlayPath);
-
-	// If the paths don't overlap at all, then there is no optimal route
-	if (intersection === null) return null;
-
-	let newVehiclePath = currentPath;
-	const MAX_WALK_DISTANCE_METER = 150;
-
-	let pickupWalk: Walk | undefined;
-	let dropOffWalk: Walk | undefined;
-
-	if (intersection.firstIndex > 0) {
-		if (
-			allowWalk ||
-			haversine(overlayPath[0], overlayPath[intersection.firstIndex]) * 1000 >
-				MAX_WALK_DISTANCE_METER ||
-			checkVehicleCrossedPoint(
-				location,
-				overlayPath[intersection.firstIndex],
-				currentPath,
-			)
-		) {
-			return null;
-		}
-
-		const path = overlayPath.slice(0, intersection.firstIndex + 1);
-		const length = pathLength(path);
-
-		if (length > MAX_WALK_DISTANCE_METER) {
-			return null;
-		}
-
-		pickupWalk = {
-			path,
-			polyline: polyline.encode(path),
-			length,
-		};
-	}
-
-	let tripPath = intersection.points;
-
-	if (
-		overlayPath[intersection.lastIndex].toString() ===
-		currentPath[-1].toString()
-	) {
-		const path = overlayPath.slice(intersection.lastIndex + 1);
-		newVehiclePath = currentPath.concat(path);
-		tripPath = tripPath.concat(path);
-	} else if (overlayPath.length > intersection.lastIndex + 1) {
-		if (
-			!allowWalk ||
-			haversine(overlayPath[intersection.lastIndex], overlayPath[-1]) * 1000 >
-				MAX_WALK_DISTANCE_METER
-		) {
-			return null;
-		}
-
-		const path = overlayPath.slice(intersection.lastIndex);
-		const length = pathLength(path);
-
-		if (length > MAX_WALK_DISTANCE_METER) {
-			return null;
-		}
-
-		dropOffWalk = {
-			path,
-			polyline: polyline.encode(path),
-			length,
-		};
-	}
-
-	return {
-		pickupWalk,
-		dropOffWalk,
-		tripPath,
-		tripPathPolyline: polyline.encode(tripPath),
-		newVehiclePathPolyline: polyline.encode(newVehiclePath),
-	};
+	encodedDriverPath: Polyline | undefined;
+	optimalRoute: Route | null;
 }
 
 class DriverSearchService {
@@ -180,7 +46,7 @@ class DriverSearchService {
 
 	private skipList: Set<string> = new Set<string>([]);
 
-	private path: [number, number][];
+	private riderPath: [number, number][];
 
 	private geoCollection: firestore.CollectionReference;
 
@@ -202,7 +68,9 @@ class DriverSearchService {
 		this.tripRequest = tripRequest;
 
 		logInfo("Decoding polyline");
-		this.path = polyline.decode(tripRequest.trip.route.pickup.polylineString);
+		this.riderPath = polyline.decode(
+			tripRequest.trip.route.pickup.polylineString,
+		);
 
 		this.geoCollection = firestore.collection("activeDrivers");
 		logInfo("Geocollection initialized");
@@ -234,19 +102,23 @@ class DriverSearchService {
 			const result = nearestDrivers[id];
 			const cachedDriver = this.allDriversCache[id];
 
-			if (
-				cachedDriver.currentPathString !== result.currentPathString ||
-				cachedDriver.location.toString() !== result.location.toString()
-			) {
+			const driverPathChanged =
+				cachedDriver.encodedDriverPath !== result.encodedDriverPath;
+			const driverLocationChanged =
+				cachedDriver.location.toString() !== result.location.toString();
+
+			if (driverPathChanged || driverLocationChanged) {
 				logInfo(
-					`Driver ${id} path/location changed or didn't exist. Recommputing optimal route`,
+					`Driver ${id} path/location changed or didn't exist. Recomputing optimal route`,
 				);
-				const optimalRoute = getOptimalRoute(
-					result.location,
-					result.currentPathString
-						? polyline.decode(result.currentPathString)
+
+				const optimalRoute = new RouteGenerator(
+					result.encodedDriverPath
+						? polyline.decode(result.encodedDriverPath)
 						: undefined,
-					this.path,
+				).getOptimalRoute(
+					result.location,
+					this.riderPath,
 					this.tripRequest.trip?.type === Trip_Type.SHARED,
 				);
 
@@ -254,7 +126,7 @@ class DriverSearchService {
 				this.allDriversCache[id] = {
 					driverId: id,
 					location: result.location,
-					currentPathString: result.currentPathString,
+					encodedDriverPath: result.encodedDriverPath,
 					distance: result.distance,
 					optimalRoute,
 				};
@@ -294,7 +166,7 @@ class DriverSearchService {
 			{
 				location: [number, number];
 				distance: number;
-				currentPathString?: string;
+				encodedDriverPath?: Polyline;
 			}
 		>
 	> {
@@ -303,7 +175,7 @@ class DriverSearchService {
 			{
 				location: [number, number];
 				distance: number;
-				currentPathString?: string;
+				encodedDriverPath?: Polyline;
 			}
 		> = {};
 
@@ -362,14 +234,14 @@ class DriverSearchService {
 
 				// We have to filter out a few false positives due to GeoHash
 				// accuracy, but most will match
-				const distanceInM = distanceBetween([lat, lng], center) * 1000;
-				logDebug(`Distance: ${distanceInM}m`);
+				const distanceInMeters = distanceBetween([lat, lng], center) * 1000;
+				logDebug(`Distance: ${distanceInMeters}m`);
 
-				if (distanceInM <= this.searchRadius) {
+				if (distanceInMeters <= this.searchRadius) {
 					results[doc.id] = {
 						location: [lat, lng],
-						distance: distanceInM,
-						currentPathString: doc.data()["currentPathString"] as string,
+						distance: distanceInMeters,
+						encodedDriverPath: doc.data()["encodedDriverPath"] as string,
 					};
 				}
 			});
@@ -379,4 +251,4 @@ class DriverSearchService {
 	}
 }
 
-export { DriverSearchService, type Driver, type Walk };
+export { DriverSearchService, type Driver };
