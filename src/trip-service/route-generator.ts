@@ -25,34 +25,36 @@ export interface Route {
 }
 
 export class RouteGenerator {
-	private readonly driverPath: [number, number][] | undefined;
+	// private readonly driverPath: [number, number][] | undefined;
+	private readonly riderPath: [number, number][];
 
-	constructor(driverPath: [number, number][] | undefined) {
-		this.driverPath = driverPath;
+	constructor(riderPath: [number, number][]) {
+		if (riderPath.length === 0) {
+			throw new Error("Rider path must not be empty");
+		}
+		this.riderPath = riderPath;
 	}
 
 	getOptimalRoute(
 		currentDriverLocation: [number, number],
-		riderPath: [number, number][],
+		driverPath: [number, number][] | undefined,
 		allowWalk = false,
 	): Route | null {
-		if (riderPath.length === 0) return null;
-
-		if (this.driverPath === undefined || this.driverPath.length == 0) {
-			const path = encode(riderPath);
+		if (driverPath === undefined || driverPath.length == 0) {
+			const path = encode(this.riderPath);
 			return {
-				tripPath: riderPath,
+				tripPath: this.riderPath,
 				encodedTripPath: path,
 				encodedNewDriverPath: path,
 			};
 		}
 
-		const intersection = findIntersection(this.driverPath, riderPath);
+		const intersection = findIntersection(driverPath, this.riderPath);
 
 		// If the paths don't overlap at all, then there is no optimal route
 		if (intersection === null) return null;
 
-		let newDriverPath = this.driverPath;
+		let newDriverPath = driverPath;
 		const MAX_WALK_DISTANCE_METER = 150;
 
 		let pickupWalk: Walk | undefined;
@@ -61,18 +63,19 @@ export class RouteGenerator {
 		if (intersection.firstIndex > 0) {
 			if (
 				allowWalk ||
-				haversine(riderPath[0], riderPath[intersection.firstIndex]) * 1000 >
+				haversine(this.riderPath[0], this.riderPath[intersection.firstIndex]) *
+					1000 >
 					MAX_WALK_DISTANCE_METER ||
 				this.checkVehicleCrossedPoint(
 					currentDriverLocation,
-					riderPath[intersection.firstIndex],
-					this.driverPath,
+					this.riderPath[intersection.firstIndex],
+					driverPath,
 				)
 			) {
 				return null;
 			}
 
-			const path = riderPath.slice(0, intersection.firstIndex + 1);
+			const path = this.riderPath.slice(0, intersection.firstIndex + 1);
 			const length = pathLength(path);
 
 			if (length > MAX_WALK_DISTANCE_METER) {
@@ -89,22 +92,23 @@ export class RouteGenerator {
 		let tripPath = intersection.points;
 
 		if (
-			riderPath[intersection.lastIndex].toString() ===
-			this.driverPath[-1].toString()
+			this.riderPath[intersection.lastIndex].toString() ===
+			driverPath[-1].toString()
 		) {
-			const path = riderPath.slice(intersection.lastIndex + 1);
-			newDriverPath = this.driverPath.concat(path);
+			const path = this.riderPath.slice(intersection.lastIndex + 1);
+			newDriverPath = driverPath.concat(path);
 			tripPath = tripPath.concat(path);
-		} else if (riderPath.length > intersection.lastIndex + 1) {
+		} else if (this.riderPath.length > intersection.lastIndex + 1) {
 			if (
 				!allowWalk ||
-				haversine(riderPath[intersection.lastIndex], riderPath[-1]) * 1000 >
+				haversine(this.riderPath[intersection.lastIndex], this.riderPath[-1]) *
+					1000 >
 					MAX_WALK_DISTANCE_METER
 			) {
 				return null;
 			}
 
-			const path = riderPath.slice(intersection.lastIndex);
+			const path = this.riderPath.slice(intersection.lastIndex);
 			const length = pathLength(path);
 
 			if (length > MAX_WALK_DISTANCE_METER) {

@@ -44,11 +44,11 @@ class DriverSearchService {
 
 	private allDriversCache: Record<string, CachedDriver> = {};
 
-	private skipList: Set<string> = new Set<string>([]);
+	private blockedDriverIds: Set<string> = new Set<string>([]);
 
-	private riderPath: [number, number][];
+	private readonly routeGenerator: RouteGenerator;
 
-	private geoCollection: firestore.CollectionReference;
+	private readonly geoCollection: firestore.CollectionReference;
 
 	constructor(
 		searchRadius: number,
@@ -68,21 +68,24 @@ class DriverSearchService {
 		this.tripRequest = tripRequest;
 
 		logInfo("Decoding polyline");
-		this.riderPath = polyline.decode(
+		const riderPath = polyline.decode(
 			tripRequest.trip.route.pickup.polylineString,
 		);
+
+		logInfo("Initializing route generator");
+		this.routeGenerator = new RouteGenerator(riderPath);
 
 		this.geoCollection = firestore.collection("activeDrivers");
 		logInfo("Geocollection initialized");
 
 		this.searchRadius = searchRadius;
-		this.skipList = new Set(
+		this.blockedDriverIds = new Set(
 			this.tripRequest.ignore.map((d) => d.split("/").pop()!),
 		);
 	}
 
 	addToSkipList(id: string) {
-		this.skipList.add(id);
+		this.blockedDriverIds.add(id);
 	}
 
 	async findDriver(): Promise<Driver | undefined> {
@@ -112,13 +115,11 @@ class DriverSearchService {
 					`Driver ${id} path/location changed or didn't exist. Recomputing optimal route`,
 				);
 
-				const optimalRoute = new RouteGenerator(
+				const optimalRoute = this.routeGenerator.getOptimalRoute(
+					result.location,
 					result.encodedDriverPath
 						? polyline.decode(result.encodedDriverPath)
 						: undefined,
-				).getOptimalRoute(
-					result.location,
-					this.riderPath,
 					this.tripRequest.trip?.type === Trip_Type.SHARED,
 				);
 
@@ -224,7 +225,7 @@ class DriverSearchService {
 			logInfo(`Processing snapshot with ${snap.docs.length} docs`);
 			snap.docs.forEach((doc) => {
 				logInfo(`Constructing result for driver ${doc.id}`);
-				if (this.skipList.has(doc.id)) {
+				if (this.blockedDriverIds.has(doc.id)) {
 					logInfo(`Skipping driver ${doc.id}`);
 					return;
 				}
