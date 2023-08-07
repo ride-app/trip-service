@@ -25,7 +25,6 @@ export interface Route {
 }
 
 export class RouteGenerator {
-	// private readonly driverPath: [number, number][] | undefined;
 	private readonly riderPath: [number, number][];
 
 	constructor(riderPath: [number, number][]) {
