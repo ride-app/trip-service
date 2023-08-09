@@ -2,5 +2,5 @@ name: trip-service
 runtime: nodejs
 description: A minimal Google Cloud TypeScript Pulumi program
 config:
-  gcp:region: asia-south2
+  gcp:region: asia-east1
   service:name: trip-service
