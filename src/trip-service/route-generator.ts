@@ -1,14 +1,14 @@
+import * as polyline from "@googlemaps/polyline-codec";
 import {
 	distanceToPathSegment,
 	haversine,
 	pathLength,
-} from "../utils/distance";
+} from "../utils/distance.js";
 import {
 	findIntersection,
 	indexOfPointOnPath,
 	type Polyline,
-} from "../utils/paths";
-import { encode } from "@googlemaps/polyline-codec";
+} from "../utils/paths.js";
 
 export interface Walk {
 	path: [number, number][];
@@ -34,13 +34,34 @@ export class RouteGenerator {
 		this.riderPath = riderPath;
 	}
 
+	private static checkVehicleCrossedPoint(
+		location: [number, number],
+		point: [number, number],
+		path: [number, number][],
+	): boolean {
+		let edgeStartPoint: number = path.length - 2;
+		let shortestDistance = Infinity;
+		const indexOfPoint: number = indexOfPointOnPath(point, path);
+
+		for (let i = 0; i < path.length - 1; i += 1) {
+			const distanceRes = distanceToPathSegment(location, path[i], path[i + 1]);
+			if (distanceRes.distance < shortestDistance) {
+				edgeStartPoint = i;
+				if (edgeStartPoint > indexOfPoint) return true;
+				shortestDistance = distanceRes.distance;
+			}
+		}
+
+		return false;
+	}
+
 	getOptimalRoute(
 		currentDriverLocation: [number, number],
 		driverPath: [number, number][] | undefined,
 		allowWalk = false,
 	): Route | null {
-		if (driverPath === undefined || driverPath.length == 0) {
-			const path = encode(this.riderPath);
+		if (driverPath === undefined || driverPath.length === 0) {
+			const path = polyline.encode(this.riderPath);
 			return {
 				tripPath: this.riderPath,
 				encodedTripPath: path,
@@ -65,7 +86,7 @@ export class RouteGenerator {
 				haversine(this.riderPath[0], this.riderPath[intersection.firstIndex]) *
 					1000 >
 					MAX_WALK_DISTANCE_METER ||
-				this.checkVehicleCrossedPoint(
+				RouteGenerator.checkVehicleCrossedPoint(
 					currentDriverLocation,
 					this.riderPath[intersection.firstIndex],
 					driverPath,
@@ -83,7 +104,7 @@ export class RouteGenerator {
 
 			pickupWalk = {
 				path,
-				polyline: encode(path),
+				polyline: polyline.encode(path),
 				length,
 			};
 		}
@@ -116,7 +137,7 @@ export class RouteGenerator {
 
 			dropOffWalk = {
 				path,
-				polyline: encode(path),
+				polyline: polyline.encode(path),
 				length,
 			};
 		}
@@ -125,29 +146,8 @@ export class RouteGenerator {
 			pickupWalk,
 			dropOffWalk,
 			tripPath,
-			encodedTripPath: encode(tripPath),
-			encodedNewDriverPath: encode(newDriverPath),
+			encodedTripPath: polyline.encode(tripPath),
+			encodedNewDriverPath: polyline.encode(newDriverPath),
 		};
-	}
-
-	private checkVehicleCrossedPoint(
-		location: [number, number],
-		point: [number, number],
-		path: [number, number][],
-	): boolean {
-		let edgeStartPoint: number = path.length - 2;
-		let shortestDistance = Infinity;
-		const indexOfPoint: number = indexOfPointOnPath(point, path);
-
-		for (let i = 0; i < path.length - 1; i += 1) {
-			const distanceRes = distanceToPathSegment(location, path[i], path[i + 1]);
-			if (distanceRes.distance < shortestDistance) {
-				edgeStartPoint = i;
-				if (edgeStartPoint > indexOfPoint) return true;
-				shortestDistance = distanceRes.distance;
-			}
-		}
-
-		return false;
 	}
 }
