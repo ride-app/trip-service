@@ -37,7 +37,7 @@ steps:
       - asia-south2-docker.pkg.dev/$PROJECT_ID/docker-registry/$_SERVICE_NAME:$COMMIT_SHA
       - --region=asia-south2
       - --allow-unauthenticated
-      - --set-env-vars=PROJECT_ID=$PROJECT_ID,FIREBASE_DATABASE_URL=$_FIREBASE_DATABASE_URL,NOTIFICATION_SERVICE_URL=$_NOTIFICATION_SERVICE_URL,DEBUG=$_DEBUG
+      - --set-env-vars=PROJECT_ID=$PROJECT_ID,FIREBASE_DATABASE_URL=$_FIREBASE_DATABASE_URL,NOTIFICATION_SERVICE_URL=$_NOTIFICATION_SERVICE_URL,LOG_DEBUG=$_LOG_DEBUG
       - --max-instances=10
       - --port=50051
       - --use-http2
