@@ -35,6 +35,6 @@ new gcp.cloudbuild.Trigger("build-trigger", {
 		_NOTIFICATION_SERVICE_URL: new pulumi.Config().require(
 			"notificationServiceUrl",
 		),
-		_DEBUG: new pulumi.Config().get("debug") ?? "false",
+		_LOG_DEBUG: new pulumi.Config().get("debug") ?? "false",
 	},
 });
