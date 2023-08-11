@@ -40,7 +40,7 @@ jobs:
       - name: Install Packages
         run: npm install
 
-      - uses: bufbuild/buf-setup-action@v1.25.0
+      - uses: bufbuild/buf-setup-action@v1.25.1
         with:
           github_token: ${{ github.token }}
 
