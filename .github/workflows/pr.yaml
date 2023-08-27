@@ -87,7 +87,7 @@ jobs:
         with:
           token_format: access_token
           workload_identity_provider: projects/486946551871/locations/global/workloadIdentityPools/github-actions/providers/github-actions-provider
-          service_account: artifact-registry-admin@ride-app-prod.iam.gserviceaccount.com
+          service_account: pulumi@ride-app-prod.iam.gserviceaccount.com
 
       - uses: pulumi/actions@v4
         with:
