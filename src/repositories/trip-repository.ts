@@ -1,6 +1,6 @@
 import { FieldValue, GeoPoint } from "firebase-admin/firestore";
 import { Auth, UserRecord } from "firebase-admin/auth";
-import { Code, ConnectError } from "@bufbuild/connect";
+import { Code, ConnectError } from "@connectrpc/connect";
 import { Timestamp } from "@bufbuild/protobuf";
 import {
 	Trip,

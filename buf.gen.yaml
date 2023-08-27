@@ -1,9 +1,9 @@
 version: v1
 plugins:
-  - plugin: buf.build/bufbuild/es
+  - plugin: buf.build/connectrpc/es
     opt: target=ts
     out: src/gen
 
-  - plugin: buf.build/bufbuild/connect-es
+  - plugin: buf.build/bufbuild/es
     opt: target=ts
     out: src/gen

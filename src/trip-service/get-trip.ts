@@ -1,4 +1,4 @@
-import { Code, ConnectError, type HandlerContext } from "@bufbuild/connect";
+import { Code, ConnectError, type HandlerContext } from "@connectrpc/connect";
 import {
 	GetTripRequest,
 	GetTripResponse,

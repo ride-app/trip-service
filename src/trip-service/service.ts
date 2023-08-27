@@ -5,11 +5,11 @@ import {
 	type ServiceImpl,
 	ConnectError,
 	Code,
-} from "@bufbuild/connect";
+} from "@connectrpc/connect";
 import { getFirestore } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
-import { createConnectTransport } from "@bufbuild/connect-node";
-import { NotificationService } from "@buf/ride_notification.bufbuild_connect-es/ride/notification/v1alpha1/notification_service_connect.js";
+import { createConnectTransport } from "@connectrpc/connect-node";
+import { NotificationService } from "@buf/ride_notification.connectrpc_es/ride/notification/v1alpha1/notification_service_connect.js";
 import { getMessaging } from "firebase-admin/messaging";
 import { initializeApp } from "firebase-admin/app";
 import { TripService } from "../gen/ride/trip/v1alpha1/trip_service_connect.js";

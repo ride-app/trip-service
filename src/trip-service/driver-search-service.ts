@@ -6,7 +6,7 @@ import {
 	type Geopoint,
 } from "geofire-common";
 import type { firestore } from "firebase-admin";
-import { Code, ConnectError } from "@bufbuild/connect";
+import { Code, ConnectError } from "@connectrpc/connect";
 
 import ScoreVector from "../models/score-vector.js";
 import {

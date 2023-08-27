@@ -12,10 +12,10 @@
 		"test": "NODE_ENV=test jest"
 	},
 	"dependencies": {
-		"@buf/ride_notification.bufbuild_connect-es": "^0.11.0-20221008103517-92c26566abf3.1",
-		"@bufbuild/connect": "^0.11.0",
-		"@bufbuild/connect-node": "^0.13.0",
+		"@buf/ride_notification.connectrpc_es": "^0.13.1-20230728133931-d7e9cae588d2.1",
 		"@bufbuild/protobuf": "^1.3.0",
+		"@connectrpc/connect": "^0.13.1",
+		"@connectrpc/connect-node": "^0.13.1",
 		"@googlemaps/polyline-codec": "^1.0.28",
 		"firebase-admin": "^11.10.1",
 		"geofire-common": "^6.0.0",

@@ -1,5 +1,5 @@
 import { Timestamp } from "@bufbuild/protobuf";
-import { Code, ConnectError } from "@bufbuild/connect";
+import { Code, ConnectError } from "@connectrpc/connect";
 import {
 	CreateTripRequest,
 	CreateTripResponse,
