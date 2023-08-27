@@ -4,7 +4,6 @@ package ride.trip.v1alpha1;
 
 import "google/protobuf/timestamp.proto";
 import "google/type/latlng.proto";
-import "google/type/phone_number.proto";
 import "google/api/annotations.proto";
 import "validate/validate.proto";
 import "ride/driver/v1alpha1/driver_service.proto";
@@ -153,7 +152,7 @@ message Trip {
     string display_name = 2 [(validate.rules).string.min_len = 1];
 
     // The phone number of the Rider
-    optional google.type.PhoneNumber phone_number = 4;
+    optional string phone_number = 4 [(validate.rules).string.pattern = "^\\+?[1-9]\\d{1,14}$"];
   }
 
   message Driver {
@@ -167,7 +166,7 @@ message Trip {
     string photo_uri = 3 [(validate.rules).string.uri = true];
 
     // The phone number of the Driver
-    optional string phone_number = 4;
+    optional string phone_number = 4 [(validate.rules).string.pattern = "^\\+?[1-9]\\d{1,14}$"];
   }
 
   message Vehicle {

@@ -14,7 +14,6 @@ import {
 	Trip_Vehicle,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 
-import { PhoneNumber } from "../gen/google/type/phone_number_pb.js";
 import { LatLng } from "../gen/google/type/latlng_pb.js";
 import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb.js";
 import { logError, logInfo } from "../utils/logger.js";
@@ -74,9 +73,7 @@ export default class TripRepository {
 			rider: new Trip_Rider({
 				name: `users/${snapshot.get("rider.uid")}`,
 				displayName: riderUserRecord.displayName!,
-				phoneNumber: new PhoneNumber({
-					extension: riderUserRecord.phoneNumber,
-				}),
+				phoneNumber: riderUserRecord.phoneNumber,
 			}),
 			route: new Trip_Route({
 				pickup: new Trip_Location({
