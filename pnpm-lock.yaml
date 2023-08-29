@@ -20,6 +20,9 @@ dependencies:
   '@googlemaps/polyline-codec':
     specifier: ^1.0.28
     version: 1.0.28
+  '@types/jsonwebtoken':
+    specifier: ^9.0.2
+    version: 9.0.2
   firebase-admin:
     specifier: ^11.10.1
     version: 11.10.1
