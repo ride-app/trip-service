@@ -1,18 +1,21 @@
-# Compile typescript
-FROM node:lts-alpine as build
+# Setup node environment
+FROM node:lts-alpine as base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
 WORKDIR /app
 
 COPY . .
-RUN npm ci && npm run build
 
-# Copy package.json and build node_modules
-FROM node:lts-alpine as deps
+# Install dependencies
+FROM base AS deps
+RUN pnpm install --prod --frozen-lockfile
 
-WORKDIR /app
-
-COPY package-lock.json package.json ./
-RUN npm ci --production
+# Compile typescript
+FROM base AS build
+RUN pnpm install --frozen-lockfile && \
+  pnpm run build
 
 # Copy node_modules from build and js files from local /build
 FROM gcr.io/distroless/nodejs18-debian11
