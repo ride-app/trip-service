@@ -85,23 +85,25 @@ export default class DriverRepository {
 					expiresAt,
 					passengers: trip.passengers,
 					polyline: driver.optimalRoute.encodedNewDriverPath,
-					locations: [
-						// TODO: Don't forget about these null checks
-						new GeoPoint(
+					pickup: {
+						location: new GeoPoint(
 							...(driver.optimalRoute.tripPath[0] ?? [
 								trip.route?.pickup?.coordinates?.latitude,
 								trip.route?.dropOff?.coordinates?.longitude,
 							]),
 						),
-						new GeoPoint(
+						address: trip.route?.pickup?.address,
+					},
+					dropOff: {
+						location: new GeoPoint(
 							...(driver.optimalRoute.tripPath[-1] ?? [
 								trip.route?.pickup?.coordinates?.latitude,
 								trip.route?.dropOff?.coordinates?.longitude,
 							]),
 						),
-					],
+						address: trip.route?.dropOff?.address,
+					},
 				});
-
 				return true;
 			},
 		);
