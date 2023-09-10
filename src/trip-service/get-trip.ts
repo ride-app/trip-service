@@ -2,10 +2,10 @@ import { Code, ConnectError, type HandlerContext } from "@connectrpc/connect";
 import {
 	GetTripRequest,
 	GetTripResponse,
-} from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
+} from "../gen/ride/trip/v1alpha1/trip_service_pb";
 
-import type { Service } from "./service.js";
-import { logError } from "../utils/logger.js";
+import type { Service } from "./service";
+import { logError } from "../utils/logger";
 
 async function getTrip(
 	_service: Service,

@@ -5,12 +5,12 @@ import {
 	CreateTripResponse,
 	Trip_PaymentMethod,
 	Trip_Type,
-} from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
+} from "../gen/ride/trip/v1alpha1/trip_service_pb";
 
-import { DriverSearchService, type Driver } from "./driver-search-service.js";
-import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb.js";
-import type { Service } from "./service.js";
-import { logDebug, logInfo } from "../utils/logger.js";
+import { DriverSearchService, type Driver } from "./driver-search-service";
+import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb";
+import type { Service } from "./service";
+import { logDebug, logInfo } from "../utils/logger";
 
 const createTrip = async (
 	_service: Service,

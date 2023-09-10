@@ -7,8 +7,8 @@ import {
 	StartTripRequest,
 	StartTripResponse,
 	Trip_Status,
-} from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
-import type { Service } from "./service.js";
+} from "../gen/ride/trip/v1alpha1/trip_service_pb";
+import type { Service } from "./service";
 
 const { verify } = jwt;
 

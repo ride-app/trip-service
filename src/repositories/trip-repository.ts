@@ -12,11 +12,11 @@ import {
 	Trip_Status,
 	Trip_Type,
 	Trip_Vehicle,
-} from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
+} from "../gen/ride/trip/v1alpha1/trip_service_pb";
 
-import { LatLng } from "../gen/google/type/latlng_pb.js";
-import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb.js";
-import { logError, logInfo } from "../utils/logger.js";
+import { LatLng } from "../gen/google/type/latlng_pb";
+import { Vehicle_Type } from "../gen/ride/driver/v1alpha1/driver_service_pb";
+import { logError, logInfo } from "../utils/logger";
 
 export default class TripRepository {
 	readonly #firestore: FirebaseFirestore.Firestore;

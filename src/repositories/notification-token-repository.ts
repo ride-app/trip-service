@@ -1,6 +1,6 @@
-import type { NotificationService } from "@buf/ride_notification.connectrpc_es/ride/notification/v1alpha1/notification_service_connect.js";
+import type { NotificationService } from "@buf/ride_notification.connectrpc_es/ride/notification/v1alpha1/notification_service_connect";
 import type { PromiseClient } from "@connectrpc/connect";
-import { logError, logInfo } from "../utils/logger.js";
+import { logError, logInfo } from "../utils/logger";
 
 export default class NotificationTokenRepository {
 	readonly #notificationApi: PromiseClient<typeof NotificationService>;

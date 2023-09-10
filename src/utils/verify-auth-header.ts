@@ -1,6 +1,6 @@
 // import { Code, ConnectError, type HandlerContext } from "@connectrpc/connect";
-// import { verifyIdToken } from "../repositories/auth-repository.js";
-// import { logDebug, logError, logInfo } from "./logger.js";
+// import { verifyIdToken } from "../repositories/auth-repository";
+// import { logDebug, logError, logInfo } from "./logger";
 
 // const verifyAuthHeader = async (context: HandlerContext): Promise<void> => {
 // 	try {

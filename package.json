@@ -1,15 +1,13 @@
 {
 	"private": true,
 	"type": "module",
-	"main": "build/index.js",
+	"module": "src/index.ts",
 	"scripts": {
-		"build": "tsc -p tsconfig.prod.json",
-		"debug": "nodemon -r dotenv/config src/index.ts",
+		"build": "bun build src/index.ts --compile --minify --outfile build/app --tsconfig-override tsconfig.prod.json",
+		"dev": "bun --watch --hot run src/index.ts",
 		"format": "eslint ./src --fix",
 		"integration-test": "NODE_ENV=test jest --group=integration",
-		"lint": "eslint ./src",
-		"start": "node build/index.js",
-		"test": "NODE_ENV=test jest"
+		"lint": "eslint ./src"
 	},
 	"dependencies": {
 		"@buf/ride_notification.connectrpc_es": "0.13.1-20230728133931-d7e9cae588d2.1",
@@ -27,31 +25,21 @@
 		"@tsconfig/esm": "^1.0.4",
 		"@tsconfig/node-lts": "^18.12.5",
 		"@tsconfig/strictest": "^2.0.2",
-		"@types/jest": "^29.5.4",
-		"@types/node": "^20.5.9",
 		"@typescript-eslint/eslint-plugin": "^6.6.0",
 		"@typescript-eslint/parser": "^6.6.0",
-		"dotenv": "^16.3.1",
+		"bun-types": "^1.0.1",
 		"eslint": "^8.48.0",
 		"eslint-config-airbnb-base": "^15.0.0",
 		"eslint-config-airbnb-typescript": "^17.1.0",
 		"eslint-config-prettier": "^9.0.0",
 		"eslint-config-standard": "^17.1.0",
 		"eslint-plugin-import": "^2.28.1",
-		"eslint-plugin-jest": "^27.2.3",
 		"eslint-plugin-node": "^11.1.0",
 		"eslint-plugin-prettier": "^5.0.0",
 		"eslint-plugin-promise": "^6.1.1",
-		"jest": "^28.1.3",
-		"jest-node-exports-resolver": "^1.1.6",
-		"jest-runner-groups": "^2.2.0",
-		"nodemon": "^3.0.1",
-		"prettier": "^3.0.3",
-		"ts-jest": "^28.0.8",
-		"ts-node": "^10.9.1",
-		"typescript": "^5.2.2"
+		"prettier": "^3.0.3"
 	},
-	"engines": {
-		"node": ">=18"
+	"peerDependencies": {
+		"typescript": "^5.0.0"
 	}
 }

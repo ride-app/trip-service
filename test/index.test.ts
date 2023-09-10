@@ -3,6 +3,7 @@
  *
  * @group unit
  */
+import { expect, it, describe } from "bun:test";
 
 function greeter(name: string) {
 	return `Hello, ${name}!`;

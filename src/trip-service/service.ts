@@ -9,15 +9,15 @@ import {
 import { getFirestore } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
 import { createConnectTransport } from "@connectrpc/connect-node";
-import { NotificationService } from "@buf/ride_notification.connectrpc_es/ride/notification/v1alpha1/notification_service_connect.js";
+import { NotificationService } from "@buf/ride_notification.connectrpc_es/ride/notification/v1alpha1/notification_service_connect";
 import { getMessaging } from "firebase-admin/messaging";
 import { initializeApp } from "firebase-admin/app";
-import { TripService } from "../gen/ride/trip/v1alpha1/trip_service_connect.js";
-import AuthRepository from "../repositories/auth-repository.js";
-import createTrip from "./create-trip.js";
-import getTrip from "./get-trip.js";
-import startTripVerification from "./start-trip-verification.js";
-import startTrip from "./start-trip.js";
+import { TripService } from "../gen/ride/trip/v1alpha1/trip_service_connect";
+import AuthRepository from "../repositories/auth-repository";
+import createTrip from "./create-trip";
+import getTrip from "./get-trip";
+import startTripVerification from "./start-trip-verification";
+import startTrip from "./start-trip";
 import type {
 	CancelTripRequest,
 	CreateTripRequest,
@@ -27,11 +27,11 @@ import type {
 	StartTripRequest,
 	StartTripVerificationRequest,
 	WatchTripRequest,
-} from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
-import DriverRepository from "../repositories/driver-repository.js";
-import TripRepository from "../repositories/trip-repository.js";
-import { logDebug, logError, logInfo, logWarn } from "../utils/logger.js";
-import NotificationTokenRepository from "../repositories/notification-token-repository.js";
+} from "../gen/ride/trip/v1alpha1/trip_service_pb";
+import DriverRepository from "../repositories/driver-repository";
+import TripRepository from "../repositories/trip-repository";
+import { logDebug, logError, logInfo, logWarn } from "../utils/logger";
+import NotificationTokenRepository from "../repositories/notification-token-repository";
 
 class Service implements ServiceImpl<typeof TripService> {
 	readonly authRepository: AuthRepository;
@@ -153,7 +153,7 @@ class Service implements ServiceImpl<typeof TripService> {
 			// trunk-ignore(eslint/@typescript-eslint/no-unsafe-member-access)
 			const token: string | undefined = context.requestHeader
 				.get("authorization")
-				.toString();
+				?.toString();
 			logDebug(`Token is: ${token}`);
 
 			if (token === undefined) {

@@ -1,5 +1,5 @@
 import type { Firestore, QuerySnapshot } from "firebase-admin/firestore";
-import polyline from "@googlemaps/polyline-codec";
+import * as polyline from "@googlemaps/polyline-codec";
 import {
 	distanceBetween,
 	geohashQueryBounds,
@@ -8,16 +8,16 @@ import {
 import type { firestore } from "firebase-admin";
 import { Code, ConnectError } from "@connectrpc/connect";
 
-import ScoreVector from "../models/score-vector.js";
+import ScoreVector from "../models/score-vector";
 import {
 	CreateTripRequest,
 	Trip_Type,
-} from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
-import MinHeap from "../utils/min-heap.js";
+} from "../gen/ride/trip/v1alpha1/trip_service_pb";
+import MinHeap from "../utils/min-heap";
 
-import { type Polyline } from "../utils/paths.js";
-import { logDebug, logError, logInfo } from "../utils/logger.js";
-import { RouteGenerator, type Route } from "./route-generator.js";
+import { type Polyline } from "../utils/paths";
+import { logDebug, logError, logInfo } from "../utils/logger";
+import { RouteGenerator, type Route } from "./route-generator";
 
 interface Driver {
 	// driver: Driver;
@@ -103,12 +103,29 @@ class DriverSearchService {
 		Object.keys(nearestDrivers).forEach((id) => {
 			logInfo(`Processing driver ${id}`);
 			const result = nearestDrivers[id];
+
+			if (result === undefined) {
+				logInfo(`Driver ${id} was undefined. Skipping`);
+				return;
+			}
+
 			const cachedDriver = this.allDriversCache[id];
 
+			if (cachedDriver === undefined) {
+				logInfo(`Driver ${id} was not cached. Adding to cache`);
+				this.allDriversCache[id] = {
+					driverId: id,
+					location: result.location,
+					encodedDriverPath: result.encodedDriverPath,
+					distance: result.distance,
+					optimalRoute: null,
+				};
+			}
+
 			const driverPathChanged =
-				cachedDriver.encodedDriverPath !== result.encodedDriverPath;
+				cachedDriver!.encodedDriverPath !== result.encodedDriverPath;
 			const driverLocationChanged =
-				cachedDriver.location.toString() !== result.location.toString();
+				cachedDriver!.location.toString() !== result.location.toString();
 
 			if (driverPathChanged || driverLocationChanged) {
 				logInfo(
@@ -134,6 +151,11 @@ class DriverSearchService {
 			}
 
 			const currentDriver = this.allDriversCache[id];
+
+			if (currentDriver === undefined) {
+				logInfo(`Driver ${id} was undefined. Skipping`);
+				return;
+			}
 
 			if (currentDriver.optimalRoute !== null) {
 				logInfo(`Driver ${id} has optimal route. Adding to score map`);

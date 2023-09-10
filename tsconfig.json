@@ -1,16 +1,35 @@
 {
 	"extends": [
-		"@tsconfig/node-lts/tsconfig.json",
+		// "@tsconfig/node-lts/tsconfig.json",
 		"@tsconfig/strictest/tsconfig.json",
 		"@tsconfig/esm/tsconfig.json"
 	],
+
 	"compilerOptions": {
-		"outDir": "build",
-		"sourceMap": true,
-		"removeComments": true,
-		"exactOptionalPropertyTypes": false,
-		"noUncheckedIndexedAccess": false
+		// enable latest features
+		"lib": ["esnext"],
+		"module": "esnext",
+		"target": "esnext",
+
+		// if TS 5.x+
+		"moduleResolution": "bundler",
+		"noEmit": true,
+		"allowImportingTsExtensions": true,
+		"moduleDetection": "force",
+
+		// best practices
+		"strict": true,
+		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true,
+
+		"composite": true,
+		"downlevelIteration": true,
+		"jsx": "preserve",
+		"allowSyntheticDefaultImports": true,
+		"allowJs": true,
+		"types": [
+			"bun-types" // add Bun global
+		]
 	},
-	"compileOnSave": true,
 	"include": ["src", "test"]
 }

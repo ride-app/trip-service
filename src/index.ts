@@ -1,5 +1,5 @@
-import server from "./server.js";
-import { logError, logNotice } from "./utils/logger.js";
+import server from "./server";
+import { logError, logNotice } from "./utils/logger";
 
 const port = process.env["PORT"] ? parseInt(process.env["PORT"], 10) : 50051;
 

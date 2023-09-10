@@ -3,12 +3,12 @@ import {
 	distanceToPathSegment,
 	haversine,
 	pathLength,
-} from "../utils/distance.js";
+} from "../utils/distance";
 import {
 	findIntersection,
 	indexOfPointOnPath,
 	type Polyline,
-} from "../utils/paths.js";
+} from "../utils/paths";
 
 export interface Walk {
 	path: [number, number][];

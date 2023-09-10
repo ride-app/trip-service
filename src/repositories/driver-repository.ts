@@ -1,14 +1,14 @@
 import { Messaging } from "firebase-admin/messaging";
 import { FieldValue, GeoPoint } from "firebase-admin/firestore";
 import { Auth } from "firebase-admin/auth";
-import type { Driver } from "../trip-service/driver-search-service.js";
+import type { Driver } from "../trip-service/driver-search-service";
 import {
 	Trip,
 	Trip_Driver,
 	Trip_Vehicle,
-} from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
-import { logError } from "../utils/logger.js";
-import type { Polyline } from "../utils/paths.js";
+} from "../gen/ride/trip/v1alpha1/trip_service_pb";
+import { logError } from "../utils/logger";
+import type { Polyline } from "../utils/paths";
 
 export default class DriverRepository {
 	readonly #auth: Auth;
