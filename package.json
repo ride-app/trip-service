@@ -3,7 +3,7 @@
 	"type": "module",
 	"module": "src/index.ts",
 	"scripts": {
-		"build": "bun build src/index.ts --compile --minify --outfile build/app --tsconfig-override tsconfig.prod.json",
+		"build": "bun build src/index.ts --compile --minify --sourcemap=inline --outfile build/app",
 		"dev": "bun --watch --hot run src/index.ts",
 		"format": "eslint ./src --fix",
 		"integration-test": "NODE_ENV=test jest --group=integration",
