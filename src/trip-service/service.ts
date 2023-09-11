@@ -124,21 +124,18 @@ class Service implements ServiceImpl<typeof TripService> {
 		}
 	}
 
-	// @ts-expect-error we will use req in the future
 	// trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
 	// trunk-ignore(eslint/class-methods-use-this)
 	async cancelTrip(req: CancelTripRequest) {
 		throw new ConnectError("Method not implemented.", Code.Unimplemented);
 	}
 
-	// @ts-expect-error we will use req in the future
 	// trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
 	// trunk-ignore(eslint/class-methods-use-this)
 	async endTrip(req: EndTripRequest) {
 		throw new ConnectError("Method not implemented.", Code.Unimplemented);
 	}
 
-	// @ts-expect-error we will use req in the future
 	// trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
 	// trunk-ignore(eslint/require-yield)
 	// trunk-ignore(eslint/class-methods-use-this)
