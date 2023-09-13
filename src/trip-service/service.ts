@@ -119,7 +119,7 @@ class Service implements ServiceImpl<typeof TripService> {
 				throw error;
 			}
 
-			logError("StartTripVerification failed", error);
+			logError("TripVerification failed", error);
 			throw new ConnectError("Internal server error", Code.Internal);
 		}
 	}
