@@ -16,7 +16,7 @@ import { TripService } from "../gen/ride/trip/v1alpha1/trip_service_connect.js";
 import AuthRepository from "../repositories/auth-repository.js";
 import createTrip from "./create-trip.js";
 import getTrip from "./get-trip.js";
-import startTripVerification from "./start-trip-verification.js";
+import tripVerification from "./trip-verification.js";
 import startTrip from "./start-trip.js";
 import type {
 	CancelTripRequest,
@@ -25,7 +25,7 @@ import type {
 	EndTripRequest,
 	GetTripRequest,
 	StartTripRequest,
-	StartTripVerificationRequest,
+	TripVerificationRequest,
 	WatchTripRequest,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import DriverRepository from "../repositories/driver-repository.js";
@@ -106,13 +106,13 @@ class Service implements ServiceImpl<typeof TripService> {
 		}
 	}
 
-	async startTripVerification(
-		req: StartTripVerificationRequest,
+	async tripVerification(
+		req: TripVerificationRequest,
 		context: HandlerContext,
 	) {
 		try {
 			await this.verifyAuthHeader(context);
-			return await startTripVerification(this, req, context);
+			return await tripVerification(this, req, context);
 		} catch (error) {
 			if (error instanceof ConnectError) {
 				logDebug("Error is ConnectError. Rethrowing");

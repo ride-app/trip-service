@@ -3,16 +3,16 @@ import { Code, ConnectError, type HandlerContext } from "@connectrpc/connect";
 import { createHmac } from "node:crypto";
 import { TOTP } from "otpauth";
 import {
-	StartTripVerificationRequest,
-	StartTripVerificationResponse,
+	TripVerificationRequest,
+	TripVerificationResponse,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import type { Service } from "./service.js";
 
-async function startTripVerification(
+async function tripVerification(
 	_service: Service,
-	req: StartTripVerificationRequest,
+	req: TripVerificationRequest,
 	context: HandlerContext,
-): Promise<StartTripVerificationResponse> {
+): Promise<TripVerificationResponse> {
 	// TODO: Remove ignores when type if fixed
 	// trunk-ignore(eslint/@typescript-eslint/no-unsafe-member-access)
 	// trunk-ignore(eslint/@typescript-eslint/no-unsafe-assignment)
@@ -86,7 +86,7 @@ async function startTripVerification(
 		},
 	});
 
-	return new StartTripVerificationResponse();
+	return new TripVerificationResponse();
 }
 
-export default startTripVerification;
+export default tripVerification;

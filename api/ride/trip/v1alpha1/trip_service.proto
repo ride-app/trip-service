@@ -28,9 +28,9 @@ service TripService {
     };
   }
 
-  rpc StartTripVerification(StartTripVerificationRequest) returns (StartTripVerificationResponse) {
+  rpc TripVerification(TripVerificationRequest) returns (TripVerificationResponse) {
     option (google.api.http) = {
-      post: "/v1alpha1/{name=trips/*}:startTripVerification"
+      post: "/v1alpha1/{name=trips/*}:tripVerification"
     };
   }
 
@@ -237,12 +237,12 @@ message WatchTripResponse {
   Trip trip = 1;
 }
 
-message StartTripVerificationRequest{
+message TripVerificationRequest{
   // Relative resource name of the Trip, for example, "trips/trip1"
   string name = 1 [(validate.rules).string.pattern = "^trips/[A-Za-z0-9_-]+$"];
 }
 
-message StartTripVerificationResponse{}
+message TripVerificationResponse{}
 
 message StartTripRequest {
   // Relative resource name of the Trip, for example, "trips/trip1"
