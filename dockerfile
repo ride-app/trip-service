@@ -1,31 +1,18 @@
-# Setup node environment
-FROM node:lts-alpine as base
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
+FROM oven/bun:1.0 as build
+
+ARG USERNAME=nonroot
+ARG USER_GROUP=nonroot
+RUN groupadd -g 10001 $USER_GROUP && useradd -m -u 10000 -g $USER_GROUP $USERNAME
+USER ${USERNAME}:${USER_GROUP}
 
 WORKDIR /app
 
-COPY . .
+COPY --chown=${USERNAME}:${USER_GROUP} . .
 
-# Install dependencies
-FROM base AS deps
-RUN pnpm install --prod --frozen-lockfile
+RUN bun install --production --no-cache && bun run build
 
-# Compile typescript
-FROM base AS build
-RUN pnpm install --frozen-lockfile && \
-  pnpm run build
+FROM gcr.io/distroless/base:nonroot
 
-# Copy node_modules from build and js files from local /build
-FROM gcr.io/distroless/nodejs18-debian11
+COPY --from=build --chown=nonroot:nonroot /app/build .
 
-WORKDIR /app
-
-COPY --from=deps /app/node_modules node_modules
-COPY --from=build /app/build .
-COPY package.json .
-
-ENV NODE_ENV production
-
-CMD ["index.js"]
+CMD ["./app"]
