@@ -75,6 +75,9 @@ message Trip {
   // Output only. The time when the Trip was started
   google.protobuf.Timestamp start_time = 15;
 
+  // Output only. The time when the Trip was ended
+  google.protobuf.Timestamp end_time = 16;
+
   // Output only. The time when the Trip was last updated.
   google.protobuf.Timestamp update_time = 4 [(validate.rules).timestamp.required = true];
 

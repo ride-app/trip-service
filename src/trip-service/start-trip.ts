@@ -1,10 +1,11 @@
 import { Code, ConnectError, type HandlerContext } from "@connectrpc/connect";
 import { createHmac } from "node:crypto";
 import { totp } from "otplib";
-
+import { Timestamp } from "@bufbuild/protobuf";
 import {
 	StartTripRequest,
 	StartTripResponse,
+	Trip_Status,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import type { Service } from "./service.js";
 
@@ -58,7 +59,9 @@ async function startTrip(
 	}
 
 	try {
-		await _service.tripRepository.startTrip(tripId);
+		trip.startTime = Timestamp.now();
+		trip.status = Trip_Status.ACTIVE;
+		await _service.tripRepository.updateTrip(trip);
 	} catch (error) {
 		throw new ConnectError("Something went wrong", Code.Internal);
 	}

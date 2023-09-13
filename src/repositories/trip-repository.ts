@@ -68,6 +68,11 @@ export default class TripRepository {
 						) as FirebaseFirestore.Timestamp)!.toDate(),
 				  )
 				: undefined,
+			endTime: snapshot.get("endTime")
+				? Timestamp.fromDate(
+						(snapshot.get("endTime") as FirebaseFirestore.Timestamp)!.toDate(),
+				  )
+				: undefined,
 			type: Trip_Type[snapshot.get("type") as string as keyof typeof Trip_Type],
 			status:
 				Trip_Status[
@@ -137,6 +142,7 @@ export default class TripRepository {
 			const write = await this.#firestore.collection("trips").add({
 				status: Trip_Status[Trip_Status.PENDING],
 				createTime: FieldValue.serverTimestamp(),
+				updateTime: FieldValue.serverTimestamp(),
 				type: Trip_Type[trip.type],
 				vehicleType: Vehicle_Type[trip.vehicleType],
 				passengers: trip.passengers,
@@ -206,6 +212,8 @@ export default class TripRepository {
 			.update({
 				status: Trip_Status[trip.status],
 				startTime: trip.startTime ? trip.startTime.toDate() : undefined,
+				updateTime: FieldValue.serverTimestamp(),
+				endTime: trip.endTime ? trip.endTime.toDate() : undefined,
 				driver: trip.driver
 					? {
 							uid: trip.driver.name.split("/").pop(),
