@@ -136,7 +136,7 @@ export default class TripRepository {
 			logInfo("Writing trip to firestore");
 			const write = await this.#firestore.collection("trips").add({
 				status: Trip_Status[Trip_Status.PENDING],
-				createdAt: FieldValue.serverTimestamp(),
+				createTime: FieldValue.serverTimestamp(),
 				type: Trip_Type[trip.type],
 				vehicleType: Vehicle_Type[trip.vehicleType],
 				passengers: trip.passengers,
