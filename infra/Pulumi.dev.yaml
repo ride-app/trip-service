@@ -1,5 +1,7 @@
 config:
   firebase:databaseURL: https://ride-app-dev-2-default-rtdb.asia-southeast1.firebasedatabase.app
   gcp:project: ride-app-dev-2
+  trip-service:logDebug: "true"
   trip-service:notificationServiceUrl: https://notification-service-gbbsdms5pq-el.a.run.app
-  logDebug: true
+  trip-service:otpSecret:
+    secure: AAABALKUHLg/PTFg7xDq3r3l0vttQ3YDvp4eoerosX2MRQAHEShU0Bmo521L419/NRUQcSU=
