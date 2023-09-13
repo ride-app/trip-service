@@ -158,14 +158,17 @@ class Service implements ServiceImpl<typeof TripService> {
 				throw new ConnectError("missing authorization", Code.Unauthenticated);
 			}
 
-			if (!token.startsWith("Bearer ")) {
-				logInfo("Invalid token format");
-				throw new ConnectError("invalid token format", Code.Unauthenticated);
+			if (
+				!token.startsWith("Bearer ") ||
+				token.split("Bearer ")[1] === undefined
+			) {
+				logInfo("Invalid token");
+				throw new ConnectError("invalid token", Code.Unauthenticated);
 			}
 
 			logInfo("Verifying token");
 			const uid = await this.authRepository.verifyIdToken(
-				token.split("Bearer ")[1],
+				token.split("Bearer ")[1]!,
 			);
 
 			logDebug(`UID from header is: ${uid}`);
