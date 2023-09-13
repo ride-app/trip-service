@@ -38,6 +38,7 @@ steps:
       - --region=asia-south2
       - --allow-unauthenticated
       - --set-env-vars=PROJECT_ID=$PROJECT_ID,FIREBASE_DATABASE_URL=$_FIREBASE_DATABASE_URL,NOTIFICATION_SERVICE_URL=$_NOTIFICATION_SERVICE_URL,LOG_DEBUG=$_LOG_DEBUG
+      - --set-secrets=OTP_SECRET=$_OTP_SECRET_ID:latest
       - --max-instances=10
       - --port=50051
       - --use-http2
