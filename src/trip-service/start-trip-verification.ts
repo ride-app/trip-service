@@ -1,14 +1,12 @@
 import { getMessaging } from "firebase-admin/messaging";
-import { getDatabase } from "firebase-admin/database";
 import { Code, ConnectError, type HandlerContext } from "@connectrpc/connect";
-import pkg from "jsonwebtoken";
+import { createHmac } from "node:crypto";
+import { totp } from "otplib";
 import {
 	StartTripVerificationRequest,
 	StartTripVerificationResponse,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import type { Service } from "./service.js";
-
-const { sign } = pkg;
 
 async function startTripVerification(
 	_service: Service,
@@ -48,23 +46,25 @@ async function startTripVerification(
 		);
 	}
 
-	const ttlSeconds = 120;
-	const code: number = Math.floor(Math.random() * 900000) + 100000;
-	const createdAt = Date.now();
-	const token = sign(
-		{ iat: Date.now() },
-		Buffer.from(code.toString()).toString("base64"),
-		{ algorithm: "HS256", expiresIn: ttlSeconds },
-	);
+	const secret = process.env["OTP_SECRET"];
 
-	await getDatabase()
-		.ref(`trip_verification_codes/${tripId}`)
-		.set({ codeToken: token, expiresAt: createdAt + ttlSeconds * 1000 });
+	if (!secret) {
+		throw new ConnectError("something went wrong", Code.Internal);
+	}
+
+	const secretHmac = createHmac("sha256", secret).update(tripId);
+
+	totp.options = {
+		epoch: trip.createTime!.toDate().getUTCMilliseconds(),
+		digits: 6,
+		step: 120,
+	};
+	const otp = totp.generate(secretHmac.digest("hex"));
 
 	await getMessaging().send({
 		token: notificationToken,
 		notification: {
-			title: `OTP for trip is ${code}`,
+			title: `OTP for trip is ${otp}`,
 		},
 		data: {
 			click_action: "FLUTTER_NOTIFICATION_CLICK",
@@ -72,7 +72,7 @@ async function startTripVerification(
 			icon: "default",
 		},
 		android: {
-			ttl: ttlSeconds,
+			ttl: 120 * 1000,
 			notification: {
 				priority: "max",
 				// channelId: "new_ride",

@@ -61,6 +61,13 @@ export default class TripRepository {
 			name: `trips/${snapshot.id}`,
 			createTime: Timestamp.fromDate(snapshot.createTime!.toDate()),
 			updateTime: Timestamp.fromDate(snapshot.updateTime!.toDate()),
+			startTime: snapshot.get("startTime")
+				? Timestamp.fromDate(
+						(snapshot.get(
+							"startTime",
+						) as FirebaseFirestore.Timestamp)!.toDate(),
+				  )
+				: undefined,
 			type: Trip_Type[snapshot.get("type") as string as keyof typeof Trip_Type],
 			status:
 				Trip_Status[
@@ -198,6 +205,7 @@ export default class TripRepository {
 			.doc(trip.name.split("/").pop()!)
 			.update({
 				status: Trip_Status[trip.status],
+				startTime: trip.startTime ? trip.startTime.toDate() : undefined,
 				driver: trip.driver
 					? {
 							uid: trip.driver.name.split("/").pop(),

@@ -32,6 +32,9 @@ dependencies:
   jsonwebtoken:
     specifier: ^9.0.2
     version: 9.0.2
+  otplib:
+    specifier: ^12.0.1
+    version: 12.0.1
   rxjs:
     specifier: ^7.8.1
     version: 7.8.1
@@ -457,7 +460,7 @@ packages:
     dev: true
 
   /@buf/envoyproxy_protoc-gen-validate.bufbuild_es@1.3.0-20220812150255-45685e052c7e.1(@bufbuild/protobuf@1.3.1):
-    resolution: {registry: https://registry.npmjs.org/, tarball: https://buf.build/gen/npm/v1/@buf/envoyproxy_protoc-gen-validate.bufbuild_es/-/envoyproxy_protoc-gen-validate.bufbuild_es-1.3.0-20220812150255-45685e052c7e.1.tgz}
+    resolution: {registry: https://buf.build/gen/npm/v1/, tarball: https://buf.build/gen/npm/v1/@buf/envoyproxy_protoc-gen-validate.bufbuild_es/-/envoyproxy_protoc-gen-validate.bufbuild_es-1.3.0-20220812150255-45685e052c7e.1.tgz}
     peerDependencies:
       '@bufbuild/protobuf': ^1.3.0
     dependencies:
@@ -465,7 +468,7 @@ packages:
     dev: false
 
   /@buf/envoyproxy_protoc-gen-validate.connectrpc_es@0.13.1-20220812150255-45685e052c7e.1(@bufbuild/protobuf@1.3.1)(@connectrpc/connect@0.13.2):
-    resolution: {registry: https://registry.npmjs.org/, tarball: https://buf.build/gen/npm/v1/@buf/envoyproxy_protoc-gen-validate.connectrpc_es/-/envoyproxy_protoc-gen-validate.connectrpc_es-0.13.1-20220812150255-45685e052c7e.1.tgz}
+    resolution: {registry: https://buf.build/gen/npm/v1/, tarball: https://buf.build/gen/npm/v1/@buf/envoyproxy_protoc-gen-validate.connectrpc_es/-/envoyproxy_protoc-gen-validate.connectrpc_es-0.13.1-20220812150255-45685e052c7e.1.tgz}
     peerDependencies:
       '@connectrpc/connect': ^0.13.1
     dependencies:
@@ -476,7 +479,7 @@ packages:
     dev: false
 
   /@buf/googleapis_googleapis.bufbuild_es@1.3.0-20220908150232-8d7204855ec1.1(@bufbuild/protobuf@1.3.1):
-    resolution: {registry: https://registry.npmjs.org/, tarball: https://buf.build/gen/npm/v1/@buf/googleapis_googleapis.bufbuild_es/-/googleapis_googleapis.bufbuild_es-1.3.0-20220908150232-8d7204855ec1.1.tgz}
+    resolution: {registry: https://buf.build/gen/npm/v1/, tarball: https://buf.build/gen/npm/v1/@buf/googleapis_googleapis.bufbuild_es/-/googleapis_googleapis.bufbuild_es-1.3.0-20220908150232-8d7204855ec1.1.tgz}
     peerDependencies:
       '@bufbuild/protobuf': ^1.3.0
     dependencies:
@@ -484,7 +487,7 @@ packages:
     dev: false
 
   /@buf/googleapis_googleapis.connectrpc_es@0.13.1-20220908150232-8d7204855ec1.1(@bufbuild/protobuf@1.3.1)(@connectrpc/connect@0.13.2):
-    resolution: {registry: https://registry.npmjs.org/, tarball: https://buf.build/gen/npm/v1/@buf/googleapis_googleapis.connectrpc_es/-/googleapis_googleapis.connectrpc_es-0.13.1-20220908150232-8d7204855ec1.1.tgz}
+    resolution: {registry: https://buf.build/gen/npm/v1/, tarball: https://buf.build/gen/npm/v1/@buf/googleapis_googleapis.connectrpc_es/-/googleapis_googleapis.connectrpc_es-0.13.1-20220908150232-8d7204855ec1.1.tgz}
     peerDependencies:
       '@connectrpc/connect': ^0.13.1
     dependencies:
@@ -495,7 +498,7 @@ packages:
     dev: false
 
   /@buf/ride_notification.bufbuild_es@1.3.0-20230728133931-d7e9cae588d2.1(@bufbuild/protobuf@1.3.1):
-    resolution: {registry: https://registry.npmjs.org/, tarball: https://buf.build/gen/npm/v1/@buf/ride_notification.bufbuild_es/-/ride_notification.bufbuild_es-1.3.0-20230728133931-d7e9cae588d2.1.tgz}
+    resolution: {registry: https://buf.build/gen/npm/v1/, tarball: https://buf.build/gen/npm/v1/@buf/ride_notification.bufbuild_es/-/ride_notification.bufbuild_es-1.3.0-20230728133931-d7e9cae588d2.1.tgz}
     peerDependencies:
       '@bufbuild/protobuf': ^1.3.0
     dependencies:
@@ -505,7 +508,7 @@ packages:
     dev: false
 
   /@buf/ride_notification.connectrpc_es@0.13.1-20230728133931-d7e9cae588d2.1(@bufbuild/protobuf@1.3.1)(@connectrpc/connect@0.13.2):
-    resolution: {registry: https://registry.npmjs.org/, tarball: https://buf.build/gen/npm/v1/@buf/ride_notification.connectrpc_es/-/ride_notification.connectrpc_es-0.13.1-20230728133931-d7e9cae588d2.1.tgz}
+    resolution: {registry: https://buf.build/gen/npm/v1/, tarball: https://buf.build/gen/npm/v1/@buf/ride_notification.connectrpc_es/-/ride_notification.connectrpc_es-0.13.1-20230728133931-d7e9cae588d2.1.tgz}
     peerDependencies:
       '@connectrpc/connect': ^0.13.1
     dependencies:
@@ -1182,6 +1185,39 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.15.0
     dev: true
+
+  /@otplib/core@12.0.1:
+    resolution: {integrity: sha512-4sGntwbA/AC+SbPhbsziRiD+jNDdIzsZ3JUyfZwjtKyc/wufl1pnSIaG4Uqx8ymPagujub0o92kgBnB89cuAMA==}
+    dev: false
+
+  /@otplib/plugin-crypto@12.0.1:
+    resolution: {integrity: sha512-qPuhN3QrT7ZZLcLCyKOSNhuijUi9G5guMRVrxq63r9YNOxxQjPm59gVxLM+7xGnHnM6cimY57tuKsjK7y9LM1g==}
+    dependencies:
+      '@otplib/core': 12.0.1
+    dev: false
+
+  /@otplib/plugin-thirty-two@12.0.1:
+    resolution: {integrity: sha512-MtT+uqRso909UkbrrYpJ6XFjj9D+x2Py7KjTO9JDPhL0bJUYVu5kFP4TFZW4NFAywrAtFRxOVY261u0qwb93gA==}
+    dependencies:
+      '@otplib/core': 12.0.1
+      thirty-two: 1.0.2
+    dev: false
+
+  /@otplib/preset-default@12.0.1:
+    resolution: {integrity: sha512-xf1v9oOJRyXfluBhMdpOkr+bsE+Irt+0D5uHtvg6x1eosfmHCsCC6ej/m7FXiWqdo0+ZUI6xSKDhJwc8yfiOPQ==}
+    dependencies:
+      '@otplib/core': 12.0.1
+      '@otplib/plugin-crypto': 12.0.1
+      '@otplib/plugin-thirty-two': 12.0.1
+    dev: false
+
+  /@otplib/preset-v11@12.0.1:
+    resolution: {integrity: sha512-9hSetMI7ECqbFiKICrNa4w70deTUfArtwXykPUvSHWOdzOlfa9ajglu7mNCntlvxycTiOAXkQGwjQCzzDEMRMg==}
+    dependencies:
+      '@otplib/core': 12.0.1
+      '@otplib/plugin-crypto': 12.0.1
+      '@otplib/plugin-thirty-two': 12.0.1
+    dev: false
 
   /@pkgr/utils@2.4.2:
     resolution: {integrity: sha512-POgTXhjrTfbTV63DiFXav4lBHiICLKKwDeaKn9Nphwj7WH6m0hMMCaJkMyRWjgtPFyRKRVoMXXjczsTQRDEhYw==}
@@ -5030,6 +5066,14 @@ packages:
       type-check: 0.4.0
     dev: true
 
+  /otplib@12.0.1:
+    resolution: {integrity: sha512-xDGvUOQjop7RDgxTQ+o4pOol0/3xSZzawTiPKRrHnQWAy0WjhNs/5HdIDJCrqC4MBynmjXgULc6YfioaxZeFgg==}
+    dependencies:
+      '@otplib/core': 12.0.1
+      '@otplib/preset-default': 12.0.1
+      '@otplib/preset-v11': 12.0.1
+    dev: false
+
   /p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
     engines: {node: '>=6'}
@@ -5688,6 +5732,11 @@ packages:
   /text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
     dev: true
+
+  /thirty-two@1.0.2:
+    resolution: {integrity: sha512-OEI0IWCe+Dw46019YLl6V10Us5bi574EvlJEOcAkB29IzQ/mYD1A6RyNHLjZPiHCmuodxvgF6U+vZO1L15lxVA==}
+    engines: {node: '>=0.2.6'}
+    dev: false
 
   /titleize@3.0.0:
     resolution: {integrity: sha512-KxVu8EYHDPBdUYdKZdKtU2aj2XfEx9AfjXxE/Aj0vT06w2icA09Vus1rh6eSu1y01akYg6BjIK/hxyLJINoMLQ==}

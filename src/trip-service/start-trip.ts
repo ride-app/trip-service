@@ -1,16 +1,12 @@
 import { Code, ConnectError, type HandlerContext } from "@connectrpc/connect";
-import { getDatabase } from "firebase-admin/database";
-import { FieldValue, getFirestore } from "firebase-admin/firestore";
-import jwt from "jsonwebtoken";
+import { createHmac } from "node:crypto";
+import { totp } from "otplib";
 
 import {
 	StartTripRequest,
 	StartTripResponse,
-	Trip_Status,
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import type { Service } from "./service.js";
-
-const { verify } = jwt;
 
 async function startTrip(
 	_service: Service,
@@ -38,36 +34,34 @@ async function startTrip(
 		throw new ConnectError("Unauthorized", Code.PermissionDenied);
 	}
 
-	const verCodeSnap = await getDatabase()
-		.ref(`trip_verification_codes/${tripId}`)
-		.get();
+	const secret = process.env["OTP_SECRET"];
 
-	if (!verCodeSnap.exists() || !verCodeSnap.val()) {
-		throw new ConnectError(
-			"Trip has no verification code",
-			Code.FailedPrecondition,
-		);
+	if (!secret) {
+		throw new ConnectError("something went wrong", Code.Internal);
 	}
 
-	if (verCodeSnap.child("expiresAt").val() < Date.now()) {
-		throw new ConnectError(
-			"Trip verification code expired",
-			Code.FailedPrecondition,
-		);
-	}
+	const secretHmac = createHmac("sha256", secret).update(tripId);
 
-	const token = verCodeSnap.child("codeToken").val() as string;
+	totp.options = {
+		epoch: trip.createTime!.toDate().getUTCMilliseconds(),
+		digits: 6,
+		step: 120,
+	};
 
-	try {
-		verify(token, Buffer.from(req.verificationCode, "base64").toString());
-	} catch (e) {
+	const valid = totp.verify({
+		token: req.verificationCode,
+		secret: secretHmac.digest("hex"),
+	});
+
+	if (!valid) {
 		throw new ConnectError("Invalid verification code", Code.InvalidArgument);
 	}
 
-	await getFirestore().collection("trips").doc(tripId).update({
-		status: Trip_Status[Trip_Status.ACTIVE],
-		endAt: FieldValue.serverTimestamp(),
-	});
+	try {
+		await _service.tripRepository.startTrip(tripId);
+	} catch (error) {
+		throw new ConnectError("Something went wrong", Code.Internal);
+	}
 
 	return new StartTripResponse();
 }
