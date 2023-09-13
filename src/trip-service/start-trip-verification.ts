@@ -1,7 +1,7 @@
 import { getMessaging } from "firebase-admin/messaging";
 import { Code, ConnectError, type HandlerContext } from "@connectrpc/connect";
 import { createHmac } from "node:crypto";
-import { totp } from "otplib";
+import { TOTP } from "otpauth";
 import {
 	StartTripVerificationRequest,
 	StartTripVerificationResponse,
@@ -54,12 +54,16 @@ async function startTripVerification(
 
 	const secretHmac = createHmac("sha256", secret).update(tripId);
 
-	totp.options = {
-		epoch: trip.createTime!.toDate().getUTCMilliseconds(),
+	const otpGenerator = new TOTP({
+		algorithm: "SHA256",
 		digits: 6,
-		step: 120,
-	};
-	const otp = totp.generate(secretHmac.digest("hex"));
+		period: 120,
+		secret: secretHmac.digest("hex"),
+	});
+
+	const otp = otpGenerator.generate({
+		timestamp: trip.createTime!.toDate().getTime(),
+	});
 
 	await getMessaging().send({
 		token: notificationToken,

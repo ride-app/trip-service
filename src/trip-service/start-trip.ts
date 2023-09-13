@@ -1,6 +1,6 @@
 import { Code, ConnectError, type HandlerContext } from "@connectrpc/connect";
 import { createHmac } from "node:crypto";
-import { totp } from "otplib";
+import { TOTP } from "otpauth";
 import { Timestamp } from "@bufbuild/protobuf";
 import {
 	StartTripRequest,
@@ -43,16 +43,18 @@ async function startTrip(
 
 	const secretHmac = createHmac("sha256", secret).update(tripId);
 
-	totp.options = {
-		epoch: trip.createTime!.toDate().getUTCMilliseconds(),
+	const otpGenerator = new TOTP({
+		algorithm: "SHA256",
 		digits: 6,
-		step: 120,
-	};
-
-	const valid = totp.verify({
-		token: req.verificationCode,
+		period: 120,
 		secret: secretHmac.digest("hex"),
 	});
+
+	const valid =
+		otpGenerator.validate({
+			token: req.verificationCode,
+			timestamp: trip.createTime!.toDate().getTime(),
+		}) !== null;
 
 	if (!valid) {
 		throw new ConnectError("Invalid verification code", Code.InvalidArgument);
