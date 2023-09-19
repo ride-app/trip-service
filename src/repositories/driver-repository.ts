@@ -123,7 +123,7 @@ export default class DriverRepository {
 			tripRequestRef.delete();
 		}, expiresAt - Date.now());
 
-		const accepted: boolean = await new Promise<boolean>((ready) => {
+		const accepted: boolean = await new Promise<boolean>((resolve) => {
 			let initialReadComplete = false;
 
 			const unsubscribe = driverRef
@@ -133,9 +133,9 @@ export default class DriverRepository {
 					if (initialReadComplete) {
 						if (!snap.data() && snap.get("accepted") === true) {
 							unsubscribe();
-							ready(true);
+							resolve(true);
 						} else {
-							ready(false);
+							resolve(false);
 						}
 					} else {
 						initialReadComplete = true;

@@ -9,6 +9,34 @@ import {
 } from "../gen/ride/trip/v1alpha1/trip_service_pb.js";
 import type { Service } from "./service.js";
 
+async function validateOTP(
+	verificationCode: string,
+	tripId: string,
+	createTime: Date,
+): Promise<boolean> {
+	const secret = process.env["OTP_SECRET"];
+
+	if (!secret) {
+		throw new ConnectError("something went wrong", Code.Internal);
+	}
+
+	const secretHmac = createHmac("sha256", secret).update(tripId);
+
+	const otpGenerator = new TOTP({
+		algorithm: "SHA256",
+		digits: 6,
+		period: 120,
+		secret: secretHmac.digest("hex"),
+	});
+
+	return (
+		otpGenerator.validate({
+			token: verificationCode,
+			timestamp: createTime.getTime(),
+		}) !== null
+	);
+}
+
 async function startTrip(
 	_service: Service,
 	req: StartTripRequest,
@@ -35,26 +63,11 @@ async function startTrip(
 		throw new ConnectError("Unauthorized", Code.PermissionDenied);
 	}
 
-	const secret = process.env["OTP_SECRET"];
-
-	if (!secret) {
-		throw new ConnectError("something went wrong", Code.Internal);
-	}
-
-	const secretHmac = createHmac("sha256", secret).update(tripId);
-
-	const otpGenerator = new TOTP({
-		algorithm: "SHA256",
-		digits: 6,
-		period: 120,
-		secret: secretHmac.digest("hex"),
-	});
-
-	const valid =
-		otpGenerator.validate({
-			token: req.verificationCode,
-			timestamp: trip.createTime!.toDate().getTime(),
-		}) !== null;
+	const valid = await validateOTP(
+		req.verificationCode,
+		tripId,
+		trip.createTime!.toDate(),
+	);
 
 	if (!valid) {
 		throw new ConnectError("Invalid verification code", Code.InvalidArgument);

@@ -6,11 +6,10 @@
 	},
 	"extends": [
 		"eslint:recommended",
-		"airbnb-base",
 		"plugin:@typescript-eslint/strict-type-checked",
 		"plugin:@typescript-eslint/stylistic-type-checked",
-		"airbnb-typescript/base",
-		"plugin:jest/recommended",
+		"plugin:promise/recommended",
+		"plugin:jest/all",
 		"prettier"
 	],
 	"parser": "@typescript-eslint/parser",
@@ -19,7 +18,7 @@
 		"sourceType": "module",
 		"project": ["tsconfig.json", "test/tsconfig.json"]
 	},
-	"plugins": ["@typescript-eslint", "jest"],
+	"plugins": ["@typescript-eslint", "promise", "jest"],
 	"rules": {
 		"no-console": ["warn", { "allow": ["info", "warn", "error"] }],
 		"@typescript-eslint/no-non-null-assertion": "off",
