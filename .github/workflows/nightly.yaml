@@ -32,7 +32,7 @@ jobs:
             node-
 
       - name: Install Packages
-        run: npm install
+        run: pnpm install
 
       - uses: bufbuild/buf-setup-action@v1.26.1
         with:
@@ -42,7 +42,7 @@ jobs:
         run: echo ${{ secrets.BUF_TOKEN }} | buf registry login --username ${{ env.BUF_USER }} --token-stdin
 
       - name: Build protobuf
-        run: buf generate
+        run: buf generate --include-imports
 
       - name: Trunk Check
         uses: trunk-io/trunk-action@v1
