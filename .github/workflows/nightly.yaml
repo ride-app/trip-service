@@ -16,23 +16,16 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version-file: .nvmrc
-
-      - name: Cache node_modules
-        uses: actions/cache@v3.3.2
-        with:
-          path: |
-            **/node_modules
-          key: |
-            node-${{ hashfiles('**/package-lock.json') }}
-          restore-keys: |
-            node-
-
-      - name: Install Packages
-        run: pnpm install
+          cache: pnpm
 
       - uses: bufbuild/buf-setup-action@v1.26.1
         with:
