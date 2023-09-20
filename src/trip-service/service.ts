@@ -125,18 +125,21 @@ class Service implements ServiceImpl<typeof TripService> {
 	}
 
 	// trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
-	async cancelTrip(req: CancelTripRequest) {
+	// trunk-ignore(eslint/@typescript-eslint/require-await)
+	async cancelTrip(_req: CancelTripRequest) {
 		throw new ConnectError("Method not implemented.", Code.Unimplemented);
 	}
 
 	// trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
-	async endTrip(req: EndTripRequest) {
+	// trunk-ignore(eslint/@typescript-eslint/require-await)
+	async endTrip(_req: EndTripRequest) {
 		throw new ConnectError("Method not implemented.", Code.Unimplemented);
 	}
 
 	// trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
 	// trunk-ignore(eslint/require-yield)
-	async *watchTrip(req: WatchTripRequest) {
+	// trunk-ignore(eslint/@typescript-eslint/require-await)
+	async *watchTrip(_req: WatchTripRequest) {
 		throw new ConnectError("Method not implemented.", Code.Unimplemented);
 	}
 
