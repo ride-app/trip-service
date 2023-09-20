@@ -6,10 +6,8 @@
 	},
 	"extends": [
 		"eslint:recommended",
-		"airbnb-base",
 		"plugin:@typescript-eslint/strict-type-checked",
 		"plugin:@typescript-eslint/stylistic-type-checked",
-		"airbnb-typescript/base",
 		"plugin:jest/recommended",
 		"prettier"
 	],

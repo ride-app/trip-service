@@ -22,7 +22,7 @@ jobs:
       - name: Setup bun
         uses: oven-sh/setup-bun@v1
         with:
-          bun-version: 1.0.0
+          bun-version: 1.0.2
 
       - name: Install Packages
         run: bun install
