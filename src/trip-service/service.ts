@@ -124,19 +124,16 @@ class Service implements ServiceImpl<typeof TripService> {
 		}
 	}
 
-	// @ts-expect-error we will use req in the future
 	// trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
 	async cancelTrip(req: CancelTripRequest) {
 		throw new ConnectError("Method not implemented.", Code.Unimplemented);
 	}
 
-	// @ts-expect-error we will use req in the future
 	// trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
 	async endTrip(req: EndTripRequest) {
 		throw new ConnectError("Method not implemented.", Code.Unimplemented);
 	}
 
-	// @ts-expect-error we will use req in the future
 	// trunk-ignore(eslint/@typescript-eslint/no-unused-vars)
 	// trunk-ignore(eslint/require-yield)
 	async *watchTrip(req: WatchTripRequest) {
@@ -150,7 +147,7 @@ class Service implements ServiceImpl<typeof TripService> {
 			// trunk-ignore(eslint/@typescript-eslint/no-unsafe-member-access)
 			const token: string | undefined = context.requestHeader
 				.get("authorization")
-				.toString();
+				?.toString();
 			logDebug(`Token is: ${token}`);
 
 			if (token === undefined) {
@@ -170,8 +167,6 @@ class Service implements ServiceImpl<typeof TripService> {
 
 			logDebug(`UID from header is: ${uid}`);
 
-			// trunk-ignore(eslint/@typescript-eslint/no-unsafe-member-access)
-			// trunk-ignore(eslint/@typescript-eslint/no-unsafe-call)
 			context.requestHeader.set("uid", uid);
 		} catch (e) {
 			logInfo("Invalid authorization");
