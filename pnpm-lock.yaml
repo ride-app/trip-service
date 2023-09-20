@@ -40,9 +40,6 @@ dependencies:
     version: 7.8.1
 
 devDependencies:
-  '@tsconfig/esm':
-    specifier: ^1.0.4
-    version: 1.0.4
   '@tsconfig/node-lts':
     specifier: ^18.12.5
     version: 18.12.5
@@ -1266,11 +1263,6 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
-
-  /@tsconfig/esm@1.0.4:
-    resolution: {integrity: sha512-bix9CWljCxyD06nGQRDYdmTw0wevvEDyrLKjbDocGV31JQYbfqqgMV1yFeJ9aDgorKQ9yDLrak8poiggsB5Liw==}
-    deprecated: Use the tsconfig base for your runtime instead of general 'esm', e.g. 'node18'
-    dev: true
 
   /@tsconfig/node-lts@18.12.5:
     resolution: {integrity: sha512-KJZX0kQ5FBv77WDVzmQ9y1dUjaJCNXAAz3LSsg5cMwH0AUijVdDQtII+IVprEXdb13U9GjVOBxBzyRvr/ozPxw==}
