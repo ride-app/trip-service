@@ -8,7 +8,6 @@
 		"eslint:recommended",
 		"plugin:@typescript-eslint/strict-type-checked",
 		"plugin:@typescript-eslint/stylistic-type-checked",
-		"plugin:promise/recommended",
 		"plugin:jest/all",
 		"prettier"
 	],
@@ -18,7 +17,7 @@
 		"sourceType": "module",
 		"project": ["tsconfig.json", "test/tsconfig.json"]
 	},
-	"plugins": ["@typescript-eslint", "promise", "jest"],
+	"plugins": ["@typescript-eslint", "jest"],
 	"rules": {
 		"no-console": ["warn", { "allow": ["info", "warn", "error"] }],
 		"@typescript-eslint/no-non-null-assertion": "off",
