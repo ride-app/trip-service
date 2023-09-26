@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       checks: write # For trunk to post annotations
+      contents: read
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
