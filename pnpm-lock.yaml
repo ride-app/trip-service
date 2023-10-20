@@ -33,8 +33,8 @@ dependencies:
     specifier: ^9.0.2
     version: 9.0.2
   otpauth:
-    specifier: ^9.1.4
-    version: 9.1.4
+    specifier: ^9.1.5
+    version: 9.1.5
   rxjs:
     specifier: ^7.8.1
     version: 7.8.1
@@ -4426,8 +4426,8 @@ packages:
       type-check: 0.4.0
     dev: true
 
-  /otpauth@9.1.4:
-    resolution: {integrity: sha512-T6T0E1WlzwKWESq8K0Ja47u01XjmDmRY/AiUoMAc6xZI/OsTsD4cqBrfpt2WfJ29W5pRiWkuUuyHdNQl0/Ic+Q==}
+  /otpauth@9.1.5:
+    resolution: {integrity: sha512-mnic91MZxvj04Ir7FN8Xi6wF3FU8D+s6M5p6FQaSS91/csKswoOI9Dk7kKSnGFAoBYgGTTO+OWScV0nJuzrbPg==}
     dependencies:
       jssha: 3.3.1
     dev: false
