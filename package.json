@@ -13,7 +13,7 @@
 	},
 	"dependencies": {
 		"@buf/ride_notification.connectrpc_es": "0.13.1-20230728133931-d7e9cae588d2.1",
-		"@bufbuild/protobuf": "^1.4.0",
+		"@bufbuild/protobuf": "^1.4.1",
 		"@connectrpc/connect": "^1.0.0",
 		"@connectrpc/connect-node": "^1.1.2",
 		"@googlemaps/polyline-codec": "^1.0.28",
