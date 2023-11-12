@@ -17,7 +17,7 @@
 		"@connectrpc/connect": "^1.0.0",
 		"@connectrpc/connect-node": "^1.1.2",
 		"@googlemaps/polyline-codec": "^1.0.28",
-		"@types/jsonwebtoken": "^9.0.4",
+		"@types/jsonwebtoken": "^9.0.5",
 		"firebase-admin": "^11.11.0",
 		"geofire-common": "^6.0.0",
 		"jsonwebtoken": "^9.0.2",
