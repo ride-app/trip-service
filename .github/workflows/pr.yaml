@@ -38,7 +38,7 @@ jobs:
       - name: Install Packages
         run: pnpm install
 
-      - uses: bufbuild/buf-setup-action@v1.28.0
+      - uses: bufbuild/buf-setup-action@v1.28.1
         with:
           github_token: ${{ github.token }}
 
