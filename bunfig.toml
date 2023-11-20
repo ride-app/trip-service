@@ -1,0 +1,4 @@
+[install.scopes]
+
+"@buf" = { token = 
+"6df7cc8affae4c4aa8baa3e9082d094312fa96532f6f49df8892b318e2cba034", url = "https://buf.build/gen/npm/v1/" }
