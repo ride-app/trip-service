@@ -1,6 +1,7 @@
+environment:
+  - app-prod
 config:
   firebase:databaseURL: https://ride-app-dev-2-default-rtdb.asia-southeast1.firebasedatabase.app
-  gcp:project: ride-app-prod
   trip-service:notificationServiceUrl: https://notification-service-5iepetd3bq-em.a.run.app
   trip-service:otpSecret:
     secure: AAABAL4kXfeuGGosIPr1w6jbRyc90A1eZTt6zLTtDfg8iVxVnexE7SlHv9WhrGDBQVUJIOI=
