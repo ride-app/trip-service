@@ -1,7 +1,6 @@
 environment:
   - app-dev
 config:
-  firebase:databaseURL: https://ride-app-dev-2-default-rtdb.asia-southeast1.firebasedatabase.app
   trip-service:notificationServiceUrl: https://notification-service-gbbsdms5pq-el.a.run.app
   trip-service:otpSecret:
     secure: AAABALKUHLg/PTFg7xDq3r3l0vttQ3YDvp4eoerosX2MRQAHEShU0Bmo521L419/NRUQcSU=
