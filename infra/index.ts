@@ -51,6 +51,6 @@ new gcp.cloudbuild.Trigger("build-trigger", {
 			"notificationServiceUrl",
 		),
 		_OTP_SECRET_ID: otpSecret.secretId,
-		_LOG_DEBUG: new pulumi.Config().get("debug") ?? "false",
+		_LOG_DEBUG: new pulumi.Config().get("logDebug") ?? "false",
 	},
 });
