@@ -22,7 +22,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -30,7 +30,7 @@ jobs:
           version: 8
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65 # v4
         with:
           node-version-file: .nvmrc
           cache: pnpm
@@ -38,7 +38,7 @@ jobs:
       - name: Install Packages
         run: pnpm install
 
-      - uses: bufbuild/buf-setup-action@v1.28.1
+      - uses: bufbuild/buf-setup-action@382440cdb8ec7bc25a68d7b4711163d95f7cc3aa # v1.28.1
         with:
           github_token: ${{ github.token }}
 
@@ -46,7 +46,7 @@ jobs:
         run: buf generate --include-imports
 
       - name: Lint
-        uses: trunk-io/trunk-action@v1
+        uses: trunk-io/trunk-action@97ecd21fe6c743bf7a606791584b683a7995c70e # v1
 
       # - name: Test
       #   run: npm test:integration
