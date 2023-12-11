@@ -12,7 +12,6 @@ const github_connection = gcp.cloudbuildv2.Connection.get(
 
 const repository = new gcp.cloudbuildv2.Repository("repository", {
 	location,
-	name: serviceName,
 	parentConnection: github_connection.name,
 	remoteUri: pulumi.interpolate`https://github.com/ride-app/${serviceName}.git`,
 });
@@ -33,7 +32,6 @@ const otpSecretVersion = new gcp.secretmanager.SecretVersion(
 );
 
 new gcp.cloudbuild.Trigger("build-trigger", {
-	name: serviceName,
 	location,
 	repositoryEventConfig: {
 		repository: repository.id,
