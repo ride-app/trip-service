@@ -19,7 +19,7 @@ const repository = new gcp.cloudbuildv2.Repository("repository", {
 const otpSecret = new gcp.secretmanager.Secret("otp-secret", {
 	secretId: "trip-service-otp-secret",
 	replication: {
-		automatic: true,
+		auto: {},
 	},
 });
 
