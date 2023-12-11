@@ -7,6 +7,7 @@ on:
 
 jobs:
   trunk-check:
+    timeout-minutes: 10
     name: Trunk Check Upload
     runs-on: ubuntu-latest
     env:

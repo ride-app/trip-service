@@ -15,6 +15,7 @@ env:
 
 jobs:
   lint:
+    timeout-minutes: 10
     name: Lint
     runs-on: ubuntu-latest
     permissions:
