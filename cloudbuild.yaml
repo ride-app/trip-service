@@ -27,7 +27,7 @@ steps:
       - asia-south2-docker.pkg.dev/$PROJECT_ID/docker-registry/$_SERVICE_NAME:$COMMIT_SHA
 
   # Step 4: Push the new Cloud Run revision
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk@sha256:045e0dbe031f9557cf14ab3364de9f4f2008da76c6ceaa437fb22af45c4aa1b3
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk@sha256:d0b7b5284996d727e1c0a7a1bda798e06582c5bb9cb0de0099bdf3eee9131d5d
     entrypoint: gcloud
     args:
       - run
