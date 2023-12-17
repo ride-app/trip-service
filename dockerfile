@@ -18,7 +18,7 @@ RUN pnpm install --frozen-lockfile && \
   pnpm run build
 
 # Copy node_modules from build and js files from local /build
-FROM gcr.io/distroless/nodejs18-debian11@sha256:cfade8a611947fc489f3c612a4e25fd20eef2c94a203c542b82b45fc6b61ce7d
+FROM gcr.io/distroless/nodejs18-debian11@sha256:a34bd12a04684c3ac17da1f83bb80ad42814ee12004d1d2cfb288be5f915e14e
 
 WORKDIR /app
 
