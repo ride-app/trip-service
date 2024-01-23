@@ -2,10 +2,10 @@ version: 0.1
 plugins:
   sources:
     - id: trunk
-      ref: v1.4.0
+      ref: v1.4.2
       uri: https://github.com/trunk-io/plugins
 cli:
-  version: 1.18.0
+  version: 1.19.0
 lint:
   # files:
   #   - name: docker
@@ -39,20 +39,20 @@ lint:
     - linters: [cspell]
       level: none
   enabled:
-    - renovate@37.87.2
-    - checkov@3.1.9
-    - osv-scanner@1.5.0
-    - terrascan@1.18.5
-    - trivy@0.48.0
-    - trufflehog@3.63.2
+    - renovate@37.146.0
+    - checkov@3.1.69
+    - osv-scanner@1.6.1
+    - terrascan@1.18.11
+    - trivy@0.48.3
+    - trufflehog@3.63.11
     - yamllint@1.33.0
     - sort-package-json@2.6.0
     - git-diff-check
     - hadolint@2.12.0
     - actionlint@1.6.26
-    - eslint@8.54.0
+    - eslint@8.56.0
     - gitleaks@8.18.1
-    - prettier@3.1.0
+    - prettier@3.2.4
     - buf-lint@1.28.1
     - buf-breaking@1.28.1
     - dotenv-linter@3.3.0
