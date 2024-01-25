@@ -16,15 +16,17 @@ const repository = new gcp.cloudbuildv2.Repository("repository", {
 	remoteUri: pulumi.interpolate`https://github.com/ride-app/${serviceName}.git`,
 });
 
-const otpSecret = new gcp.secretmanager.Secret("otp-secret", {
-	secretId: "trip-service-otp-secret",
+const otpSecret = new gcp.secretmanager.Secret(
+	"otp-secret",
+	{
+		secretId: "trip-service-otp-secret",
 		replication: {
 			auto: {},
-		},	
+		},
 	},
 	{
 		deleteBeforeReplace: true,
-	}
+	},
 );
 
 const otpSecretVersion = new gcp.secretmanager.SecretVersion(
@@ -35,7 +37,7 @@ const otpSecretVersion = new gcp.secretmanager.SecretVersion(
 	},
 	{
 		parent: otpSecret,
-	}
+	},
 );
 
 new gcp.cloudbuild.Trigger("build-trigger", {
