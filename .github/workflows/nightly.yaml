@@ -28,7 +28,7 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
 
-      - uses: bufbuild/buf-setup-action@88db93f5d74ffa329bb43e42aa95cd822697d214 # v1.29.0
+      - uses: bufbuild/buf-setup-action@517ee23296d5caf38df31c21945e6a54bbc8a89f # v1.30.0
         with:
           github_token: ${{ github.token }}
 
