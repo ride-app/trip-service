@@ -1,5 +1,5 @@
 # Setup node environment
-FROM node:lts-alpine@sha256:d68eb093e49cca93ad249a2df295b2706888f3d101fde0a0fa0548ba1fc777c7 as base
+FROM node:lts-alpine@sha256:842159a809c86c28a799b235f95e6010aa64d967d98eee0db4db5979d33dd43e as base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
