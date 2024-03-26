@@ -9,7 +9,7 @@ steps:
       - --include-imports
 
   # Step 2: Build a Docker image
-  - name: gcr.io/cloud-builders/docker@sha256:1c8dbe15a835d55900cf62054e8962d7dcf636271b6a526d2256db781909ba2d
+  - name: gcr.io/cloud-builders/docker@sha256:b850cfbcd86752489bf37feb26c5cab4937fe228653b9d3b9dc9579b3c03c383
     args:
       - build
       - -t
@@ -21,7 +21,7 @@ steps:
       - .
 
   # Step 3: Push a Docker image
-  - name: gcr.io/cloud-builders/docker@sha256:1c8dbe15a835d55900cf62054e8962d7dcf636271b6a526d2256db781909ba2d
+  - name: gcr.io/cloud-builders/docker@sha256:b850cfbcd86752489bf37feb26c5cab4937fe228653b9d3b9dc9579b3c03c383
     args:
       - push
       - asia-south2-docker.pkg.dev/$PROJECT_ID/docker-registry/$_SERVICE_NAME:$COMMIT_SHA
