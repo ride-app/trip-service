@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@pulumi/gcp':
         specifier: ^7.6.0
-        version: 7.19.0
+        version: 7.20.0
       '@pulumi/pulumi':
         specifier: ^3.103.1
         version: 3.113.3
@@ -217,8 +217,8 @@ packages:
   '@protobufjs/utf8@1.1.0':
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
 
-  '@pulumi/gcp@7.19.0':
-    resolution: {integrity: sha512-6UdGk1Fkgi6dHyeUKbDq74iPZlzhrvcmZp5GHQ8GeAfKi0JTxR3P7QoxtQT8daofrhxt/pXWmPFkqVf1l/fQgQ==}
+  '@pulumi/gcp@7.20.0':
+    resolution: {integrity: sha512-aD/VcbJENSv8r0evaBdkJaELHhID7xHyYN/r185JJelK6ajo0I73vTPmMraLYr2a4bce/sUikDgcZ3P07ajsXA==}
 
   '@pulumi/pulumi@3.113.3':
     resolution: {integrity: sha512-q7Agc4nkIKNuoOmzIvmvbH3axIkdhEbVA+GPlosRM0MUJkJdRlU82hO4EGBhkyGbBPbLWvirqCjXOAQ66LgCfg==}
@@ -1463,7 +1463,7 @@ snapshots:
 
   '@protobufjs/utf8@1.1.0': {}
 
-  '@pulumi/gcp@7.19.0':
+  '@pulumi/gcp@7.20.0':
     dependencies:
       '@pulumi/pulumi': 3.113.3
       '@types/express': 4.17.21
