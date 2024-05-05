@@ -34,7 +34,7 @@ dependencies:
     version: 9.0.2
   otpauth:
     specifier: ^9.2.0
-    version: 9.2.3
+    version: 9.2.4
   rxjs:
     specifier: ^7.8.1
     version: 7.8.1
@@ -673,8 +673,8 @@ packages:
     dev: false
     optional: true
 
-  /@google-cloud/storage@7.10.1:
-    resolution: {integrity: sha512-sZW14pfxEQZSIbBPs6doFYtcbK31Bs3E4jH5Ly3jJnBkYfkMPX8sXG3ZQXCJa88MKtUNPlgBdMN2OJUzmFe5/g==}
+  /@google-cloud/storage@7.10.2:
+    resolution: {integrity: sha512-NaCyhwu0cSqwj6waZO+8WiyzCXUBUfVE7T1fHAGRHEJ+CRy5on2ah/jfC0ZPYXL0q4JoPj98VtMW4bEgtFfKHw==}
     engines: {node: '>=14'}
     requiresBuild: true
     dependencies:
@@ -2244,7 +2244,7 @@ packages:
       function.prototype.name: 1.1.6
       get-intrinsic: 1.2.4
       get-symbol-description: 1.0.2
-      globalthis: 1.0.3
+      globalthis: 1.0.4
       gopd: 1.0.1
       has-property-descriptors: 1.0.2
       has-proto: 1.0.3
@@ -2764,7 +2764,7 @@ packages:
       uuid: 9.0.1
     optionalDependencies:
       '@google-cloud/firestore': 7.6.0
-      '@google-cloud/storage': 7.10.1
+      '@google-cloud/storage': 7.10.2
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -2968,11 +2968,12 @@ packages:
     engines: {node: '>=18'}
     dev: true
 
-  /globalthis@1.0.3:
-    resolution: {integrity: sha512-sFdI5LyBiNTHjRd7cGPWapiHWMOXKyuBNX/cWJ3NfzrZQVa8GI/8cofCl74AOVqq9W5kNmguTIzJ/1s2gyI9wA==}
+  /globalthis@1.0.4:
+    resolution: {integrity: sha512-DpLKbNU4WylpxJykQujfCcwYWiV/Jhm50Goo0wrVILAv5jOr9d+H+UR3PhSCD2rCCEIg0uc+G+muBTwD54JhDQ==}
     engines: {node: '>= 0.4'}
     dependencies:
       define-properties: 1.2.1
+      gopd: 1.0.1
     dev: true
 
   /globby@11.1.0:
@@ -4377,8 +4378,8 @@ packages:
       type-check: 0.4.0
     dev: true
 
-  /otpauth@9.2.3:
-    resolution: {integrity: sha512-oAG55Ch4MBL5Jdg+RXfKiRCZ2lCwa/UIQKsmSfYbGGLSI4dErY1HPZv0JGPPESIYGyDO3s9iJqM4HU/1IppMoQ==}
+  /otpauth@9.2.4:
+    resolution: {integrity: sha512-t0Nioq2Up2ZaT5AbpXZLTjrsNtLc/g/rVSaEThmKLErAuT9mrnAKJryiPOKc3rCH+3ycWBgKpRHYn+DHqfaPiQ==}
     dependencies:
       jssha: 3.3.1
     dev: false
