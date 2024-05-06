@@ -10,7 +10,7 @@ dependencies:
     version: 7.21.0
   '@pulumi/pulumi':
     specifier: ^3.103.1
-    version: 3.115.1
+    version: 3.115.2
 
 devDependencies:
   '@types/node':
@@ -104,7 +104,7 @@ packages:
       npm-package-arg: 11.0.2
       npm-pick-manifest: 9.0.1
       npm-registry-fetch: 17.0.1
-      pacote: 18.0.4
+      pacote: 18.0.5
       parse-conflict-json: 3.0.1
       proc-log: 4.2.0
       proggy: 2.0.0
@@ -148,7 +148,7 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     hasBin: true
     dependencies:
-      npm-bundled: 3.0.0
+      npm-bundled: 3.0.1
       npm-normalize-package-bin: 3.0.1
     dev: false
 
@@ -168,7 +168,7 @@ packages:
     dependencies:
       cacache: 18.0.3
       json-parse-even-better-errors: 3.0.2
-      pacote: 18.0.4
+      pacote: 18.0.5
       proc-log: 4.2.0
       semver: 7.6.0
     transitivePeerDependencies:
@@ -430,7 +430,7 @@ packages:
   /@pulumi/gcp@7.21.0:
     resolution: {integrity: sha512-/V9QFMWOEg4wwxZ34nfWPy5H28Imqx0YHIaa0KIFm1XfFCjvknGcQs/WCx5Yv/hRb+yUdWV6mFAZ0SpVlEF2Ig==}
     dependencies:
-      '@pulumi/pulumi': 3.115.1
+      '@pulumi/pulumi': 3.115.2
       '@types/express': 4.17.21
       read-package-json: 2.1.2
     transitivePeerDependencies:
@@ -440,8 +440,8 @@ packages:
       - typescript
     dev: false
 
-  /@pulumi/pulumi@3.115.1:
-    resolution: {integrity: sha512-gz4WUAsgHJlHDI4mW5hUv5HSZrtyRvi62xzazkHsNNAK4Og7swZmpi8ImcpNxHMCN5uM8mNSuT0lMbvPmy9ciQ==}
+  /@pulumi/pulumi@3.115.2:
+    resolution: {integrity: sha512-IgKk5UsBp7QfQetBcFKUvpkUfCz6JeiIjnD084uvEFML8okJPjzpTvHRkPGXlVvAIIj3q77UVlkB42NPI7vd+w==}
     engines: {node: '>=18'}
     peerDependencies:
       ts-node: '>= 7.0.1 < 12'
@@ -525,7 +525,7 @@ packages:
     engines: {node: ^16.14.0 || >=18.0.0}
     dependencies:
       '@sigstore/protobuf-specs': 0.3.1
-      tuf-js: 2.2.0
+      tuf-js: 2.2.1
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -556,8 +556,8 @@ packages:
     engines: {node: ^16.14.0 || >=18.0.0}
     dev: false
 
-  /@tufjs/models@2.0.0:
-    resolution: {integrity: sha512-c8nj8BaOExmZKO2DXhDfegyhSGcG9E/mPN3U13L+/PsoWm1uaGiHHjxqSHQiasDBQwDA3aHuw9+9spYAP1qvvg==}
+  /@tufjs/models@2.0.1:
+    resolution: {integrity: sha512-92F7/SFyufn4DXsha9+QfKnN03JGqtMFMXgSHbZOo8JG59WkTni7UzAouNQDf7AuP9OAMxVOPQcqG3sB7w+kkg==}
     engines: {node: ^16.14.0 || >=18.0.0}
     dependencies:
       '@tufjs/canonical-json': 2.0.0
@@ -747,12 +747,6 @@ packages:
 
   /buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
-    dev: false
-
-  /builtins@5.1.0:
-    resolution: {integrity: sha512-SW9lzGTLvWTP1AY8xeAMZimqDrIaSdLQUcVr9DMef51niJ022Ri87SwRRKYm4A6iHfkPaiVUu/Duw2Wc4J7kKg==}
-    dependencies:
-      semver: 7.6.0
     dev: false
 
   /cacache@18.0.3:
@@ -1478,8 +1472,8 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /npm-bundled@3.0.0:
-    resolution: {integrity: sha512-Vq0eyEQy+elFpzsKjMss9kxqb9tG3YHg4dsyWuUENuzvSUWe1TCnW/vV9FkhvBk/brEDoDiVd+M1Btosa6ImdQ==}
+  /npm-bundled@3.0.1:
+    resolution: {integrity: sha512-+AvaheE/ww1JEwRHOrn4WHNzOxGtVp+adrg2AeZS/7KuxGUYFuBta98wYpfHBbJp6Tg6j1NKSEVHNcfZzJHQwQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     dependencies:
       npm-normalize-package-bin: 3.0.1
@@ -1508,7 +1502,7 @@ packages:
       hosted-git-info: 7.0.2
       proc-log: 4.2.0
       semver: 7.6.0
-      validate-npm-package-name: 5.0.0
+      validate-npm-package-name: 5.0.1
     dev: false
 
   /npm-packlist@8.0.2:
@@ -1590,8 +1584,8 @@ packages:
       aggregate-error: 3.1.0
     dev: false
 
-  /pacote@18.0.4:
-    resolution: {integrity: sha512-V912GIsY6UJx+oL1o3MgFXSocUBiqVqVYuHhTxpuYSpBgfoM2kitpimil3xUGd7hU/soGGAoR5mc58daDys45A==}
+  /pacote@18.0.5:
+    resolution: {integrity: sha512-AtbhPJE1gFPFdIb04spfX0UprUL0xK2eOBVVQnDNbLg7/VPrK/NkqgZRv7fkPPMM/zxZukjCkuGh+tZh7arrwQ==}
     engines: {node: ^16.14.0 || >=18.0.0}
     hasBin: true
     dependencies:
@@ -2006,11 +2000,11 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     dev: false
 
-  /tuf-js@2.2.0:
-    resolution: {integrity: sha512-ZSDngmP1z6zw+FIkIBjvOp/II/mIub/O7Pp12j1WNsiCpg5R5wAc//i555bBQsE44O94btLt0xM/Zr2LQjwdCg==}
+  /tuf-js@2.2.1:
+    resolution: {integrity: sha512-GwIJau9XaA8nLVbUXsN3IlFi7WmQ48gBUrl3FTkkL/XLu/POhBzfmX9hd33FNMX1qAsfl6ozO1iMmW9NC8YniA==}
     engines: {node: ^16.14.0 || >=18.0.0}
     dependencies:
-      '@tufjs/models': 2.0.0
+      '@tufjs/models': 2.0.1
       debug: 4.3.4
       make-fetch-happen: 13.0.1
     transitivePeerDependencies:
@@ -2050,11 +2044,9 @@ packages:
       spdx-expression-parse: 3.0.1
     dev: false
 
-  /validate-npm-package-name@5.0.0:
-    resolution: {integrity: sha512-YuKoXDAhBYxY7SfOKxHBDoSyENFeW5VvIIQp2TGQuit8gpK6MnWaQelBKxso72DoxTZfZdcP3W90LqpSkgPzLQ==}
+  /validate-npm-package-name@5.0.1:
+    resolution: {integrity: sha512-OljLrQ9SQdOUqTaQxqL5dEfZWrXExyyWsozYlAWFawPVNuD83igl7uJD2RTkNMbniIYgt8l81eCJGIdQF7avLQ==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
-    dependencies:
-      builtins: 5.1.0
     dev: false
 
   /walk-up-path@3.0.1:
