@@ -47,7 +47,7 @@ jobs:
         run: buf generate --include-imports
 
       - name: Lint
-        uses: trunk-io/trunk-action@da67635060feab46c164bc130690e61864a5d13b # v1
+        uses: trunk-io/trunk-action@bd686325615e9cf5a4ef98372ba94a472f9b5238 # v1
 
       # - name: Test
       #   run: npm test:integration
