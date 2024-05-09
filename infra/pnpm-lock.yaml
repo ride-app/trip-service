@@ -7,7 +7,7 @@ settings:
 dependencies:
   '@pulumi/gcp':
     specifier: ^7.6.0
-    version: 7.21.0
+    version: 7.21.1
   '@pulumi/pulumi':
     specifier: ^3.103.1
     version: 3.115.2
@@ -427,8 +427,8 @@ packages:
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
     dev: false
 
-  /@pulumi/gcp@7.21.0:
-    resolution: {integrity: sha512-/V9QFMWOEg4wwxZ34nfWPy5H28Imqx0YHIaa0KIFm1XfFCjvknGcQs/WCx5Yv/hRb+yUdWV6mFAZ0SpVlEF2Ig==}
+  /@pulumi/gcp@7.21.1:
+    resolution: {integrity: sha512-HoCS6IxLRC+n4V+45aQdD/VOnbnESN0owMHWCWd/midE0pEHANEFUGa170fkz30yVNrCd89XAdfdntXw5uePAA==}
     dependencies:
       '@pulumi/pulumi': 3.115.2
       '@types/express': 4.17.21
