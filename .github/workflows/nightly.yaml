@@ -39,6 +39,6 @@ jobs:
         run: buf generate --include-imports
 
       - name: Trunk Check
-        uses: trunk-io/trunk-action@bd686325615e9cf5a4ef98372ba94a472f9b5238 # v1
+        uses: trunk-io/trunk-action@f6c5f1b90503c30e02059667dbc247f2257b63c5 # v1
         with:
           trunk-token: ${{ secrets.TRUNK_TOKEN }}
