@@ -34,7 +34,7 @@ dependencies:
     version: 9.0.2
   otpauth:
     specifier: ^9.2.0
-    version: 9.2.4
+    version: 9.3.0
   rxjs:
     specifier: ^7.8.1
     version: 7.8.1
@@ -1024,6 +1024,11 @@ packages:
     requiresBuild: true
     dev: false
     optional: true
+
+  /@noble/hashes@1.4.0:
+    resolution: {integrity: sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==}
+    engines: {node: '>= 16'}
+    dev: false
 
   /@nodelib/fs.scandir@2.1.5:
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -2391,8 +2396,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /eslint-compat-utils@0.5.0(eslint@9.4.0):
-    resolution: {integrity: sha512-dc6Y8tzEcSYZMHa+CMPLi/hyo1FzNeonbhJL7Ol0ccuKQkwopJcJBA9YL/xmMTLU1eKigXo9vj9nALElWYSowg==}
+  /eslint-compat-utils@0.5.1(eslint@9.4.0):
+    resolution: {integrity: sha512-3z3vFexKIEnjHE3zCMRo6fn/e44U7T1khUjg+Hp0ZQMCigh28rALD0nPFBcGZuiLC5rLZa2ubQHDRln09JfU2Q==}
     engines: {node: '>=12'}
     peerDependencies:
       eslint: '>=6.0.0'
@@ -2473,7 +2478,7 @@ packages:
       '@eslint-community/eslint-utils': 4.4.0(eslint@9.4.0)
       '@eslint-community/regexpp': 4.10.0
       eslint: 9.4.0
-      eslint-compat-utils: 0.5.0(eslint@9.4.0)
+      eslint-compat-utils: 0.5.1(eslint@9.4.0)
     dev: true
 
   /eslint-plugin-import@2.29.1(@typescript-eslint/parser@7.11.0)(eslint@9.4.0):
@@ -4007,10 +4012,6 @@ packages:
       semver: 7.5.4
     dev: false
 
-  /jssha@3.3.1:
-    resolution: {integrity: sha512-VCMZj12FCFMQYcFLPRm/0lOBbLi8uM2BhXPTqw3U4YAfs4AZfiApOoBLoN8cQE60Z50m1MYMTQVCfgF/KaCVhQ==}
-    dev: false
-
   /jwa@1.4.1:
     resolution: {integrity: sha512-qiLX/xhEEFKUAJ6FiBMbes3w9ATzyk5W7Hvzpa/SLYdxNtng+gcurvrI7TbACjIXlsJyr05/S1oUhZrc63evQA==}
     dependencies:
@@ -4430,10 +4431,10 @@ packages:
       type-check: 0.4.0
     dev: true
 
-  /otpauth@9.2.4:
-    resolution: {integrity: sha512-t0Nioq2Up2ZaT5AbpXZLTjrsNtLc/g/rVSaEThmKLErAuT9mrnAKJryiPOKc3rCH+3ycWBgKpRHYn+DHqfaPiQ==}
+  /otpauth@9.3.0:
+    resolution: {integrity: sha512-415wsVsJmwiOI6/Anjry9gsk23zJ6Sx5o3lIRP3xL+5D3luaB2mBs/eNCyxMpZTPKpmsyiLy1wYcQiKd22LNXg==}
     dependencies:
-      jssha: 3.3.1
+      '@noble/hashes': 1.4.0
     dev: false
 
   /p-limit@2.3.0:
