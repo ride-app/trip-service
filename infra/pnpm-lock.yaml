@@ -10,7 +10,7 @@ dependencies:
     version: 7.32.0
   '@pulumi/pulumi':
     specifier: ^3.103.1
-    version: 3.125.0
+    version: 3.126.0
 
 devDependencies:
   '@types/node':
@@ -102,7 +102,7 @@ packages:
       minimatch: 9.0.5
       nopt: 7.2.1
       npm-install-checks: 6.3.0
-      npm-package-arg: 11.0.2
+      npm-package-arg: 11.0.3
       npm-pick-manifest: 9.1.0
       npm-registry-fetch: 17.1.0
       pacote: 18.0.6
@@ -427,7 +427,7 @@ packages:
   /@pulumi/gcp@7.32.0:
     resolution: {integrity: sha512-ZWx/72GvzscI+Uouc00I6dLNjZ+EzVRfn6+uhmQV3KFSg9OoYBpsbveBlzEcNrjNPUm5KJ9mgN/WT7Xq2voIIg==}
     dependencies:
-      '@pulumi/pulumi': 3.125.0
+      '@pulumi/pulumi': 3.126.0
       '@types/express': 4.17.21
       read-package-json: 2.1.2
     transitivePeerDependencies:
@@ -437,8 +437,8 @@ packages:
       - typescript
     dev: false
 
-  /@pulumi/pulumi@3.125.0:
-    resolution: {integrity: sha512-NrSUA1sEQIu/Qc11laAHzY6yA5GJlYcLyuj7ZYPAHEhUSHwPa6PdhQcZ36xX/RHZlRihLb1vLPyV5ZsQ3VzofQ==}
+  /@pulumi/pulumi@3.126.0:
+    resolution: {integrity: sha512-NPYGHeavLh8Y2quOcx0KLMAM0WWES5RoJ9iywp953iL7hSqv1W77/GjvYuhj5jdm2O9Ty2AjYs74zpfeYzkOoQ==}
     engines: {node: '>=18'}
     peerDependencies:
       ts-node: '>= 7.0.1 < 12'
@@ -465,7 +465,7 @@ packages:
       '@types/semver': 7.5.8
       '@types/tmp': 0.2.6
       execa: 5.1.1
-      fdir: 6.1.1(picomatch@3.0.1)
+      fdir: 6.2.0(picomatch@3.0.1)
       google-protobuf: 3.21.4
       got: 11.8.6
       ini: 2.0.0
@@ -959,10 +959,10 @@ packages:
     resolution: {integrity: sha512-dX7e/LHVJ6W3DE1MHWi9S1EYzDESENfLrYohG2G++ovZrYOkm4Knwa0mc1cn84xJOR4KEU0WSchhLbd0UklbHw==}
     dev: false
 
-  /fdir@6.1.1(picomatch@3.0.1):
-    resolution: {integrity: sha512-QfKBVg453Dyn3mr0Q0O+Tkr1r79lOTAKSi9f/Ot4+qVEwxWhav2Z+SudrG9vQjM2aYRMQQZ2/Q1zdA8ACM1pDg==}
+  /fdir@6.2.0(picomatch@3.0.1):
+    resolution: {integrity: sha512-9XaWcDl0riOX5j2kYfy0kKdg7skw3IY6kA4LFT8Tk2yF9UdrADUy8D6AJuBLtf7ISm/MksumwAHE3WVbMRyCLw==}
     peerDependencies:
-      picomatch: 3.x
+      picomatch: ^3 || ^4
     peerDependenciesMeta:
       picomatch:
         optional: true
@@ -1516,8 +1516,8 @@ packages:
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
     dev: false
 
-  /npm-package-arg@11.0.2:
-    resolution: {integrity: sha512-IGN0IAwmhDJwy13Wc8k+4PEbTPhpJnMtfR53ZbOyjkvmEcLS4nCwp6mvMWjS5sUjeiW3mpx6cHmuhKEu9XmcQw==}
+  /npm-package-arg@11.0.3:
+    resolution: {integrity: sha512-sHGJy8sOC1YraBywpzQlIKBE4pBbGbiF95U6Auspzyem956E0+FtDtsx1ZxlOJkQCZ1AFXAY/yuvtFYrOxF+Bw==}
     engines: {node: ^16.14.0 || >=18.0.0}
     dependencies:
       hosted-git-info: 7.0.2
@@ -1539,7 +1539,7 @@ packages:
     dependencies:
       npm-install-checks: 6.3.0
       npm-normalize-package-bin: 3.0.1
-      npm-package-arg: 11.0.2
+      npm-package-arg: 11.0.3
       semver: 7.6.3
     dev: false
 
@@ -1553,7 +1553,7 @@ packages:
       minipass: 7.1.2
       minipass-fetch: 3.0.5
       minizlib: 2.1.2
-      npm-package-arg: 11.0.2
+      npm-package-arg: 11.0.3
       proc-log: 4.2.0
     transitivePeerDependencies:
       - supports-color
@@ -1622,7 +1622,7 @@ packages:
       cacache: 18.0.4
       fs-minipass: 3.0.3
       minipass: 7.1.2
-      npm-package-arg: 11.0.2
+      npm-package-arg: 11.0.3
       npm-packlist: 8.0.2
       npm-pick-manifest: 9.1.0
       npm-registry-fetch: 17.1.0
