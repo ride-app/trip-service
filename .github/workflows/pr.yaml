@@ -39,7 +39,7 @@ jobs:
       - name: Install Packages
         run: pnpm install
 
-      - uses: bufbuild/buf-setup-action@bdb594084c95f0638c76c891ccb75bf4b75ef61c # v1.36.0
+      - uses: bufbuild/buf-setup-action@76ddbd1bcb9da6da11cb7c41bd97e47f81c39a39 # v1.37.0
         with:
           github_token: ${{ github.token }}
 
