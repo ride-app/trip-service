@@ -34,7 +34,7 @@ dependencies:
     version: 9.0.2
   otpauth:
     specifier: ^9.2.0
-    version: 9.3.1
+    version: 9.3.2
   rxjs:
     specifier: ^7.8.1
     version: 7.8.1
@@ -2422,7 +2422,7 @@ packages:
     resolution: {integrity: sha512-WFj2isz22JahUv+B788TlO3N6zL3nNJGU8CcZbPZvVEkBPaJdCV4vy5wyghty5ROFbCRnm132v8BScu5/1BQ8g==}
     dependencies:
       debug: 3.2.7
-      is-core-module: 2.15.0
+      is-core-module: 2.15.1
       resolve: 1.22.8
     transitivePeerDependencies:
       - supports-color
@@ -2490,7 +2490,7 @@ packages:
       eslint-import-resolver-node: 0.3.9
       eslint-module-utils: 2.8.1(@typescript-eslint/parser@8.2.0)(eslint-import-resolver-node@0.3.9)(eslint@9.9.0)
       hasown: 2.0.2
-      is-core-module: 2.15.0
+      is-core-module: 2.15.1
       is-glob: 4.0.3
       minimatch: 3.1.2
       object.fromentries: 2.0.8
@@ -2538,9 +2538,9 @@ packages:
       eslint-plugin-es-x: 7.8.0(eslint@9.9.0)
       get-tsconfig: 4.7.6
       globals: 13.24.0
-      ignore: 5.3.1
+      ignore: 5.3.2
       is-builtin-module: 3.2.1
-      is-core-module: 2.15.0
+      is-core-module: 2.15.1
       minimatch: 3.1.2
       resolve: 1.22.8
       semver: 7.6.3
@@ -3209,6 +3209,11 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
+  /ignore@5.3.2:
+    resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
+    engines: {node: '>= 4'}
+    dev: true
+
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -3301,8 +3306,8 @@ packages:
       has: 1.0.3
     dev: true
 
-  /is-core-module@2.15.0:
-    resolution: {integrity: sha512-Dd+Lb2/zvk9SKy1TGCt1wFJFo/MWBPMX5x7KcvLajWTGuomczdQX61PvY5yK6SVACwpoexWo81IfFyoKY2QnTA==}
+  /is-core-module@2.15.1:
+    resolution: {integrity: sha512-z0vtXSwucUJtANQWldhbtbt7BnL0vxiFjIdDLAatwhDYty2bad6s+rijD6Ri4YuYJubLzIJLUidCh09e1djEVQ==}
     engines: {node: '>= 0.4'}
     dependencies:
       hasown: 2.0.2
@@ -4403,8 +4408,8 @@ packages:
       type-check: 0.4.0
     dev: true
 
-  /otpauth@9.3.1:
-    resolution: {integrity: sha512-E6d2tMxPofHNk4sRFp+kqW7vQ+WJGO9VLI2N/W00DnI+ThskU12Qa10kyNSGklrzhN5c+wRUsN4GijVgCU2N9w==}
+  /otpauth@9.3.2:
+    resolution: {integrity: sha512-KixtXWN9RGdS8WHPfDo7qsOYiivCbl+VeLBT+7HBTtJebBO6aXr/bpZXr+TwY2COecdY82VeBghm31mLYQVZlQ==}
     dependencies:
       '@noble/hashes': 1.4.0
     dev: false
@@ -4652,7 +4657,7 @@ packages:
     resolution: {integrity: sha512-oKWePCxqpd6FlLvGV1VU0x7bkPmmCNolxzjMf4NczoDnQcIWrAF+cPtZn5i6n+RfD2d9i0tzpKnG6Yk168yIyw==}
     hasBin: true
     dependencies:
-      is-core-module: 2.15.0
+      is-core-module: 2.15.1
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
     dev: true
