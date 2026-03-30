@@ -56,4 +56,4 @@ jobs:
       contents: read
       pull-requests: write
     name: Auto Merge PR if bot
-    uses: dragonfish-tech/workflows/.github/workflows/auto-merge.yaml@main
+    uses: dragonfish-tech/workflows/.github/workflows/auto-merge.yaml@e825696ef7140f9b51c6425dee58c5a8ff6175a1 # main
